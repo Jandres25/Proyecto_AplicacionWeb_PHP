@@ -1,32 +1,32 @@
 <?php
-    session_start();
-    if ($_POST) {
-        include("./model/bd.php");
+session_start();
+if ($_POST) {
+    include("./model/bd.php");
 
-        $sentencia = $conexion->prepare("SELECT *, count(*) as n_usuarios FROM `usuarios` WHERE Usuario = :Usuario AND Clave = :Clave");
-        $usuario = $_POST["usuario"];
-        $password = $_POST["password"];
+    $sentencia = $conexion->prepare("SELECT *, count(*) as n_usuarios FROM `usuarios` WHERE Usuario = :Usuario AND Clave = :Clave");
+    $usuario = $_POST["usuario"];
+    $password = $_POST["password"];
 
-        $sentencia->bindParam(":Usuario", $usuario);
-        $sentencia->bindParam(":Clave", $password);
-        $sentencia->execute();
-        $registro = $sentencia->fetch(PDO::FETCH_LAZY);
+    $sentencia->bindParam(":Usuario", $usuario);
+    $sentencia->bindParam(":Clave", $password);
+    $sentencia->execute();
+    $registro = $sentencia->fetch(PDO::FETCH_LAZY);
 
-        if ($registro["n_usuarios"] > 0) {
-            $_SESSION["usuario"] = $usuario;
-            $_SESSION['logueado'] = true;
+    if ($registro["n_usuarios"] > 0) {
+        $_SESSION["usuario"] = $usuario;
+        $_SESSION['logueado'] = true;
 
-            // Obtener el campo nombres del registro
-            $nombres = $registro["Nombres"];
+        // Obtener el campo nombres del registro
+        $nombres = $registro["Nombres"];
 
-            // Almacenar el valor de nombres en la sesión
-            $_SESSION["Nombres"] = $nombres;
+        // Almacenar el valor de nombres en la sesión
+        $_SESSION["Nombres"] = $nombres;
 
-            header("Location: ./index.php");
-        } else {
-            $mensaje = "Error: El usuario o contraseña son incorrectos";
-        }
+        header("Location: ./index.php");
+    } else {
+        $mensaje = "Error: El usuario o contraseña son incorrectos";
     }
+}
 
 ?>
 
@@ -40,8 +40,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS v5.2.1 -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
     <link href="https://tresplazas.com/web/img/big_punto_de_venta.png" rel="shortcut icon">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
@@ -66,9 +65,9 @@
             <form method="post" action="">
                 <img src="img/avatar.svg" alt="Imagen Usuario">
                 <h2 class="title">BIENVENIDO</h2>
-                <?php if(isset($mensaje)) { ?>
+                <?php if (isset($mensaje)) { ?>
                     <div class="alert alert-danger" role="alert">
-                        <strong><?php echo $mensaje; ?></strong> 
+                        <strong><?php echo $mensaje; ?></strong>
                     </div>
                 <?php } ?>
                 <div class="input-div one">
@@ -98,12 +97,10 @@
     </div>
 
     <!-- Bootstrap JavaScript Libraries -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
-        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
     </script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
-        integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js" integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
     </script>
     <script src="js/main.js"></script>
     <script src="js/main2.js"></script>

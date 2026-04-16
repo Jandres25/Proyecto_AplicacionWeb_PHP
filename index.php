@@ -1,4 +1,4 @@
-<?php include("./templates/header.php"); ?>
+<?php include(__DIR__ . "/templates/header.php"); ?>
 <div id="myCarousel" class="carousel slide" style="height:100vh" data-ride="carousel">
   <ol class="carousel-indicators">
     <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
@@ -150,4 +150,4 @@
   <!-- /END THE FEATURETTES -->
 
 </div><!-- /.container -->
-<?php include("./templates/footer.php"); ?>
+<?php include(__DIR__ . "/templates/footer.php"); ?>

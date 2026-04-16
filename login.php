@@ -1,7 +1,7 @@
 <?php
 session_start();
 if ($_POST) {
-    include("./model/bd.php");
+    include(__DIR__ . "/model/bd.php");
 
     $sentencia = $conexion->prepare("SELECT *, count(*) as n_usuarios FROM `usuarios` WHERE Usuario = :Usuario AND Clave = :Clave");
     $usuario = $_POST["usuario"];
@@ -22,7 +22,7 @@ if ($_POST) {
         // Almacenar el valor de nombres en la sesión
         $_SESSION["Nombres"] = $nombres;
 
-        header("Location: ./index.php");
+        header("Location: index.php");
     } else {
         $mensaje = "Error: El usuario o contraseña son incorrectos";
     }

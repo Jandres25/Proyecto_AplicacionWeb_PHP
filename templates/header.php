@@ -1,6 +1,6 @@
 <?php
 session_start();
-$url_base = "http://localhost/proyecto/";
+$url_base = "http://localhost/Proyecto_AplicacionWeb_PHP/";
 
 // Verificar si el usuario ha iniciado sesión
 $nombresusuario = isset($_SESSION['Nombres']) ? $_SESSION['Nombres'] : '';

@@ -1,0 +1,21 @@
+# Cache and temporary files
+*.log
+*.tmp
+
+# System files
+/vendor/
+.DS_Store
+Thumbs.db
+bash.exe.stackdump
+.env
+
+# IDEs and editors
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+*.code-workspace
+
+# Database backups
+*.sql
+!proyecto.sql

@@ -122,7 +122,7 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
   `Nombres` varchar(100) NOT NULL,
   `Apellidos` varchar(100) NOT NULL,
   `Usuario` varchar(50) NOT NULL,
-  `Clave` varchar(50) NOT NULL,
+  `Clave` varchar(255) NOT NULL,
   `Correo` varchar(100) NOT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -134,10 +134,14 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
 --
 -- Volcado de datos para la tabla `usuarios`
 --
+-- Credenciales iniciales (usuario => contraseña en texto plano):
+-- Administrador => 1234
+-- Perez15 => password
+-- Pulp Fiction => hand gun
 
-INSERT INTO `usuarios` (`ID`, `Nombres`, `Apellidos`, `Usuario`, `Clave`, `Correo`) VALUES(1, 'José Andrés', 'Meneces Lopez', 'Administrador', '1234', 'jandrespb4@gmail.com');
-INSERT INTO `usuarios` (`ID`, `Nombres`, `Apellidos`, `Usuario`, `Clave`, `Correo`) VALUES(3, 'Juan Juanito', 'Pérez Mamio', 'Perez15', 'password', 'JuanPerez@hotmail.com');
-INSERT INTO `usuarios` (`ID`, `Nombres`, `Apellidos`, `Usuario`, `Clave`, `Correo`) VALUES(4, 'John Bold', 'Travolta', 'Pulp Fiction', 'hand gun', 'Travolta007@gmail.com');
+INSERT INTO `usuarios` (`ID`, `Nombres`, `Apellidos`, `Usuario`, `Clave`, `Correo`) VALUES(1, 'Matín', 'Padilla', 'Administrador', '$2y$10$YHW/kbpdB7ThjThQxmOFNu5mk2Q2UulUw03USaS1Jli61ncsaZA0y', 'Martins@gmail.com');
+INSERT INTO `usuarios` (`ID`, `Nombres`, `Apellidos`, `Usuario`, `Clave`, `Correo`) VALUES(3, 'Juan Juanito', 'Pérez Mamio', 'Perez15', '$2y$10$aucTjFmj.PUJ.EHQEIJbwu/z0WFcrZHBpDX23X4jI1BfhPXZtM0qi', 'JuanPerez@hotmail.com');
+INSERT INTO `usuarios` (`ID`, `Nombres`, `Apellidos`, `Usuario`, `Clave`, `Correo`) VALUES(4, 'John Bold', 'Travolta', 'Pulp Fiction', '$2y$10$gNl3.WTynkSlVGboFLnkVeOnUWJ.4Vlp6AWKTZ0meQwZbR/GvEhw6', 'Travolta007@gmail.com');
 
 --
 -- Restricciones para tablas volcadas

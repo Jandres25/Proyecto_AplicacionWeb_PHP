@@ -1,5 +1,6 @@
 <?php
 include("../../model/bd.php");
+App\Core\Auth::requireLogin();
 
 if (isset($_GET["txtID"])) {
     $txtID = (isset($_GET["txtID"])) ? $_GET["txtID"] : "";
@@ -20,6 +21,7 @@ if (isset($_GET["txtID"])) {
 }
 
 if ($_POST) {
+    App\Core\Csrf::validateOrFail((string) ($_POST['_token'] ?? ''));
     $txtID = (isset($_POST['txtID'])) ? $_POST['txtID'] : '';
     $modelo = (isset($_POST['modelo'])) ? $_POST['modelo'] : '';
     $marca = (isset($_POST['marca'])) ? $_POST['marca'] : '';
@@ -34,6 +36,7 @@ if ($_POST) {
     $sentencia->execute();
     $mensaje = "Registro Actualizado";
     header("Location: index.php?mensaje=" . $mensaje);
+    exit;
 }
 ?>
 
@@ -46,24 +49,25 @@ if ($_POST) {
             </div>
             <div class="card-body">
                 <form action="" method="post">
+                    <input type="hidden" name="_token" value="<?php echo e(App\Core\Csrf::token()); ?>">
                     <div class="mb-3">
                         <label for="txtID" class="form-label"><i class="fa fa-id-badge" aria-hidden="true"></i>ID</label>
-                        <input type="text" value="<?php echo $txtID; ?>" class="form-control" readonly name="txtID" id="txtID">
+                        <input type="text" value="<?php echo e($txtID); ?>" class="form-control" readonly name="txtID" id="txtID">
                     </div>
                     <div class="mb-3">
                         <label for="modelo" class="form-label">Modelo</label>
-                        <input type="text" value="<?php echo $modelo; ?>" class="form-control" name="modelo" id="modelo">
+                        <input type="text" value="<?php echo e($modelo); ?>" class="form-control" name="modelo" id="modelo">
                     </div>
                     <div class="mb-3">
                         <label for="marca" class="form-label">Marca</label>
-                        <input type="text" value="<?php echo $marca; ?>" class="form-control" name="marca" id="marca">
+                        <input type="text" value="<?php echo e($marca); ?>" class="form-control" name="marca" id="marca">
                     </div>
                     <div class="mb-3">
                         <label for="propietario" class="form-label">Placa</label>
                         <select class="form-select form-select-sm" name="propietario" id="propietario">
                             <option selected>Selecciona una placa</option>
                             <?php foreach ($lista_propietarios as $registro) { ?>
-                                <option <?php echo ($propietario == $registro['Idpropietario']) ? 'selected' : '' ?> value="<?php echo $registro['Idpropietario']; ?>"><?php echo $registro['Nombre'] ?></option>
+                                <option <?php echo ($propietario == $registro['Idpropietario']) ? 'selected' : '' ?> value="<?php echo e($registro['Idpropietario']); ?>"><?php echo e($registro['Nombre']); ?></option>
                             <?php } ?>
                         </select>
                     </div>

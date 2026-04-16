@@ -6,8 +6,16 @@ namespace App\Core;
 
 final class Autoloader
 {
+    private static bool $registered = false;
+
     public static function register(): void
     {
+        if (self::$registered) {
+            return;
+        }
+
+        require_once __DIR__ . '/helpers.php';
+
         spl_autoload_register(static function (string $class): void {
             $prefix = 'App\\';
             if (strncmp($class, $prefix, strlen($prefix)) !== 0) {
@@ -21,5 +29,7 @@ final class Autoloader
                 require_once $file;
             }
         });
+
+        self::$registered = true;
     }
 }

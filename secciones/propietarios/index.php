@@ -1,14 +1,17 @@
 <?php
 include("../../model/bd.php");
+App\Core\Auth::requireLogin();
 
-if (isset($_GET['txtID'])) {
-    $txtID = (isset($_GET['txtID'])) ? $_GET['txtID'] : "";
+if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST' && ($_POST['action'] ?? '') === 'delete') {
+    App\Core\Csrf::validateOrFail((string) ($_POST['_token'] ?? ''));
+    $txtID = (string) ($_POST['txtID'] ?? '');
 
     $sentencia = $conexion->prepare("DELETE FROM `propietarios` WHERE Idpropietario=:Idpropietario");
     $sentencia->bindParam(":Idpropietario", $txtID);
     $sentencia->execute();
     $mensaje = "Registro Eliminado";
     header("Location:index.php?mensaje=" . $mensaje);
+    exit;
 }
 
 $sentencia = $conexion->prepare("SELECT * FROM `propietarios`");
@@ -38,12 +41,18 @@ $lista_propietarios = $sentencia->fetchAll(PDO::FETCH_ASSOC);
                         <tbody>
                             <?php foreach ($lista_propietarios as $registro) { ?>
                                 <tr>
-                                    <td scope="row"><?php echo $registro['Idpropietario']; ?></td>
-                                    <td><?php echo $registro['Nombre']; ?></td>
-                                    <td><?php echo $registro['Telefono']; ?></td>
+                                    <td scope="row"><?php echo e($registro['Idpropietario']); ?></td>
+                                    <td><?php echo e($registro['Nombre']); ?></td>
+                                    <td><?php echo e($registro['Telefono']); ?></td>
                                     <td>
-                                        <a name="btneditar" id="btneditar" class="btn btn-outline-info" href="editar.php?txtID=<?php echo $registro['Idpropietario']; ?>" role="button">Editar</a>
-                                        <a class="btn btn-outline-danger" href="javascript:borrar(<?php echo $registro['Idpropietario']; ?>);" role="button">Eliminar</a>
+                                        <a name="btneditar" id="btneditar" class="btn btn-outline-info" href="editar.php?txtID=<?php echo e($registro['Idpropietario']); ?>" role="button">Editar</a>
+                                        <?php $deleteFormId = 'delete-propietario-' . $registro['Idpropietario']; ?>
+                                        <form id="<?php echo e($deleteFormId); ?>" method="post" action="" class="d-inline">
+                                            <input type="hidden" name="_token" value="<?php echo e(App\Core\Csrf::token()); ?>">
+                                            <input type="hidden" name="action" value="delete">
+                                            <input type="hidden" name="txtID" value="<?php echo e($registro['Idpropietario']); ?>">
+                                            <button type="button" class="btn btn-outline-danger" onclick="borrar('<?php echo e($deleteFormId); ?>')">Eliminar</button>
+                                        </form>
                                     </td>
                                 </tr>
                             <?php } ?>

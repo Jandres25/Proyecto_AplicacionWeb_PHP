@@ -1,7 +1,9 @@
 <?php
 include("../../model/bd.php");
+App\Core\Auth::requireLogin();
 
 if ($_POST) {
+    App\Core\Csrf::validateOrFail((string) ($_POST['_token'] ?? ''));
     $nombres = (isset($_POST['nombre']) ? $_POST['nombre'] : '');
     $telefono = (isset($_POST['telefono']) ? $_POST['telefono'] : '');
 
@@ -13,6 +15,7 @@ if ($_POST) {
     $sentencia->execute();
     $mensaje = "Registro Agregado";
     header("location: index.php?mensaje=" . $mensaje);
+    exit;
 }
 ?>
 
@@ -25,6 +28,7 @@ if ($_POST) {
             </div>
             <div class="card-body">
                 <form action="" method="post">
+                    <input type="hidden" name="_token" value="<?php echo e(App\Core\Csrf::token()); ?>">
                     <div class="mb-3">
                         <label for="nombre" class="form-label">Nombres del propietario</label>
                         <input type="text" class="form-control" name="nombre" id="nombre" aria-describedby="helpId" placeholder="Ejemplo: Juan">

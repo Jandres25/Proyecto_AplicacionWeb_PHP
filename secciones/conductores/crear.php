@@ -1,8 +1,10 @@
 <?php
 
 include("../../model/bd.php");
+App\Core\Auth::requireLogin();
 
 if ($_POST) {
+    App\Core\Csrf::validateOrFail((string) ($_POST['_token'] ?? ''));
     $nombres = (isset($_POST['nombre']) ? $_POST['nombre'] : '');
     $telefono = (isset($_POST['telefono']) ? $_POST['telefono'] : '');
     $placa = (isset($_POST['placa']) ? $_POST['placa'] : '');
@@ -16,6 +18,7 @@ if ($_POST) {
     $sentencia->execute();
     $mensaje = "Registro Agregado";
     header("location: index.php?mensaje=" . $mensaje);
+    exit;
 }
 
 $sentencia = $conexion->prepare("SELECT * FROM `taxis`");
@@ -32,6 +35,7 @@ $lista_taxis = $sentencia->fetchAll(PDO::FETCH_ASSOC);
             </div>
             <div class="card-body">
                 <form action="" method="post">
+                    <input type="hidden" name="_token" value="<?php echo e(App\Core\Csrf::token()); ?>">
                     <div class="mb-3">
                         <label for="nombre" class="form-label">Nombres del conductor</label>
                         <input type="text" class="form-control" name="nombre" id="nombre" aria-describedby="helpId" placeholder="Ejemplo: Juan">
@@ -47,7 +51,7 @@ $lista_taxis = $sentencia->fetchAll(PDO::FETCH_ASSOC);
                         <select class="form-select form-select-sm" name="placa" id="placa">
                             <option selected>Selecciona una placa</option>
                             <?php foreach ($lista_taxis as $registro) { ?>
-                                <option value="<?php echo $registro['Placa']; ?>"><?php echo $registro['Placa']; ?></option>
+                                <option value="<?php echo e($registro['Placa']); ?>"><?php echo e($registro['Placa']); ?></option>
                             <?php } ?>
 
                         </select>

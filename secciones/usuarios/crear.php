@@ -1,12 +1,15 @@
 <?php
 include("../../model/bd.php");
+App\Core\Auth::requireAdmin();
 
 if ($_POST) {
+  App\Core\Csrf::validateOrFail((string) ($_POST['_token'] ?? ''));
   $nombres = (isset($_POST['nombres']) ? $_POST['nombres'] : '');
   $apellidos = (isset($_POST['apellidos']) ? $_POST['apellidos'] : '');
   $usuario = (isset($_POST['usuario']) ? $_POST['usuario'] : '');
   $clave = (isset($_POST['clave']) ? $_POST['clave'] : '');
   $correo = (isset($_POST['correo']) ? $_POST['correo'] : '');
+  $hashedPassword = password_hash($clave, PASSWORD_DEFAULT);
 
   $sentencia = $conexion->prepare("INSERT INTO `usuarios` (ID, Nombres, Apellidos, Usuario, Clave, Correo)
         VALUES(null, :Nombres, :Apellidos, :Usuario, :Clave, :Correo)");
@@ -14,11 +17,12 @@ if ($_POST) {
   $sentencia->bindParam(":Nombres", $nombres);
   $sentencia->bindParam(":Apellidos", $apellidos);
   $sentencia->bindParam(":Usuario", $usuario);
-  $sentencia->bindParam(":Clave", $clave);
+  $sentencia->bindParam(":Clave", $hashedPassword);
   $sentencia->bindParam(":Correo", $correo);
   $sentencia->execute();
   $mensaje = "Registro Agregado";
   header("location: index.php?mensaje=" . $mensaje);
+  exit;
 }
 ?>
 
@@ -31,6 +35,7 @@ if ($_POST) {
       </div>
       <div class="card-body">
         <form action="" method="post">
+          <input type="hidden" name="_token" value="<?php echo e(App\Core\Csrf::token()); ?>">
           <div class="mb-3">
             <label for="nombres" class="form-label">Nombres del usuario</label>
             <input type="text" class="form-control" name="nombres" id="nombres" aria-describedby="helpId" placeholder="Ejemplo: Juan Juanito">
@@ -48,7 +53,7 @@ if ($_POST) {
           </div>
           <div class="mb-3">
             <label for="clave" class="form-label">Clave</label>
-            <input type="text" class="form-control" name="clave" id="clave" aria-describedby="helpId" placeholder="Ejemplo: password">
+            <input type="password" class="form-control" name="clave" id="clave" aria-describedby="helpId" placeholder="Ejemplo: password" required>
             <small id="helpId" class="form-text text-muted">Escriba la clave de usuario</small>
           </div>
           <div class="mb-3">

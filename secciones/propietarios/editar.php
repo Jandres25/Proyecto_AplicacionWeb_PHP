@@ -1,5 +1,6 @@
 <?php
 include("../../model/bd.php");
+App\Core\Auth::requireLogin();
 
 if (isset($_GET["txtID"])) {
     $txtID = (isset($_GET["txtID"])) ? $_GET["txtID"] : "";
@@ -15,6 +16,7 @@ if (isset($_GET["txtID"])) {
 }
 
 if ($_POST) {
+    App\Core\Csrf::validateOrFail((string) ($_POST['_token'] ?? ''));
     $txtID = (isset($_POST['txtID'])) ? $_POST['txtID'] : '';
     $nombres = (isset($_POST['nombre'])) ? $_POST['nombre'] : '';
     $telefono = (isset($_POST['telefono'])) ? $_POST['telefono'] : '';
@@ -27,6 +29,7 @@ if ($_POST) {
     $sentencia->execute();
     $mensaje = "Registro Actualizado";
     header("Location: index.php?mensaje=" . $mensaje);
+    exit;
 }
 ?>
 
@@ -39,17 +42,18 @@ if ($_POST) {
             </div>
             <div class="card-body">
                 <form action="" method="post">
+                    <input type="hidden" name="_token" value="<?php echo e(App\Core\Csrf::token()); ?>">
                     <div class="mb-3">
                         <label for="txtID" class="form-label"><i class="fa fa-id-badge" aria-hidden="true"></i>ID</label>
-                        <input type="text" value="<?php echo $txtID; ?>" class="form-control" readonly name="txtID" id="txtID">
+                        <input type="text" value="<?php echo e($txtID); ?>" class="form-control" readonly name="txtID" id="txtID">
                     </div>
                     <div class="mb-3">
                         <label for="nombre" class="form-label">Conductor</label>
-                        <input type="text" value="<?php echo $nombres; ?>" class="form-control" name="nombre" id="nombre">
+                        <input type="text" value="<?php echo e($nombres); ?>" class="form-control" name="nombre" id="nombre">
                     </div>
                     <div class="mb-3">
                         <label for="telefono" class="form-label">Telefono</label>
-                        <input type="text" value="<?php echo $telefono; ?>" class="form-control" name="telefono" id="telefono">
+                        <input type="text" value="<?php echo e($telefono); ?>" class="form-control" name="telefono" id="telefono">
                     </div>
                     <button type="submit" class="btn btn-outline-success">Actualizar</button>
                     <a name="" id="" class="btn btn-outline-primary" href="index.php" role="button">Cancelar</a>

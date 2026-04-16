@@ -20,7 +20,7 @@
       });
 </script>
 <script>
-      function borrar(ID) {
+      function borrar(formId) {
             Swal.fire({
                   title: '¿Esta seguro de borrar el registro?',
                   text: '¡Una vez borrado no se puede recuperar!',
@@ -29,7 +29,10 @@
                   confirmButtonText: 'Si, elimínelo'
             }).then((result) => {
                   if (result.isConfirmed) {
-                        window.location = "index.php?txtID=" + ID;
+                        const form = document.getElementById(formId);
+                        if (form) {
+                              form.submit();
+                        }
                   }
             })
       }

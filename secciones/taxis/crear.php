@@ -1,7 +1,9 @@
 <?php
 include("../../model/bd.php");
+App\Core\Auth::requireLogin();
 
 if ($_POST) {
+    App\Core\Csrf::validateOrFail((string) ($_POST['_token'] ?? ''));
     $modelo = (isset($_POST['modelo']) ? $_POST['modelo'] : '');
     $marca = (isset($_POST['marca']) ? $_POST['marca'] : '');
     $propietario = (isset($_POST['propietario']) ? $_POST['propietario'] : '');
@@ -15,6 +17,7 @@ if ($_POST) {
     $sentencia->execute();
     $mensaje = "Registro Agregado";
     header("location: index.php?mensaje=" . $mensaje);
+    exit;
 }
 
 $sentencia = $conexion->prepare("SELECT * FROM `propietarios`");
@@ -31,6 +34,7 @@ $lista_propietarios = $sentencia->fetchAll(PDO::FETCH_ASSOC);
             </div>
             <div class="card-body">
                 <form action="" method="post">
+                    <input type="hidden" name="_token" value="<?php echo e(App\Core\Csrf::token()); ?>">
                     <div class="mb-3">
                         <label for="modelo" class="form-label">Modelo</label>
                         <input type="text" class="form-control" name="modelo" id="modelo" aria-describedby="helpId" placeholder="Ejemplo: BMW">
@@ -46,7 +50,7 @@ $lista_propietarios = $sentencia->fetchAll(PDO::FETCH_ASSOC);
                         <select class="form-select form-select-sm" name="propietario" id="propietario">
                             <option selected>Selecciona un propietario</option>
                             <?php foreach ($lista_propietarios as $registro) { ?>
-                                <option value="<?php echo $registro['Idpropietario']; ?>"><?php echo $registro['Nombre']; ?></option>
+                                <option value="<?php echo e($registro['Idpropietario']); ?>"><?php echo e($registro['Nombre']); ?></option>
                             <?php } ?>
                         </select>
                     </div>

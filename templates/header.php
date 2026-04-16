@@ -1,13 +1,10 @@
 <?php
-session_start();
-$url_base = "http://localhost/Proyecto_AplicacionWeb_PHP/";
+require_once __DIR__ . '/../app/Core/Autoloader.php';
+App\Core\Autoloader::register();
 
-// Verificar si el usuario ha iniciado sesión
-$nombresusuario = isset($_SESSION['Nombres']) ? $_SESSION['Nombres'] : '';
-$usuarioVerificado = isset($_SESSION['usuario']) ? $_SESSION['usuario'] : '';
-if (!isset($_SESSION['logueado'])) {
-  header("Location:" . $url_base . "login.php");
-}
+$url_base = "http://localhost/Proyecto_AplicacionWeb_PHP/";
+$nombresusuario = App\Core\Auth::fullName();
+$usuarioVerificado = App\Core\Auth::username();
 ?>
 
 <!doctype html>
@@ -26,7 +23,7 @@ if (!isset($_SESSION['logueado'])) {
   <!-- Bootstrap core CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js" integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/" crossorigin="anonymous"></script>
-  <link href="https://tresplazas.com/web/img/big_punto_de_venta.png" rel="shortcut icon">
+  <link href="img/compras.png" rel="shortcut icon">
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
   <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
@@ -170,45 +167,48 @@ if (!isset($_SESSION['logueado'])) {
       <div class="container-fluid" id="barra_navegacion">
         <ul class="navbar-nav mr-auto mb-2 mb-md-0">
           <div>
-            <a class="nav-link active" href="<?php echo $url_base; ?>">
+            <a class="nav-link active" href="<?php echo e($url_base); ?>">
               <img src="https://images.unsplash.com/photo-1641846948845-60e99fa0f072?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1229&q=80" alt="Bootstrap" width="30" height="25" class="d-inline-block align-text-top rounded-circle"> Proyecto
             </a>
           </div>
           <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="<?php echo $url_base; ?>">Inicio</a>
+            <a class="nav-link" aria-current="page" href="<?php echo e($url_base); ?>">Inicio</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="<?php echo $url_base; ?>secciones/conductores/">Conductores</a>
+            <a class="nav-link" aria-current="page" href="<?php echo e($url_base); ?>secciones/conductores/">Conductores</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="<?php echo $url_base; ?>secciones/propietarios/">Propietarios</a>
+            <a class="nav-link" href="<?php echo e($url_base); ?>secciones/propietarios/">Propietarios</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="<?php echo $url_base; ?>secciones/taxis/">Taxis</a>
+            <a class="nav-link" href="<?php echo e($url_base); ?>secciones/taxis/">Taxis</a>
           </li>
           <?php if ($usuarioVerificado == 'Administrador') { ?>
             <li class="nav-item">
-              <a class="nav-link" href="<?php echo $url_base; ?>secciones/usuarios/">Usuarios</a>
+               <a class="nav-link" href="<?php echo e($url_base); ?>secciones/usuarios/">Usuarios</a>
             </li>
           <?php } ?>
         </ul>
         <ul class="navbar-nav">
           <div class="text-white p-2">
-            Bienvenido: <?php echo $nombresusuario; ?>
+            Bienvenido: <?php echo e($nombresusuario); ?>
           </div>
           <li class="nav-item">
-            <a class="nav-link" href="<?php echo $url_base; ?>controller/cerrar_sesion.php">Cerrar Sesión</a>
+            <form method="post" action="<?php echo e($url_base); ?>index.php?route=/logout" class="d-inline">
+              <input type="hidden" name="_token" value="<?php echo e(App\Core\Csrf::token()); ?>">
+              <button type="submit" class="nav-link btn btn-link p-0">Cerrar Sesión</button>
+            </form>
           </li>
         </ul>
       </div>
     </nav>
   </header>
   <main>
-    <?php if (isset($_GET['mensaje'])) { ?>
+    <?php if (isset($_GET['mensaje'])) { $mensaje = (string) $_GET['mensaje']; ?>
       <script>
         Swal.fire({
           icon: "success",
-          title: "<?php echo $_GET['mensaje']; ?>"
+          title: <?php echo json_encode($mensaje, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP); ?>
         });
       </script>
     <?php } ?>

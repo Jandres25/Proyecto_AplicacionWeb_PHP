@@ -8,7 +8,7 @@ use RuntimeException;
 
 final class View
 {
-    public static function render(string $view, array $data = []): void
+    public static function render(string $view, array $data = [], bool $withLayout = true): void
     {
         $basePath = dirname(__DIR__, 2);
         $viewPath = $basePath . '/app/Views/' . $view . '.php';
@@ -19,8 +19,14 @@ final class View
 
         extract($data, EXTR_SKIP);
 
-        require $basePath . '/templates/header.php';
+        if ($withLayout) {
+            require $basePath . '/templates/header.php';
+        }
+
         require $viewPath;
-        require $basePath . '/templates/footer.php';
+
+        if ($withLayout) {
+            require $basePath . '/templates/footer.php';
+        }
     }
 }

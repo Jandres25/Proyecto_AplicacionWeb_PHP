@@ -175,17 +175,17 @@ $usuarioVerificado = App\Core\Auth::username();
             <a class="nav-link" aria-current="page" href="<?php echo e($url_base); ?>">Inicio</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="<?php echo e($url_base); ?>secciones/conductores/">Conductores</a>
+            <a class="nav-link" aria-current="page" href="<?php echo e($url_base); ?>index.php?route=/conductores">Conductores</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="<?php echo e($url_base); ?>secciones/propietarios/">Propietarios</a>
+            <a class="nav-link" href="<?php echo e($url_base); ?>index.php?route=/propietarios">Propietarios</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="<?php echo e($url_base); ?>secciones/taxis/">Taxis</a>
+            <a class="nav-link" href="<?php echo e($url_base); ?>index.php?route=/taxis">Taxis</a>
           </li>
           <?php if ($usuarioVerificado == 'Administrador') { ?>
             <li class="nav-item">
-               <a class="nav-link" href="<?php echo e($url_base); ?>secciones/usuarios/">Usuarios</a>
+               <a class="nav-link" href="<?php echo e($url_base); ?>index.php?route=/usuarios">Usuarios</a>
             </li>
           <?php } ?>
         </ul>

@@ -10,7 +10,7 @@
                         <?php echo e($error); ?>
                     </div>
                 <?php } ?>
-                <form action="/Proyecto_AplicacionWeb_PHP/index.php?route=/taxis/crear" method="post">
+                <form action="<?php echo e(app_url('/taxis/crear')); ?>" method="post">
                     <input type="hidden" name="_token" value="<?php echo e(\App\Core\Csrf::token()); ?>">
                     <div class="mb-3">
                         <label for="modelo" class="form-label">Modelo</label>
@@ -34,7 +34,7 @@
                         </select>
                     </div>
                     <button type="submit" class="btn btn-outline-success">Agregar</button>
-                    <a class="btn btn-outline-primary" href="/Proyecto_AplicacionWeb_PHP/index.php?route=/taxis" role="button">Cancelar</a>
+                    <a class="btn btn-outline-primary" href="<?php echo e(app_url('/taxis')); ?>" role="button">Cancelar</a>
                 </form>
             </div>
         </div>

@@ -1,0 +1,14 @@
+RewriteEngine On
+
+# Keep direct access to existing files/directories.
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Avoid adding /public twice.
+RewriteRule ^public/ - [L]
+
+# Route all app requests through /public while keeping clean URLs.
+RewriteRule ^(.*)$ public/$1 [L,QSA]
+
+DirectoryIndex public/index.php

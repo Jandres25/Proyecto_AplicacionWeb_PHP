@@ -10,7 +10,7 @@
                         <?php echo e($error); ?>
                     </div>
                 <?php } ?>
-                <form action="/Proyecto_AplicacionWeb_PHP/index.php?route=/conductores/crear" method="post">
+                <form action="<?php echo e(app_url('/conductores/crear')); ?>" method="post">
                     <input type="hidden" name="_token" value="<?php echo e(\App\Core\Csrf::token()); ?>">
                     <div class="mb-3">
                         <label for="nombre" class="form-label">Nombres del conductor</label>
@@ -34,7 +34,7 @@
                         </select>
                     </div>
                     <button type="submit" class="btn btn-outline-success">Agregar</button>
-                    <a class="btn btn-outline-primary" href="/Proyecto_AplicacionWeb_PHP/index.php?route=/conductores" role="button">Cancelar</a>
+                    <a class="btn btn-outline-primary" href="<?php echo e(app_url('/conductores')); ?>" role="button">Cancelar</a>
                 </form>
             </div>
         </div>

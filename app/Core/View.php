@@ -20,13 +20,13 @@ final class View
         extract($data, EXTR_SKIP);
 
         if ($withLayout) {
-            require $basePath . '/templates/header.php';
+            require $basePath . '/app/Views/layout/header.php';
         }
 
         require $viewPath;
 
         if ($withLayout) {
-            require $basePath . '/templates/footer.php';
+            require $basePath . '/app/Views/layout/footer.php';
         }
     }
 }

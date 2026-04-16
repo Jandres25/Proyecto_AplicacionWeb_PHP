@@ -10,7 +10,7 @@
                         <?php echo e($error); ?>
                     </div>
                 <?php } ?>
-                <form action="/Proyecto_AplicacionWeb_PHP/index.php?route=/propietarios/editar" method="post">
+                <form action="<?php echo e(app_url('/propietarios/editar')); ?>" method="post">
                     <input type="hidden" name="_token" value="<?php echo e(\App\Core\Csrf::token()); ?>">
                     <input type="hidden" name="id" value="<?php echo e($propietario['Idpropietario']); ?>">
                     <div class="mb-3">
@@ -26,7 +26,7 @@
                         <input type="text" value="<?php echo e($propietario['Telefono']); ?>" class="form-control" name="telefono" id="telefono">
                     </div>
                     <button type="submit" class="btn btn-outline-success">Actualizar</button>
-                    <a class="btn btn-outline-primary" href="/Proyecto_AplicacionWeb_PHP/index.php?route=/propietarios" role="button">Cancelar</a>
+                    <a class="btn btn-outline-primary" href="<?php echo e(app_url('/propietarios')); ?>" role="button">Cancelar</a>
                 </form>
             </div>
         </div>

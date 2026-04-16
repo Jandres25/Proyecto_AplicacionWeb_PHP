@@ -10,7 +10,7 @@
                         <?php echo e($error); ?>
                     </div>
                 <?php } ?>
-                <form action="/Proyecto_AplicacionWeb_PHP/index.php?route=/conductores/editar" method="post">
+                <form action="<?php echo e(app_url('/conductores/editar')); ?>" method="post">
                     <input type="hidden" name="_token" value="<?php echo e(\App\Core\Csrf::token()); ?>">
                     <input type="hidden" name="id" value="<?php echo e($conductor['ID']); ?>">
                     <div class="mb-3">
@@ -37,7 +37,7 @@
                         </select>
                     </div>
                     <button type="submit" class="btn btn-outline-success">Actualizar</button>
-                    <a class="btn btn-outline-primary" href="/Proyecto_AplicacionWeb_PHP/index.php?route=/conductores" role="button">Cancelar</a>
+                    <a class="btn btn-outline-primary" href="<?php echo e(app_url('/conductores')); ?>" role="button">Cancelar</a>
                 </form>
             </div>
         </div>

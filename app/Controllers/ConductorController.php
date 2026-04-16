@@ -6,6 +6,7 @@ namespace App\Controllers;
 
 use App\Core\Auth;
 use App\Core\Csrf;
+use App\Core\Flash;
 use App\Core\View;
 use App\Services\ConductorService;
 use InvalidArgumentException;
@@ -50,7 +51,8 @@ final class ConductorController
 
         try {
             $this->service->create($old['nombre'], $old['telefono'], (int) $old['placa']);
-            header('Location: /Proyecto_AplicacionWeb_PHP/index.php?route=/conductores&mensaje=Registro%20Agregado');
+            Flash::set('success', 'Registro Agregado');
+            header('Location: ' . app_url('/conductores'));
             exit;
         } catch (InvalidArgumentException $exception) {
             View::render('conductores/create', [
@@ -98,7 +100,8 @@ final class ConductorController
 
         try {
             $this->service->update($id, $conductor['Nombres'], $conductor['Telefono'], (int) $conductor['Placa']);
-            header('Location: /Proyecto_AplicacionWeb_PHP/index.php?route=/conductores&mensaje=Registro%20Actualizado');
+            Flash::set('success', 'Registro Actualizado');
+            header('Location: ' . app_url('/conductores'));
             exit;
         } catch (InvalidArgumentException $exception) {
             View::render('conductores/edit', [
@@ -116,7 +119,8 @@ final class ConductorController
         $id = (int) ($_POST['id'] ?? 0);
         $this->service->delete($id);
 
-        header('Location: /Proyecto_AplicacionWeb_PHP/index.php?route=/conductores&mensaje=Registro%20Eliminado');
+        Flash::set('success', 'Registro Eliminado');
+        header('Location: ' . app_url('/conductores'));
         exit;
     }
 }

@@ -3,7 +3,7 @@
         <h1>Lista de propietarios</h1>
         <div class="card mb-5">
             <div class="card-header">
-                <a class="btn btn-outline-primary" href="/Proyecto_AplicacionWeb_PHP/index.php?route=/propietarios/crear" role="button">Crear registro</a>
+                <a class="btn btn-outline-primary" href="<?php echo e(app_url('/propietarios/crear')); ?>" role="button">Crear registro</a>
             </div>
             <div class="card-body">
                 <div class="table-responsive-sm">
@@ -23,9 +23,9 @@
                                     <td><?php echo e($registro['Nombre']); ?></td>
                                     <td><?php echo e($registro['Telefono']); ?></td>
                                     <td>
-                                        <a class="btn btn-outline-info" href="/Proyecto_AplicacionWeb_PHP/index.php?route=/propietarios/editar&id=<?php echo e($registro['Idpropietario']); ?>" role="button">Editar</a>
+                                        <a class="btn btn-outline-info" href="<?php echo e(app_url('/propietarios/editar')); ?>?id=<?php echo e($registro['Idpropietario']); ?>" role="button">Editar</a>
                                         <?php $deleteFormId = 'delete-propietario-new-' . $registro['Idpropietario']; ?>
-                                        <form id="<?php echo e($deleteFormId); ?>" method="post" action="/Proyecto_AplicacionWeb_PHP/index.php?route=/propietarios/eliminar" class="d-inline">
+                                        <form id="<?php echo e($deleteFormId); ?>" method="post" action="<?php echo e(app_url('/propietarios/eliminar')); ?>" class="d-inline">
                                             <input type="hidden" name="_token" value="<?php echo e(\App\Core\Csrf::token()); ?>">
                                             <input type="hidden" name="id" value="<?php echo e($registro['Idpropietario']); ?>">
                                             <button type="button" class="btn btn-outline-danger" onclick="borrar('<?php echo e($deleteFormId); ?>')">Eliminar</button>

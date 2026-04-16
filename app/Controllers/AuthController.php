@@ -14,7 +14,7 @@ final class AuthController
     public function showLogin(): void
     {
         if (Auth::check()) {
-            header('Location: /Proyecto_AplicacionWeb_PHP/');
+            header('Location: ' . app_url('/'));
             exit;
         }
 
@@ -36,7 +36,7 @@ final class AuthController
         }
 
         Auth::login($user);
-        header('Location: /Proyecto_AplicacionWeb_PHP/');
+        header('Location: ' . app_url('/'));
         exit;
     }
 
@@ -44,7 +44,7 @@ final class AuthController
     {
         Csrf::validateOrFail((string) ($_POST['_token'] ?? ''));
         Auth::logout();
-        header('Location: /Proyecto_AplicacionWeb_PHP/login.php');
+        header('Location: ' . app_url('/login'));
         exit;
     }
 }

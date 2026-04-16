@@ -53,8 +53,19 @@ final class Router
         $path = is_string($path) ? $path : '/';
 
         $scriptDir = rtrim(str_replace('\\', '/', dirname($scriptName)), '/');
+        $baseDir = preg_replace('#/public$#', '', $scriptDir) ?: $scriptDir;
+
         if ($scriptDir !== '' && $scriptDir !== '/' && str_starts_with($path, $scriptDir)) {
             $path = substr($path, strlen($scriptDir));
+        } elseif ($baseDir !== '' && $baseDir !== '/' && str_starts_with($path, $baseDir)) {
+            $path = substr($path, strlen($baseDir));
+        }
+
+        while (str_starts_with($path, '/public/')) {
+            $path = substr($path, strlen('/public'));
+        }
+        if ($path === '/public') {
+            $path = '/';
         }
 
         $path = preg_replace('#/index\.php$#', '', $path) ?? $path;

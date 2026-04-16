@@ -33,7 +33,7 @@ final class Auth
             return;
         }
 
-        header('Location: /Proyecto_AplicacionWeb_PHP/login.php');
+        header('Location: ' . app_url('/login'));
         exit;
     }
 

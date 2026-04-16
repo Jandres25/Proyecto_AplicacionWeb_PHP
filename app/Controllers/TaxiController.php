@@ -6,6 +6,7 @@ namespace App\Controllers;
 
 use App\Core\Auth;
 use App\Core\Csrf;
+use App\Core\Flash;
 use App\Core\View;
 use App\Services\TaxiService;
 use InvalidArgumentException;
@@ -52,7 +53,8 @@ final class TaxiController
 
         try {
             $this->service->create($old['modelo'], $old['marca'], (int) $old['propietario']);
-            header('Location: /Proyecto_AplicacionWeb_PHP/index.php?route=/taxis&mensaje=Registro%20Agregado');
+            Flash::set('success', 'Registro Agregado');
+            header('Location: ' . app_url('/taxis'));
             exit;
         } catch (InvalidArgumentException $exception) {
             View::render('taxis/create', [
@@ -100,7 +102,8 @@ final class TaxiController
 
         try {
             $this->service->update($placa, $taxi['Modelo'], $taxi['Marca'], (int) $taxi['Idpropietario']);
-            header('Location: /Proyecto_AplicacionWeb_PHP/index.php?route=/taxis&mensaje=Registro%20Actualizado');
+            Flash::set('success', 'Registro Actualizado');
+            header('Location: ' . app_url('/taxis'));
             exit;
         } catch (InvalidArgumentException $exception) {
             View::render('taxis/edit', [
@@ -119,7 +122,8 @@ final class TaxiController
         $placa = (int) ($_POST['placa'] ?? 0);
         $this->service->delete($placa);
 
-        header('Location: /Proyecto_AplicacionWeb_PHP/index.php?route=/taxis&mensaje=Registro%20Eliminado');
+        Flash::set('success', 'Registro Eliminado');
+        header('Location: ' . app_url('/taxis'));
         exit;
     }
 }

@@ -6,6 +6,7 @@ namespace App\Controllers;
 
 use App\Core\Auth;
 use App\Core\Csrf;
+use App\Core\Flash;
 use App\Core\View;
 use App\Services\UsuarioService;
 use InvalidArgumentException;
@@ -51,7 +52,8 @@ final class UsuarioController
 
         try {
             $this->service->create($old['nombres'], $old['apellidos'], $old['usuario'], $clave, $old['correo']);
-            header('Location: /Proyecto_AplicacionWeb_PHP/index.php?route=/usuarios&mensaje=Registro%20Agregado');
+            Flash::set('success', 'Registro Agregado');
+            header('Location: ' . app_url('/usuarios'));
             exit;
         } catch (InvalidArgumentException $exception) {
             View::render('usuarios/create', [
@@ -106,7 +108,8 @@ final class UsuarioController
                 $clave,
                 $usuario['Correo']
             );
-            header('Location: /Proyecto_AplicacionWeb_PHP/index.php?route=/usuarios&mensaje=Registro%20Actualizado');
+            Flash::set('success', 'Registro Actualizado');
+            header('Location: ' . app_url('/usuarios'));
             exit;
         } catch (InvalidArgumentException $exception) {
             View::render('usuarios/edit', [
@@ -130,12 +133,14 @@ final class UsuarioController
         }
 
         if ((string) $current['Usuario'] === Auth::username()) {
-            header('Location: /Proyecto_AplicacionWeb_PHP/index.php?route=/usuarios&mensaje=No%20puedes%20eliminar%20tu%20propio%20usuario');
+            Flash::set('error', 'No puedes eliminar tu propio usuario');
+            header('Location: ' . app_url('/usuarios'));
             exit;
         }
 
         $this->service->delete($id);
-        header('Location: /Proyecto_AplicacionWeb_PHP/index.php?route=/usuarios&mensaje=Registro%20Eliminado');
+        Flash::set('success', 'Registro Eliminado');
+        header('Location: ' . app_url('/usuarios'));
         exit;
     }
 }

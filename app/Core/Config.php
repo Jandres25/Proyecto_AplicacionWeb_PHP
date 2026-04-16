@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Core;
 
-require_once __DIR__ . '/../../config/env.php';
+require_once __DIR__ . '/Env.php';
 
 final class Config
 {

@@ -6,6 +6,7 @@ namespace App\Controllers;
 
 use App\Core\Auth;
 use App\Core\Csrf;
+use App\Core\Flash;
 use App\Core\View;
 use App\Services\PropietarioService;
 use InvalidArgumentException;
@@ -50,7 +51,8 @@ final class PropietarioController
 
         try {
             $this->service->create($old['nombre'], $old['telefono']);
-            header('Location: /Proyecto_AplicacionWeb_PHP/index.php?route=/propietarios&mensaje=Registro%20Agregado');
+            Flash::set('success', 'Registro Agregado');
+            header('Location: ' . app_url('/propietarios'));
             exit;
         } catch (InvalidArgumentException $exception) {
             View::render('propietarios/create', [
@@ -95,7 +97,8 @@ final class PropietarioController
 
         try {
             $this->service->update($id, $propietario['Nombre'], $propietario['Telefono']);
-            header('Location: /Proyecto_AplicacionWeb_PHP/index.php?route=/propietarios&mensaje=Registro%20Actualizado');
+            Flash::set('success', 'Registro Actualizado');
+            header('Location: ' . app_url('/propietarios'));
             exit;
         } catch (InvalidArgumentException $exception) {
             View::render('propietarios/edit', [
@@ -113,7 +116,8 @@ final class PropietarioController
         $id = (int) ($_POST['id'] ?? 0);
         $this->service->delete($id);
 
-        header('Location: /Proyecto_AplicacionWeb_PHP/index.php?route=/propietarios&mensaje=Registro%20Eliminado');
+        Flash::set('success', 'Registro Eliminado');
+        header('Location: ' . app_url('/propietarios'));
         exit;
     }
 }

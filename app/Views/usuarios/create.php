@@ -10,7 +10,7 @@
                         <?php echo e($error); ?>
                     </div>
                 <?php } ?>
-                <form action="/Proyecto_AplicacionWeb_PHP/index.php?route=/usuarios/crear" method="post">
+                <form action="<?php echo e(app_url('/usuarios/crear')); ?>" method="post">
                     <input type="hidden" name="_token" value="<?php echo e(\App\Core\Csrf::token()); ?>">
                     <div class="mb-3">
                         <label for="nombres" class="form-label">Nombres del usuario</label>
@@ -33,7 +33,7 @@
                         <input type="email" class="form-control" name="correo" id="correo" value="<?php echo e($old['correo'] ?? ''); ?>" placeholder="Ejemplo: ejemplo@dominio.com">
                     </div>
                     <button type="submit" class="btn btn-outline-success">Agregar</button>
-                    <a class="btn btn-outline-primary" href="/Proyecto_AplicacionWeb_PHP/index.php?route=/usuarios" role="button">Cancelar</a>
+                    <a class="btn btn-outline-primary" href="<?php echo e(app_url('/usuarios')); ?>" role="button">Cancelar</a>
                 </form>
             </div>
         </div>

@@ -3,7 +3,7 @@
         <h1>Lista de conductores</h1>
         <div class="card mb-5">
             <div class="card-header">
-                <a class="btn btn-outline-primary" href="/Proyecto_AplicacionWeb_PHP/index.php?route=/conductores/crear" role="button">Crear registro</a>
+                <a class="btn btn-outline-primary" href="<?php echo e(app_url('/conductores/crear')); ?>" role="button">Crear registro</a>
             </div>
             <div class="card-body">
                 <div class="table-responsive-sm">
@@ -25,9 +25,9 @@
                                     <td><?php echo e($registro['Telefono']); ?></td>
                                     <td><?php echo e($registro['Placa']); ?></td>
                                     <td>
-                                        <a class="btn btn-outline-info" href="/Proyecto_AplicacionWeb_PHP/index.php?route=/conductores/editar&id=<?php echo e($registro['ID']); ?>" role="button">Editar</a>
+                                        <a class="btn btn-outline-info" href="<?php echo e(app_url('/conductores/editar')); ?>?id=<?php echo e($registro['ID']); ?>" role="button">Editar</a>
                                         <?php $deleteFormId = 'delete-conductor-new-' . $registro['ID']; ?>
-                                        <form id="<?php echo e($deleteFormId); ?>" method="post" action="/Proyecto_AplicacionWeb_PHP/index.php?route=/conductores/eliminar" class="d-inline">
+                                        <form id="<?php echo e($deleteFormId); ?>" method="post" action="<?php echo e(app_url('/conductores/eliminar')); ?>" class="d-inline">
                                             <input type="hidden" name="_token" value="<?php echo e(\App\Core\Csrf::token()); ?>">
                                             <input type="hidden" name="id" value="<?php echo e($registro['ID']); ?>">
                                             <button type="button" class="btn btn-outline-danger" onclick="borrar('<?php echo e($deleteFormId); ?>')">Eliminar</button>

@@ -3,7 +3,7 @@
         <h1>Lista de taxis</h1>
         <div class="card mb-5">
             <div class="card-header">
-                <a class="btn btn-outline-primary" href="/Proyecto_AplicacionWeb_PHP/index.php?route=/taxis/crear" role="button">Crear registro</a>
+                <a class="btn btn-outline-primary" href="<?php echo e(app_url('/taxis/crear')); ?>" role="button">Crear registro</a>
             </div>
             <div class="card-body">
                 <div class="table-responsive-sm">
@@ -25,9 +25,9 @@
                                     <td><?php echo e($registro['Marca']); ?></td>
                                     <td><?php echo e($registro['propietario']); ?></td>
                                     <td>
-                                        <a class="btn btn-outline-info" href="/Proyecto_AplicacionWeb_PHP/index.php?route=/taxis/editar&placa=<?php echo e($registro['Placa']); ?>" role="button">Editar</a>
+                                        <a class="btn btn-outline-info" href="<?php echo e(app_url('/taxis/editar')); ?>?placa=<?php echo e($registro['Placa']); ?>" role="button">Editar</a>
                                         <?php $deleteFormId = 'delete-taxi-new-' . $registro['Placa']; ?>
-                                        <form id="<?php echo e($deleteFormId); ?>" method="post" action="/Proyecto_AplicacionWeb_PHP/index.php?route=/taxis/eliminar" class="d-inline">
+                                        <form id="<?php echo e($deleteFormId); ?>" method="post" action="<?php echo e(app_url('/taxis/eliminar')); ?>" class="d-inline">
                                             <input type="hidden" name="_token" value="<?php echo e(\App\Core\Csrf::token()); ?>">
                                             <input type="hidden" name="placa" value="<?php echo e($registro['Placa']); ?>">
                                             <button type="button" class="btn btn-outline-danger" onclick="borrar('<?php echo e($deleteFormId); ?>')">Eliminar</button>

@@ -3,7 +3,7 @@
         <h1>Lista de usuarios</h1>
         <div class="card mb-5">
             <div class="card-header">
-                <a class="btn btn-outline-primary" href="/Proyecto_AplicacionWeb_PHP/index.php?route=/usuarios/crear" role="button">Crear registro</a>
+                <a class="btn btn-outline-primary" href="<?php echo e(app_url('/usuarios/crear')); ?>" role="button">Crear registro</a>
             </div>
             <div class="card-body">
                 <div class="table-responsive-sm">
@@ -29,9 +29,9 @@
                                     <td><?php echo e(str_repeat('*', 8)); ?></td>
                                     <td><?php echo e($registro['Correo']); ?></td>
                                     <td>
-                                        <a class="btn btn-outline-info" href="/Proyecto_AplicacionWeb_PHP/index.php?route=/usuarios/editar&id=<?php echo e($registro['ID']); ?>" role="button">Editar</a>
+                                        <a class="btn btn-outline-info" href="<?php echo e(app_url('/usuarios/editar')); ?>?id=<?php echo e($registro['ID']); ?>" role="button">Editar</a>
                                         <?php $deleteFormId = 'delete-usuario-new-' . $registro['ID']; ?>
-                                        <form id="<?php echo e($deleteFormId); ?>" method="post" action="/Proyecto_AplicacionWeb_PHP/index.php?route=/usuarios/eliminar" class="d-inline">
+                                        <form id="<?php echo e($deleteFormId); ?>" method="post" action="<?php echo e(app_url('/usuarios/eliminar')); ?>" class="d-inline">
                                             <input type="hidden" name="_token" value="<?php echo e(\App\Core\Csrf::token()); ?>">
                                             <input type="hidden" name="id" value="<?php echo e($registro['ID']); ?>">
                                             <button type="button" class="btn btn-outline-danger" onclick="borrar('<?php echo e($deleteFormId); ?>')">Eliminar</button>

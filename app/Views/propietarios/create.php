@@ -10,7 +10,7 @@
                         <?php echo e($error); ?>
                     </div>
                 <?php } ?>
-                <form action="/Proyecto_AplicacionWeb_PHP/index.php?route=/propietarios/crear" method="post">
+                <form action="<?php echo e(app_url('/propietarios/crear')); ?>" method="post">
                     <input type="hidden" name="_token" value="<?php echo e(\App\Core\Csrf::token()); ?>">
                     <div class="mb-3">
                         <label for="nombre" class="form-label">Nombres del propietario</label>
@@ -23,7 +23,7 @@
                         <small class="form-text text-muted">Escriba el teléfono del propietario</small>
                     </div>
                     <button type="submit" class="btn btn-outline-success">Agregar</button>
-                    <a class="btn btn-outline-primary" href="/Proyecto_AplicacionWeb_PHP/index.php?route=/propietarios" role="button">Cancelar</a>
+                    <a class="btn btn-outline-primary" href="<?php echo e(app_url('/propietarios')); ?>" role="button">Cancelar</a>
                 </form>
             </div>
         </div>

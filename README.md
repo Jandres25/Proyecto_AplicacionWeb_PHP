@@ -2,6 +2,8 @@
 
 Aplicación web desarrollada con **PHP** y **Bootstrap**, orientada a la gestión de conductores, propietarios, taxis y usuarios, con autenticación por sesión y panel administrativo.
 
+Actualmente usa una arquitectura por capas (mini-MVC): **Controller -> Service -> Repository -> View**.
+
 ## Tecnologías
 
 - PHP (PDO)
@@ -42,13 +44,21 @@ Abrir en el navegador:
 
 ## Estructura principal
 
-- `index.php`: página principal.
-- `login.php`: autenticación de usuarios.
-- `model/`: conexión a base de datos y lógica de datos.
-- `controller/`: controladores (ej. cierre de sesión).
-- `secciones/`: módulos CRUD del sistema.
-- `templates/`: layout compartido (header/footer).
-- `config/env.php`: carga de variables de entorno.
+- `public/index.php`: front controller y punto de entrada del router.
+- `public/css`, `public/js`, `public/img`: recursos estáticos.
+- `routes/web.php`: definición de rutas.
+- `app/Controllers/`: controladores HTTP.
+- `app/Services/`: reglas de negocio y validaciones.
+- `app/Repositories/`: acceso a datos (PDO).
+- `app/Views/`: vistas de módulos y layout (`app/Views/layout`).
+- `app/Core/`: núcleo compartido (router, auth, csrf, flash, db, view, autoload, env).
+
+## Módulos migrados a rutas nuevas
+
+- `/public/propietarios`
+- `/public/taxis`
+- `/public/conductores`
+- `/public/usuarios` (solo administrador)
 
 ---
 

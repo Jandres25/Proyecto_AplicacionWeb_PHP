@@ -116,8 +116,29 @@ final class ConductorController
     {
         Auth::requireLogin();
         Csrf::validateOrFail((string) ($_POST['_token'] ?? ''));
+
         $id = (int) ($_POST['id'] ?? 0);
+        $current = $this->service->findById($id);
+
+        $isAjax = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest';
+
+        if ($current === null) {
+            if ($isAjax) {
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'message' => 'Conductor no encontrado.']);
+                exit;
+            }
+            http_response_code(404);
+            exit('Conductor no encontrado.');
+        }
+
         $this->service->delete($id);
+
+        if ($isAjax) {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => true, 'message' => 'Registro Eliminado']);
+            exit;
+        }
 
         Flash::set('success', 'Registro Eliminado');
         header('Location: ' . app_url('/conductores'));

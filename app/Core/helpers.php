@@ -12,6 +12,12 @@ if (!function_exists('e')) {
 if (!function_exists('app_base_url')) {
     function app_base_url(): string
     {
+        $appUrl = env('APP_URL');
+        if ($appUrl !== null) {
+            $parsed = parse_url((string) $appUrl);
+            return rtrim($parsed['path'] ?? '', '/');
+        }
+
         $scriptName = $_SERVER['SCRIPT_NAME'] ?? '/index.php';
         $dir = rtrim(str_replace('\\', '/', dirname($scriptName)), '/');
 
@@ -30,8 +36,14 @@ if (!function_exists('app_base_url')) {
 if (!function_exists('app_url')) {
     function app_url(string $path = '/'): string
     {
-        $base = app_base_url();
+        $appUrl = env('APP_URL');
         $normalizedPath = '/' . ltrim($path, '/');
+
+        if ($appUrl !== null) {
+            return rtrim((string) $appUrl, '/') . $normalizedPath;
+        }
+
+        $base = app_base_url();
 
         if ($normalizedPath === '/') {
             return ($base === '' ? '' : $base) . '/';

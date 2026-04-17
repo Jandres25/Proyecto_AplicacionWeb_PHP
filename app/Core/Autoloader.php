@@ -14,6 +14,7 @@ final class Autoloader
             return;
         }
 
+        require_once __DIR__ . '/Env.php';
         require_once __DIR__ . '/helpers.php';
 
         spl_autoload_register(static function (string $class): void {

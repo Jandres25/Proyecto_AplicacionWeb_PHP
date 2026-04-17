@@ -18,4 +18,5 @@ bash.exe.stackdump
 
 # Database backups
 *.sql
-!proyecto.sql
+!database/schema.sql
+!database/seeder.sql

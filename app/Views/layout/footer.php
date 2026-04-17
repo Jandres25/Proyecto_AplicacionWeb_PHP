@@ -1,11 +1,18 @@
 </main>
 <!-- FOOTER -->
-<footer>
-      <div class="d-flex align-items-center justify-content-center" style="height: 70px; color: white; background: rgb(52, 58, 64);">
-            <b>&copy;Derechos reservados UPDS 2023, Inc. &middot; <a href="#">Privacidad</a></b>
-      </div>
+<footer class="bg-dark text-white py-4 border-top border-secondary">
+    <div class="container text-center">
+        <div class="row align-items-center">
+            <div class="col-md-12">
+                <p class="mb-0 small text-white-50">
+                    &copy; <?= date('Y'); ?> Derechos reservados <strong>UPDS</strong>. &middot;
+                    <a href="#" class="text-white-50 text-decoration-none border-bottom">Privacidad</a>
+                </p>
+            </div>
+        </div>
+    </div>
 </footer>
-<script src="<?php echo e(app_url('/js/layout.js')); ?>"></script>
+<script src="<?= e(app_url('/js/layout.js')); ?>"></script>
 </body>
 
 </html>

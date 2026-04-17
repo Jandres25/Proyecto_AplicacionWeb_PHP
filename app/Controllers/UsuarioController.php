@@ -127,18 +127,37 @@ final class UsuarioController
         $id = (int) ($_POST['id'] ?? 0);
         $current = $this->service->findById($id);
 
+        $isAjax = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest';
+
         if ($current === null) {
+            if ($isAjax) {
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'message' => 'Usuario no encontrado.']);
+                exit;
+            }
             http_response_code(404);
             exit('Usuario no encontrado.');
         }
 
         if ((string) $current['Usuario'] === Auth::username()) {
+            if ($isAjax) {
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'message' => 'No puedes eliminar tu propio usuario']);
+                exit;
+            }
             Flash::set('error', 'No puedes eliminar tu propio usuario');
             header('Location: ' . app_url('/usuarios'));
             exit;
         }
 
         $this->service->delete($id);
+
+        if ($isAjax) {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => true, 'message' => 'Registro Eliminado']);
+            exit;
+        }
+
         Flash::set('success', 'Registro Eliminado');
         header('Location: ' . app_url('/usuarios'));
         exit;

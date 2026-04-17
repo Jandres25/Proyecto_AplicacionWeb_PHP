@@ -22,7 +22,7 @@ final class TaxiController
 
     public function index(): void
     {
-        Auth::requireLogin();
+        Auth::requireAdmin();
 
         View::render('taxis/index', [
             'lista_taxis' => $this->service->allWithOwner(),
@@ -31,7 +31,7 @@ final class TaxiController
 
     public function create(): void
     {
-        Auth::requireLogin();
+        Auth::requireAdmin();
 
         View::render('taxis/create', [
             'old' => ['modelo' => '', 'marca' => '', 'propietario' => ''],
@@ -42,7 +42,7 @@ final class TaxiController
 
     public function store(): void
     {
-        Auth::requireLogin();
+        Auth::requireAdmin();
         Csrf::validateOrFail((string) ($_POST['_token'] ?? ''));
 
         $old = [
@@ -67,7 +67,7 @@ final class TaxiController
 
     public function edit(): void
     {
-        Auth::requireLogin();
+        Auth::requireAdmin();
 
         $placa = (int) ($_GET['placa'] ?? 0);
         $taxi = $this->service->findByPlaca($placa);
@@ -86,7 +86,7 @@ final class TaxiController
 
     public function update(): void
     {
-        Auth::requireLogin();
+        Auth::requireAdmin();
         Csrf::validateOrFail((string) ($_POST['_token'] ?? ''));
 
         $placa = (int) ($_POST['placa'] ?? 0);
@@ -116,11 +116,31 @@ final class TaxiController
 
     public function destroy(): void
     {
-        Auth::requireLogin();
+        Auth::requireAdmin();
         Csrf::validateOrFail((string) ($_POST['_token'] ?? ''));
 
         $placa = (int) ($_POST['placa'] ?? 0);
+        $current = $this->service->findByPlaca($placa);
+
+        $isAjax = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest';
+
+        if ($current === null) {
+            if ($isAjax) {
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'message' => 'Taxi no encontrado.']);
+                exit;
+            }
+            http_response_code(404);
+            exit('Taxi no encontrado.');
+        }
+
         $this->service->delete($placa);
+
+        if ($isAjax) {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => true, 'message' => 'Registro Eliminado']);
+            exit;
+        }
 
         Flash::set('success', 'Registro Eliminado');
         header('Location: ' . app_url('/taxis'));

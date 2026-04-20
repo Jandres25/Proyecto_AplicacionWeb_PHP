@@ -6,6 +6,7 @@ namespace App\Controllers;
 
 use App\Core\Auth;
 use App\Core\Csrf;
+use App\Core\ErrorHandler;
 use App\Core\Flash;
 use App\Core\View;
 use App\Services\TaxiService;
@@ -73,8 +74,7 @@ final class TaxiController
         $taxi = $this->service->findByPlaca($placa);
 
         if ($taxi === null) {
-            http_response_code(404);
-            exit('Taxi no encontrado.');
+            ErrorHandler::abort(404, 'Taxi no encontrado.');
         }
 
         View::render('taxis/edit', [
@@ -92,8 +92,7 @@ final class TaxiController
         $placa = (int) ($_POST['placa'] ?? 0);
         $taxi = $this->service->findByPlaca($placa);
         if ($taxi === null) {
-            http_response_code(404);
-            exit('Taxi no encontrado.');
+            ErrorHandler::abort(404, 'Taxi no encontrado.');
         }
 
         $taxi['Modelo'] = (string) ($_POST['modelo'] ?? '');
@@ -130,8 +129,7 @@ final class TaxiController
                 echo json_encode(['success' => false, 'message' => 'Taxi no encontrado.']);
                 exit;
             }
-            http_response_code(404);
-            exit('Taxi no encontrado.');
+            ErrorHandler::abort(404, 'Taxi no encontrado.');
         }
 
         $this->service->delete($placa);

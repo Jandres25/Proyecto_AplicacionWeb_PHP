@@ -26,12 +26,20 @@ final class Router
     {
         $httpMethod = strtoupper($method);
         $path = $this->resolvePath($uri, $scriptName);
+        if (!isset($this->routes[$httpMethod])) {
+            ErrorHandler::abort(405);
+        }
+
         $handler = $this->routes[$httpMethod][$path] ?? null;
 
         if ($handler === null) {
-            http_response_code(404);
-            echo '404 - Ruta no encontrada';
-            return;
+            foreach ($this->routes as $routesByMethod) {
+                if (isset($routesByMethod[$path])) {
+                    ErrorHandler::abort(405);
+                }
+            }
+
+            ErrorHandler::abort(404);
         }
 
         $this->invoke($handler);

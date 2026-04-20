@@ -6,6 +6,7 @@ namespace App\Controllers;
 
 use App\Core\Auth;
 use App\Core\Csrf;
+use App\Core\ErrorHandler;
 use App\Core\Flash;
 use App\Core\View;
 use App\Services\ConductorService;
@@ -70,8 +71,7 @@ final class ConductorController
         $conductor = $this->service->findById($id);
 
         if ($conductor === null) {
-            http_response_code(404);
-            exit('Conductor no encontrado.');
+            ErrorHandler::abort(404, 'Conductor no encontrado.');
         }
 
         View::render('conductores/edit', [
@@ -90,8 +90,7 @@ final class ConductorController
         $conductor = $this->service->findById($id);
 
         if ($conductor === null) {
-            http_response_code(404);
-            exit('Conductor no encontrado.');
+            ErrorHandler::abort(404, 'Conductor no encontrado.');
         }
 
         $conductor['Nombres'] = (string) ($_POST['nombre'] ?? '');
@@ -128,8 +127,7 @@ final class ConductorController
                 echo json_encode(['success' => false, 'message' => 'Conductor no encontrado.']);
                 exit;
             }
-            http_response_code(404);
-            exit('Conductor no encontrado.');
+            ErrorHandler::abort(404, 'Conductor no encontrado.');
         }
 
         $this->service->delete($id);

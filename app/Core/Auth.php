@@ -41,8 +41,7 @@ final class Auth
     {
         self::requireLogin();
         if (self::username() !== 'Administrador') {
-            http_response_code(403);
-            exit('No autorizado.');
+            ErrorHandler::abort(403);
         }
     }
 

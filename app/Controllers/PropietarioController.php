@@ -6,6 +6,7 @@ namespace App\Controllers;
 
 use App\Core\Auth;
 use App\Core\Csrf;
+use App\Core\ErrorHandler;
 use App\Core\Flash;
 use App\Core\View;
 use App\Services\PropietarioService;
@@ -70,8 +71,7 @@ final class PropietarioController
         $propietario = $this->service->findById($id);
 
         if ($propietario === null) {
-            http_response_code(404);
-            exit('Propietario no encontrado.');
+            ErrorHandler::abort(404, 'Propietario no encontrado.');
         }
 
         View::render('propietarios/edit', [
@@ -88,8 +88,7 @@ final class PropietarioController
         $id = (int) ($_POST['id'] ?? 0);
         $propietario = $this->service->findById($id);
         if ($propietario === null) {
-            http_response_code(404);
-            exit('Propietario no encontrado.');
+            ErrorHandler::abort(404, 'Propietario no encontrado.');
         }
 
         $propietario['Nombre'] = (string) ($_POST['nombre'] ?? '');
@@ -124,8 +123,7 @@ final class PropietarioController
                 echo json_encode(['success' => false, 'message' => 'Propietario no encontrado.']);
                 exit;
             }
-            http_response_code(404);
-            exit('Propietario no encontrado.');
+            ErrorHandler::abort(404, 'Propietario no encontrado.');
         }
 
         $this->service->delete($id);

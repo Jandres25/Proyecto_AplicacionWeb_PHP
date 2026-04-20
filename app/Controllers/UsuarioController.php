@@ -6,6 +6,7 @@ namespace App\Controllers;
 
 use App\Core\Auth;
 use App\Core\Csrf;
+use App\Core\ErrorHandler;
 use App\Core\Flash;
 use App\Core\View;
 use App\Services\UsuarioService;
@@ -70,8 +71,7 @@ final class UsuarioController
         $usuario = $this->service->findById($id);
 
         if ($usuario === null) {
-            http_response_code(404);
-            exit('Usuario no encontrado.');
+            ErrorHandler::abort(404, 'Usuario no encontrado.');
         }
 
         View::render('usuarios/edit', [
@@ -89,8 +89,7 @@ final class UsuarioController
         $usuario = $this->service->findById($id);
 
         if ($usuario === null) {
-            http_response_code(404);
-            exit('Usuario no encontrado.');
+            ErrorHandler::abort(404, 'Usuario no encontrado.');
         }
 
         $usuario['Nombres'] = (string) ($_POST['nombres'] ?? '');
@@ -135,8 +134,7 @@ final class UsuarioController
                 echo json_encode(['success' => false, 'message' => 'Usuario no encontrado.']);
                 exit;
             }
-            http_response_code(404);
-            exit('Usuario no encontrado.');
+            ErrorHandler::abort(404, 'Usuario no encontrado.');
         }
 
         if ((string) $current['Usuario'] === Auth::username()) {

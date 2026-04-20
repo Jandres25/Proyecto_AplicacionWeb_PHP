@@ -30,8 +30,7 @@ final class Csrf
     public static function validateOrFail(string $token): void
     {
         if (!self::validate($token)) {
-            http_response_code(419);
-            exit('CSRF token inválido.');
+            ErrorHandler::abort(419);
         }
     }
 }

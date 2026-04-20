@@ -10,6 +10,7 @@ Actualmente usa una arquitectura por capas (mini-MVC): **Controller -> Service -
 - **Gestión AJAX:** Eliminación de registros optimizada mediante peticiones asíncronas (Fetch API) y SweetAlert2.
 - **Seguridad Mejorada:** Validación de CSRF en todas las acciones sensibles y control de acceso basado en roles (Administrador).
 - **Arquitectura Modular:** Lógica de frontend desacoplada en módulos ES6 (`public/modules/`).
+- **Manejo de Errores HTTP:** Vistas dedicadas para errores comunes (404, 500 y genéricas para 403/405/419).
 
 ## 🛠 Tecnologías
 
@@ -49,6 +50,13 @@ APP_URL=http://localhost/Proyecto_AplicacionWeb_PHP
 
 Abrir en el navegador:
 `http://localhost/Proyecto_AplicacionWeb_PHP/`
+
+## 🌐 Nota sobre `APP_URL` y `.htaccess`
+
+- Este proyecto está configurado para **mantener** el `.htaccess` en la raíz.
+- Con esta configuración, `APP_URL` debe quedar **sin** `/public`:
+  `APP_URL=http://localhost/Proyecto_AplicacionWeb_PHP`
+- El `.htaccess` de la raíz redirige internamente hacia `public/` para conservar URLs limpias.
 
 ## 📁 Estructura del Proyecto
 

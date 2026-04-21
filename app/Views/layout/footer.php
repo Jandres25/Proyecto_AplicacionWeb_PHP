@@ -12,6 +12,16 @@
         </div>
     </div>
 </footer>
+
+<!-- DataTables Core & Bootstrap 5 Integration -->
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+
+<!-- DataTables Extensions -->
+<script src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.4.1/js/responsive.bootstrap5.min.js"></script>
+
+<!-- Custom Scripts -->
 <script src="<?= e(app_url('/js/layout.js')); ?>"></script>
 </body>
 

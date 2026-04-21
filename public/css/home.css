@@ -1,0 +1,64 @@
+/* Home Page Specific Styles */
+
+/* Custom Carousel Responsiveness */
+.custom-carousel {
+  height: 100vh;
+  min-height: 500px;
+}
+
+.custom-carousel .carousel-item {
+  height: 100vh;
+  min-height: 500px;
+}
+
+.carousel-img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+/* Adjustments for mobile */
+@media (max-width: 768px) {
+  .custom-carousel, 
+  .custom-carousel .carousel-item {
+    height: 70vh;
+    min-height: 400px;
+  }
+
+  .carousel-caption h1 {
+    font-size: 1.5rem;
+  }
+
+  .carousel-caption p {
+    font-size: 1rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .marketing .col-lg-4 {
+    margin-bottom: 2rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .custom-carousel, 
+  .custom-carousel .carousel-item {
+    height: 60vh;
+    min-height: 350px;
+  }
+
+  .carousel-caption {
+    bottom: 1.25rem;
+    padding-bottom: 1rem;
+  }
+}
+
+.featurette-divider {
+  margin: 5rem 0;
+}
+
+.featurette-heading {
+  letter-spacing: -.01rem;
+}

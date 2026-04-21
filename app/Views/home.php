@@ -1,12 +1,20 @@
-<div id="myCarousel" class="carousel slide" data-bs-ride="carousel" style="height: 100vh;">
+<link rel="stylesheet" href="<?= e(app_url('/css/home.css')); ?>">
+<style>
+  /* Solo para home, ajustamos el padding para el navbar fijo si es necesario, 
+     o dejamos que el carrusel empiece desde arriba si así se prefiere */
+  body {
+    padding-top: 56px;
+  }
+</style>
+<div id="myCarousel" class="carousel slide custom-carousel" data-bs-ride="carousel">
   <div class="carousel-indicators">
     <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
     <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
     <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
   </div>
   <div class="carousel-inner">
-    <div class="carousel-item active" style="height: 100vh;">
-      <img class="d-block w-100 h-100" style="object-fit: cover;" src="https://images.unsplash.com/photo-1556122071-e404eaedb77f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1134&q=80" alt="Primer Imagen">
+    <div class="carousel-item active">
+      <img class="d-block w-100 carousel-img" src="https://images.unsplash.com/photo-1556122071-e404eaedb77f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1134&q=80" alt="Primer Imagen">
       <div class="container">
         <div class="carousel-caption text-start">
           <h1>Gestión Eficiente.</h1>
@@ -15,8 +23,8 @@
         </div>
       </div>
     </div>
-    <div class="carousel-item" style="height: 100vh;">
-      <img class="d-block w-100 h-100" style="object-fit: cover;" src="https://images.unsplash.com/photo-1483721168571-c0895f4432c7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1861&q=80" alt="Segunda Imagen">
+    <div class="carousel-item">
+      <img class="d-block w-100 carousel-img" src="https://images.unsplash.com/photo-1483721168571-c0895f4432c7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1861&q=80" alt="Segunda Imagen">
       <div class="container">
         <div class="carousel-caption">
           <h1>Control de Taxis.</h1>
@@ -25,8 +33,8 @@
         </div>
       </div>
     </div>
-    <div class="carousel-item" style="height: 100vh;">
-      <img class="d-block w-100 h-100" style="object-fit: cover;" src="https://images.unsplash.com/photo-1538661369300-11e61e167e95?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1167&q=80" alt="Tercer Imagen">
+    <div class="carousel-item">
+      <img class="d-block w-100 carousel-img" src="https://images.unsplash.com/photo-1538661369300-11e61e167e95?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1167&q=80" alt="Tercer Imagen">
       <div class="container">
         <div class="carousel-caption text-end">
           <h1>Seguridad y Confianza.</h1>

@@ -1,6 +1,8 @@
 $(document).ready(function () {
   if ($("#tabla_id").length) {
     $("#tabla_id").DataTable({
+      responsive: true,
+      autoWidth: false,
       pageLength: 5,
       lengthMenu: [
         [3, 5, 10, 25, 50],

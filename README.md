@@ -6,7 +6,8 @@ Actualmente usa una arquitectura por capas (mini-MVC): **Controller -> Service -
 
 ## ✨ Características Recientes
 
-- **Diseño Moderno:** Interfaz de usuario renovada en todos los módulos (Taxis, Propietarios, Conductores y Usuarios) basada en un patrón visual limpio y profesional.
+- **Diseño Moderno y Responsivo:** Interfaz de usuario renovada en todos los módulos. La página de inicio ahora cuenta con un carrusel totalmente adaptativo que ajusta su altura y contenido dinámicamente según el dispositivo.
+- **Estilos Modulares:** Implementación de hojas de estilo específicas por vista (`public/css/home.css`) para evitar colisiones y mantener un `layout.css` limpio y global.
 - **Gestión AJAX:** Eliminación de registros optimizada mediante peticiones asíncronas (Fetch API) y SweetAlert2.
 - **Seguridad Mejorada:** Validación de CSRF en todas las acciones sensibles y control de acceso basado en roles (Administrador).
 - **Arquitectura Modular:** Lógica de frontend desacoplada en módulos ES6 (`public/modules/`).

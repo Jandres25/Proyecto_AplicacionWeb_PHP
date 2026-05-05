@@ -2,13 +2,17 @@
 
 Aplicación web desarrollada con **PHP** y **Bootstrap**, orientada a la gestión de conductores, propietarios, taxis y usuarios, con autenticación por sesión y panel administrativo.
 
-Actualmente usa una arquitectura por capas (mini-MVC): **Controller -> Service -> Repository -> View**.
+Actualmente usa una arquitectura por capas (mini-MVC): **Controller -> Service -> Repository -> View** con modelos tipados y ViewModels.
 
 ## ✨ Características Recientes
 
 - **Diseño Moderno y Responsivo:** Interfaz de usuario renovada en todos los módulos. La página de inicio ahora cuenta con un carrusel totalmente adaptativo que ajusta su altura y contenido dinámicamente según el dispositivo.
 - **Estilos Modulares:** Implementación de hojas de estilo específicas por vista (`public/css/home.css`) para evitar colisiones y mantener un `layout.css` limpio y global.
 - **Gestión AJAX:** Eliminación de registros optimizada mediante peticiones asíncronas (Fetch API) y SweetAlert2.
+- **Repositorios Tipados:** Los repositorios exponen métodos con nombres limpios (`all`, `findById`, etc.) y retornan modelos de dominio tipados.
+- **Renderizado Tipado de Vistas:** `View::renderWith()` usa `ViewModel` en toda la aplicación (se eliminó `View::render()` legacy con arrays).
+- **Layout Desacoplado:** El layout (`header/footer`) consume un `LayoutViewModel` preparado desde `App\Core\View`, evitando lógica de aplicación dentro de la plantilla.
+- **Toasts Centralizados:** Configuración global en `public/js/toast-config.js` con helpers reutilizables (`showToast`, `showToastSuccess`, `showToastError`) para respuestas CRUD.
 - **Seguridad Mejorada:** Validación de CSRF en todas las acciones sensibles y control de acceso basado en roles (Administrador).
 - **Arquitectura Modular:** Lógica de frontend desacoplada en módulos ES6 (`public/modules/`).
 - **Manejo de Errores HTTP:** Vistas dedicadas para errores comunes (404, 500 y genéricas para 403/405/419).
@@ -63,11 +67,13 @@ Abrir en el navegador:
 
 - `public/index.php`: Front Controller y punto de entrada.
 - `public/modules/`: Módulos JavaScript para lógica de frontend (eliminaciones AJAX).
+- `public/js/toast-config.js`: Configuración global de SweetAlert2 para toasts.
 - `public/css`, `public/js`, `public/img`: Recursos estáticos (estilos, scripts base e imágenes).
 - `routes/web.php`: Definición de rutas del sistema.
 - `app/Controllers/`: Manejo de peticiones HTTP y lógica de control.
 - `app/Services/`: Reglas de negocio, validaciones y orquestación.
-- `app/Repositories/`: Abstracción de acceso a datos (PDO).
+- `app/Repositories/`: Abstracción de acceso a datos (PDO) con retorno de modelos tipados.
+- `app/Http/ViewModels/`: ViewModels de cada pantalla y `LayoutViewModel`.
 - `app/Views/`: Plantillas de vista organizadas por módulos.
 - `app/Core/`: Núcleo del sistema (Router, Auth, Csrf, Flash, Database, View, Autoloader, Env).
 

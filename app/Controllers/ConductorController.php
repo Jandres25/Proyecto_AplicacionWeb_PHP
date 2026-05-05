@@ -9,12 +9,17 @@ use App\Core\Csrf;
 use App\Core\ErrorHandler;
 use App\Core\Flash;
 use App\Core\View;
+use App\Http\Request;
+use App\Http\Response;
 use App\Services\ConductorService;
 use InvalidArgumentException;
 
 final class ConductorController
 {
-    public function __construct(private readonly ConductorService $service) {}
+    public function __construct(
+        private readonly ConductorService $service,
+        private readonly Request $request,
+    ) {}
 
     public function index(): void
     {
@@ -37,19 +42,18 @@ final class ConductorController
     public function store(): void
     {
         Auth::requireLogin();
-        Csrf::validateOrFail((string) ($_POST['_token'] ?? ''));
+        Csrf::validateOrFail((string) $this->request->post('_token', ''));
 
         $old = [
-            'nombre' => (string) ($_POST['nombre'] ?? ''),
-            'telefono' => (string) ($_POST['telefono'] ?? ''),
-            'placa' => (string) ($_POST['placa'] ?? ''),
+            'nombre' => (string) $this->request->post('nombre', ''),
+            'telefono' => (string) $this->request->post('telefono', ''),
+            'placa' => (string) $this->request->post('placa', ''),
         ];
 
         try {
             $this->service->create($old['nombre'], $old['telefono'], (int) $old['placa']);
             Flash::set('success', 'Registro Agregado');
-            header('Location: ' . app_url('/conductores'));
-            exit;
+            Response::redirect(app_url('/conductores'));
         } catch (InvalidArgumentException $exception) {
             View::render('conductores/create', [
                 'old' => $old,
@@ -62,7 +66,7 @@ final class ConductorController
     public function edit(): void
     {
         Auth::requireLogin();
-        $id = (int) ($_GET['id'] ?? 0);
+        $id = (int) $this->request->get('id', 0);
         $conductor = $this->service->findById($id);
 
         if ($conductor === null) {
@@ -79,24 +83,23 @@ final class ConductorController
     public function update(): void
     {
         Auth::requireLogin();
-        Csrf::validateOrFail((string) ($_POST['_token'] ?? ''));
+        Csrf::validateOrFail((string) $this->request->post('_token', ''));
 
-        $id = (int) ($_POST['id'] ?? 0);
+        $id = (int) $this->request->post('id', 0);
         $conductor = $this->service->findById($id);
 
         if ($conductor === null) {
             ErrorHandler::abort(404, 'Conductor no encontrado.');
         }
 
-        $nombres = (string) ($_POST['nombre'] ?? '');
-        $telefono = (string) ($_POST['telefono'] ?? '');
-        $placa = (int) ($_POST['placa'] ?? 0);
+        $nombres = (string) $this->request->post('nombre', '');
+        $telefono = (string) $this->request->post('telefono', '');
+        $placa = (int) $this->request->post('placa', 0);
 
         try {
             $this->service->update($id, $nombres, $telefono, $placa);
             Flash::set('success', 'Registro Actualizado');
-            header('Location: ' . app_url('/conductores'));
-            exit;
+            Response::redirect(app_url('/conductores'));
         } catch (InvalidArgumentException $exception) {
             View::render('conductores/edit', [
                 'conductor' => $conductor,
@@ -109,32 +112,25 @@ final class ConductorController
     public function destroy(): void
     {
         Auth::requireLogin();
-        Csrf::validateOrFail((string) ($_POST['_token'] ?? ''));
+        Csrf::validateOrFail((string) $this->request->post('_token', ''));
 
-        $id = (int) ($_POST['id'] ?? 0);
+        $id = (int) $this->request->post('id', 0);
         $current = $this->service->findById($id);
 
-        $isAjax = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest';
-
         if ($current === null) {
-            if ($isAjax) {
-                header('Content-Type: application/json');
-                echo json_encode(['success' => false, 'message' => 'Conductor no encontrado.']);
-                exit;
+            if ($this->request->isAjax()) {
+                Response::json(['success' => false, 'message' => 'Conductor no encontrado.'], 404);
             }
             ErrorHandler::abort(404, 'Conductor no encontrado.');
         }
 
         $this->service->delete($id);
 
-        if ($isAjax) {
-            header('Content-Type: application/json');
-            echo json_encode(['success' => true, 'message' => 'Registro Eliminado']);
-            exit;
+        if ($this->request->isAjax()) {
+            Response::json(['success' => true, 'message' => 'Registro Eliminado']);
         }
 
         Flash::set('success', 'Registro Eliminado');
-        header('Location: ' . app_url('/conductores'));
-        exit;
+        Response::redirect(app_url('/conductores'));
     }
 }

@@ -9,12 +9,17 @@ use App\Core\Csrf;
 use App\Core\ErrorHandler;
 use App\Core\Flash;
 use App\Core\View;
+use App\Http\Request;
+use App\Http\Response;
 use App\Services\PropietarioService;
 use InvalidArgumentException;
 
 final class PropietarioController
 {
-    public function __construct(private readonly PropietarioService $service) {}
+    public function __construct(
+        private readonly PropietarioService $service,
+        private readonly Request $request,
+    ) {}
 
     public function index(): void
     {
@@ -38,18 +43,17 @@ final class PropietarioController
     public function store(): void
     {
         Auth::requireLogin();
-        Csrf::validateOrFail((string) ($_POST['_token'] ?? ''));
+        Csrf::validateOrFail((string) $this->request->post('_token', ''));
 
         $old = [
-            'nombre' => (string) ($_POST['nombre'] ?? ''),
-            'telefono' => (string) ($_POST['telefono'] ?? ''),
+            'nombre' => (string) $this->request->post('nombre', ''),
+            'telefono' => (string) $this->request->post('telefono', ''),
         ];
 
         try {
             $this->service->create($old['nombre'], $old['telefono']);
             Flash::set('success', 'Registro Agregado');
-            header('Location: ' . app_url('/propietarios'));
-            exit;
+            Response::redirect(app_url('/propietarios'));
         } catch (InvalidArgumentException $exception) {
             View::render('propietarios/create', [
                 'old' => $old,
@@ -62,7 +66,7 @@ final class PropietarioController
     {
         Auth::requireLogin();
 
-        $id = (int) ($_GET['id'] ?? 0);
+        $id = (int) $this->request->get('id', 0);
         $propietario = $this->service->findById($id);
 
         if ($propietario === null) {
@@ -78,22 +82,21 @@ final class PropietarioController
     public function update(): void
     {
         Auth::requireLogin();
-        Csrf::validateOrFail((string) ($_POST['_token'] ?? ''));
+        Csrf::validateOrFail((string) $this->request->post('_token', ''));
 
-        $id = (int) ($_POST['id'] ?? 0);
+        $id = (int) $this->request->post('id', 0);
         $propietario = $this->service->findById($id);
         if ($propietario === null) {
             ErrorHandler::abort(404, 'Propietario no encontrado.');
         }
 
-        $nombre = (string) ($_POST['nombre'] ?? '');
-        $telefono = (string) ($_POST['telefono'] ?? '');
+        $nombre = (string) $this->request->post('nombre', '');
+        $telefono = (string) $this->request->post('telefono', '');
 
         try {
             $this->service->update($id, $nombre, $telefono);
             Flash::set('success', 'Registro Actualizado');
-            header('Location: ' . app_url('/propietarios'));
-            exit;
+            Response::redirect(app_url('/propietarios'));
         } catch (InvalidArgumentException $exception) {
             View::render('propietarios/edit', [
                 'propietario' => $propietario,
@@ -105,32 +108,25 @@ final class PropietarioController
     public function destroy(): void
     {
         Auth::requireLogin();
-        Csrf::validateOrFail((string) ($_POST['_token'] ?? ''));
+        Csrf::validateOrFail((string) $this->request->post('_token', ''));
 
-        $id = (int) ($_POST['id'] ?? 0);
+        $id = (int) $this->request->post('id', 0);
         $current = $this->service->findById($id);
 
-        $isAjax = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest';
-
         if ($current === null) {
-            if ($isAjax) {
-                header('Content-Type: application/json');
-                echo json_encode(['success' => false, 'message' => 'Propietario no encontrado.']);
-                exit;
+            if ($this->request->isAjax()) {
+                Response::json(['success' => false, 'message' => 'Propietario no encontrado.'], 404);
             }
             ErrorHandler::abort(404, 'Propietario no encontrado.');
         }
 
         $this->service->delete($id);
 
-        if ($isAjax) {
-            header('Content-Type: application/json');
-            echo json_encode(['success' => true, 'message' => 'Registro Eliminado']);
-            exit;
+        if ($this->request->isAjax()) {
+            Response::json(['success' => true, 'message' => 'Registro Eliminado']);
         }
 
         Flash::set('success', 'Registro Eliminado');
-        header('Location: ' . app_url('/propietarios'));
-        exit;
+        Response::redirect(app_url('/propietarios'));
     }
 }

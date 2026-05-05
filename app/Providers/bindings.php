@@ -8,6 +8,7 @@ use App\Contracts\Repositories\TaxiRepositoryInterface;
 use App\Contracts\Repositories\UserRepositoryInterface;
 use App\Contracts\Services\AuthServiceInterface;
 use App\Core\Container;
+use App\Http\Request;
 use App\Repositories\ConductorRepository;
 use App\Repositories\PropietarioRepository;
 use App\Repositories\TaxiRepository;
@@ -17,6 +18,7 @@ use App\Services\AuthService;
 /** @param Container $container */
 return static function (Container $container): void {
     $container->singleton(\PDO::class, static fn() => \App\Core\Database::getConnection());
+    $container->singleton(Request::class, static fn() => new Request());
 
     $container->bind(TaxiRepositoryInterface::class, static fn(Container $c) => new TaxiRepository($c->make(\PDO::class)));
     $container->bind(PropietarioRepositoryInterface::class, static fn(Container $c) => new PropietarioRepository($c->make(\PDO::class)));

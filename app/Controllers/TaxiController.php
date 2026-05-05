@@ -9,12 +9,17 @@ use App\Core\Csrf;
 use App\Core\ErrorHandler;
 use App\Core\Flash;
 use App\Core\View;
+use App\Http\Request;
+use App\Http\Response;
 use App\Services\TaxiService;
 use InvalidArgumentException;
 
 final class TaxiController
 {
-    public function __construct(private readonly TaxiService $service) {}
+    public function __construct(
+        private readonly TaxiService $service,
+        private readonly Request $request,
+    ) {}
 
     public function index(): void
     {
@@ -39,19 +44,18 @@ final class TaxiController
     public function store(): void
     {
         Auth::requireAdmin();
-        Csrf::validateOrFail((string) ($_POST['_token'] ?? ''));
+        Csrf::validateOrFail((string) $this->request->post('_token', ''));
 
         $old = [
-            'modelo' => (string) ($_POST['modelo'] ?? ''),
-            'marca' => (string) ($_POST['marca'] ?? ''),
-            'propietario' => (string) ($_POST['propietario'] ?? ''),
+            'modelo' => (string) $this->request->post('modelo', ''),
+            'marca' => (string) $this->request->post('marca', ''),
+            'propietario' => (string) $this->request->post('propietario', ''),
         ];
 
         try {
             $this->service->create($old['modelo'], $old['marca'], (int) $old['propietario']);
             Flash::set('success', 'Registro Agregado');
-            header('Location: ' . app_url('/taxis'));
-            exit;
+            Response::redirect(app_url('/taxis'));
         } catch (InvalidArgumentException $exception) {
             View::render('taxis/create', [
                 'old' => $old,
@@ -65,7 +69,7 @@ final class TaxiController
     {
         Auth::requireAdmin();
 
-        $placa = (int) ($_GET['placa'] ?? 0);
+        $placa = (int) $this->request->get('placa', 0);
         $taxi = $this->service->findByPlaca($placa);
 
         if ($taxi === null) {
@@ -82,23 +86,22 @@ final class TaxiController
     public function update(): void
     {
         Auth::requireAdmin();
-        Csrf::validateOrFail((string) ($_POST['_token'] ?? ''));
+        Csrf::validateOrFail((string) $this->request->post('_token', ''));
 
-        $placa = (int) ($_POST['placa'] ?? 0);
+        $placa = (int) $this->request->post('placa', 0);
         $taxi = $this->service->findByPlaca($placa);
         if ($taxi === null) {
             ErrorHandler::abort(404, 'Taxi no encontrado.');
         }
 
-        $modelo = (string) ($_POST['modelo'] ?? '');
-        $marca = (string) ($_POST['marca'] ?? '');
-        $idPropietario = (int) ($_POST['propietario'] ?? 0);
+        $modelo = (string) $this->request->post('modelo', '');
+        $marca = (string) $this->request->post('marca', '');
+        $idPropietario = (int) $this->request->post('propietario', 0);
 
         try {
             $this->service->update($placa, $modelo, $marca, $idPropietario);
             Flash::set('success', 'Registro Actualizado');
-            header('Location: ' . app_url('/taxis'));
-            exit;
+            Response::redirect(app_url('/taxis'));
         } catch (InvalidArgumentException $exception) {
             View::render('taxis/edit', [
                 'taxi' => $taxi,
@@ -111,32 +114,25 @@ final class TaxiController
     public function destroy(): void
     {
         Auth::requireAdmin();
-        Csrf::validateOrFail((string) ($_POST['_token'] ?? ''));
+        Csrf::validateOrFail((string) $this->request->post('_token', ''));
 
-        $placa = (int) ($_POST['placa'] ?? 0);
+        $placa = (int) $this->request->post('placa', 0);
         $current = $this->service->findByPlaca($placa);
 
-        $isAjax = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest';
-
         if ($current === null) {
-            if ($isAjax) {
-                header('Content-Type: application/json');
-                echo json_encode(['success' => false, 'message' => 'Taxi no encontrado.']);
-                exit;
+            if ($this->request->isAjax()) {
+                Response::json(['success' => false, 'message' => 'Taxi no encontrado.'], 404);
             }
             ErrorHandler::abort(404, 'Taxi no encontrado.');
         }
 
         $this->service->delete($placa);
 
-        if ($isAjax) {
-            header('Content-Type: application/json');
-            echo json_encode(['success' => true, 'message' => 'Registro Eliminado']);
-            exit;
+        if ($this->request->isAjax()) {
+            Response::json(['success' => true, 'message' => 'Registro Eliminado']);
         }
 
         Flash::set('success', 'Registro Eliminado');
-        header('Location: ' . app_url('/taxis'));
-        exit;
+        Response::redirect(app_url('/taxis'));
     }
 }

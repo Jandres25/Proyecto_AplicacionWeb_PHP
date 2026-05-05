@@ -9,12 +9,17 @@ use App\Core\Csrf;
 use App\Core\ErrorHandler;
 use App\Core\Flash;
 use App\Core\View;
+use App\Http\Request;
+use App\Http\Response;
 use App\Services\UsuarioService;
 use InvalidArgumentException;
 
 final class UsuarioController
 {
-    public function __construct(private readonly UsuarioService $service) {}
+    public function __construct(
+        private readonly UsuarioService $service,
+        private readonly Request $request,
+    ) {}
 
     public function index(): void
     {
@@ -36,21 +41,20 @@ final class UsuarioController
     public function store(): void
     {
         Auth::requireAdmin();
-        Csrf::validateOrFail((string) ($_POST['_token'] ?? ''));
+        Csrf::validateOrFail((string) $this->request->post('_token', ''));
 
         $old = [
-            'nombres' => (string) ($_POST['nombres'] ?? ''),
-            'apellidos' => (string) ($_POST['apellidos'] ?? ''),
-            'usuario' => (string) ($_POST['usuario'] ?? ''),
-            'correo' => (string) ($_POST['correo'] ?? ''),
+            'nombres' => (string) $this->request->post('nombres', ''),
+            'apellidos' => (string) $this->request->post('apellidos', ''),
+            'usuario' => (string) $this->request->post('usuario', ''),
+            'correo' => (string) $this->request->post('correo', ''),
         ];
-        $clave = (string) ($_POST['clave'] ?? '');
+        $clave = (string) $this->request->post('clave', '');
 
         try {
             $this->service->create($old['nombres'], $old['apellidos'], $old['usuario'], $clave, $old['correo']);
             Flash::set('success', 'Registro Agregado');
-            header('Location: ' . app_url('/usuarios'));
-            exit;
+            Response::redirect(app_url('/usuarios'));
         } catch (InvalidArgumentException $exception) {
             View::render('usuarios/create', [
                 'old' => $old,
@@ -62,7 +66,7 @@ final class UsuarioController
     public function edit(): void
     {
         Auth::requireAdmin();
-        $id = (int) ($_GET['id'] ?? 0);
+        $id = (int) $this->request->get('id', 0);
         $usuario = $this->service->findById($id);
 
         if ($usuario === null) {
@@ -78,33 +82,25 @@ final class UsuarioController
     public function update(): void
     {
         Auth::requireAdmin();
-        Csrf::validateOrFail((string) ($_POST['_token'] ?? ''));
+        Csrf::validateOrFail((string) $this->request->post('_token', ''));
 
-        $id = (int) ($_POST['id'] ?? 0);
+        $id = (int) $this->request->post('id', 0);
         $usuario = $this->service->findById($id);
 
         if ($usuario === null) {
             ErrorHandler::abort(404, 'Usuario no encontrado.');
         }
 
-        $nombres = (string) ($_POST['nombres'] ?? '');
-        $apellidos = (string) ($_POST['apellidos'] ?? '');
-        $usuarioNombre = (string) ($_POST['usuario'] ?? '');
-        $correo = (string) ($_POST['correo'] ?? '');
-        $clave = (string) ($_POST['clave'] ?? '');
+        $nombres = (string) $this->request->post('nombres', '');
+        $apellidos = (string) $this->request->post('apellidos', '');
+        $usuarioNombre = (string) $this->request->post('usuario', '');
+        $correo = (string) $this->request->post('correo', '');
+        $clave = (string) $this->request->post('clave', '');
 
         try {
-            $this->service->update(
-                $id,
-                $nombres,
-                $apellidos,
-                $usuarioNombre,
-                $clave,
-                $correo
-            );
+            $this->service->update($id, $nombres, $apellidos, $usuarioNombre, $clave, $correo);
             Flash::set('success', 'Registro Actualizado');
-            header('Location: ' . app_url('/usuarios'));
-            exit;
+            Response::redirect(app_url('/usuarios'));
         } catch (InvalidArgumentException $exception) {
             View::render('usuarios/edit', [
                 'usuario' => $usuario,
@@ -116,43 +112,33 @@ final class UsuarioController
     public function destroy(): void
     {
         Auth::requireAdmin();
-        Csrf::validateOrFail((string) ($_POST['_token'] ?? ''));
+        Csrf::validateOrFail((string) $this->request->post('_token', ''));
 
-        $id = (int) ($_POST['id'] ?? 0);
+        $id = (int) $this->request->post('id', 0);
         $current = $this->service->findById($id);
 
-        $isAjax = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest';
-
         if ($current === null) {
-            if ($isAjax) {
-                header('Content-Type: application/json');
-                echo json_encode(['success' => false, 'message' => 'Usuario no encontrado.']);
-                exit;
+            if ($this->request->isAjax()) {
+                Response::json(['success' => false, 'message' => 'Usuario no encontrado.'], 404);
             }
             ErrorHandler::abort(404, 'Usuario no encontrado.');
         }
 
         if ($current->usuario === Auth::username()) {
-            if ($isAjax) {
-                header('Content-Type: application/json');
-                echo json_encode(['success' => false, 'message' => 'No puedes eliminar tu propio usuario']);
-                exit;
+            if ($this->request->isAjax()) {
+                Response::json(['success' => false, 'message' => 'No puedes eliminar tu propio usuario'], 403);
             }
             Flash::set('error', 'No puedes eliminar tu propio usuario');
-            header('Location: ' . app_url('/usuarios'));
-            exit;
+            Response::redirect(app_url('/usuarios'));
         }
 
         $this->service->delete($id);
 
-        if ($isAjax) {
-            header('Content-Type: application/json');
-            echo json_encode(['success' => true, 'message' => 'Registro Eliminado']);
-            exit;
+        if ($this->request->isAjax()) {
+            Response::json(['success' => true, 'message' => 'Registro Eliminado']);
         }
 
         Flash::set('success', 'Registro Eliminado');
-        header('Location: ' . app_url('/usuarios'));
-        exit;
+        Response::redirect(app_url('/usuarios'));
     }
 }

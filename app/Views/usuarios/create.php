@@ -27,10 +27,10 @@
                         </h5>
                     </div>
                     <div class="card-body p-4">
-                        <?php if (!empty($error)) : ?>
+                        <?php if (!empty($vm->error)) : ?>
                             <div class="alert alert-danger d-flex align-items-center" role="alert">
                                 <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                                <div><?= e($error); ?></div>
+                                <div><?= e($vm->error); ?></div>
                             </div>
                         <?php endif; ?>
 
@@ -41,14 +41,14 @@
                                 <label for="nombres" class="form-label fw-bold text-muted small text-uppercase">Nombres</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-light"><i class="bi bi-person"></i></span>
-                                    <input type="text" class="form-control" name="nombres" id="nombres" value="<?= e($old['nombres'] ?? ''); ?>" placeholder="Ej: Juan Juanito" required>
+                                    <input type="text" class="form-control" name="nombres" id="nombres" value="<?= e($vm->old['nombres'] ?? ''); ?>" placeholder="Ej: Juan Juanito" required>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="apellidos" class="form-label fw-bold text-muted small text-uppercase">Apellidos</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-light"><i class="bi bi-person"></i></span>
-                                    <input type="text" class="form-control" name="apellidos" id="apellidos" value="<?= e($old['apellidos'] ?? ''); ?>" placeholder="Ej: Perez" required>
+                                    <input type="text" class="form-control" name="apellidos" id="apellidos" value="<?= e($vm->old['apellidos'] ?? ''); ?>" placeholder="Ej: Perez" required>
                                 </div>
                             </div>
                         </div>
@@ -58,7 +58,7 @@
                                 <label for="usuario" class="form-label fw-bold text-muted small text-uppercase">Nombre de Usuario</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-light"><i class="bi bi-at"></i></span>
-                                    <input type="text" class="form-control" name="usuario" id="usuario" value="<?= e($old['usuario'] ?? ''); ?>" placeholder="Ej: juan10" required>
+                                    <input type="text" class="form-control" name="usuario" id="usuario" value="<?= e($vm->old['usuario'] ?? ''); ?>" placeholder="Ej: juan10" required>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
@@ -74,7 +74,7 @@
                             <label for="correo" class="form-label fw-bold text-muted small text-uppercase">Correo Electrónico</label>
                             <div class="input-group">
                                 <span class="input-group-text bg-light"><i class="bi bi-envelope"></i></span>
-                                <input type="email" class="form-control" name="correo" id="correo" value="<?= e($old['correo'] ?? ''); ?>" placeholder="ejemplo@dominio.com" required>
+                                <input type="email" class="form-control" name="correo" id="correo" value="<?= e($vm->old['correo'] ?? ''); ?>" placeholder="ejemplo@dominio.com" required>
                             </div>
                         </div>
                     </div>

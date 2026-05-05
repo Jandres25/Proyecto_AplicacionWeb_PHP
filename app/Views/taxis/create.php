@@ -27,10 +27,10 @@
                         </h5>
                     </div>
                     <div class="card-body p-4">
-                        <?php if (!empty($error)) : ?>
+                        <?php if (!empty($vm->error)) : ?>
                             <div class="alert alert-danger d-flex align-items-center" role="alert">
                                 <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                                <div><?= e($error); ?></div>
+                                <div><?= e($vm->error); ?></div>
                             </div>
                         <?php endif; ?>
 
@@ -39,7 +39,7 @@
                                 <label for="modelo" class="form-label fw-bold text-muted small text-uppercase">Modelo</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-light"><i class="bi bi-tag"></i></span>
-                                    <input type="text" class="form-control" name="modelo" id="modelo" value="<?= e($old['modelo'] ?? ''); ?>" placeholder="Ej: Corola" required>
+                                    <input type="text" class="form-control" name="modelo" id="modelo" value="<?= e($vm->old['modelo'] ?? ''); ?>" placeholder="Ej: Corola" required>
                                 </div>
                                 <div class="form-text small">Escriba el modelo del vehículo.</div>
                             </div>
@@ -47,7 +47,7 @@
                                 <label for="marca" class="form-label fw-bold text-muted small text-uppercase">Marca</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-light"><i class="bi bi-briefcase"></i></span>
-                                    <input type="text" class="form-control" name="marca" id="marca" value="<?= e($old['marca'] ?? ''); ?>" placeholder="Ej: Toyota" required>
+                                    <input type="text" class="form-control" name="marca" id="marca" value="<?= e($vm->old['marca'] ?? ''); ?>" placeholder="Ej: Toyota" required>
                                 </div>
                                 <div class="form-text small">Escriba la marca del vehículo.</div>
                             </div>
@@ -59,8 +59,8 @@
                                 <span class="input-group-text bg-light"><i class="bi bi-person-badge"></i></span>
                                 <select class="form-select" name="propietario" id="propietario" required>
                                     <option value="">Selecciona un propietario</option>
-                                    <?php foreach ($owners as $owner) : ?>
-                                        <option value="<?= e($owner->id); ?>" <?= ((string) ($old['propietario'] ?? '') === (string) $owner->id) ? 'selected' : ''; ?>>
+                                    <?php foreach ($vm->owners as $owner) : ?>
+                                        <option value="<?= e($owner->id); ?>" <?= ((string) ($vm->old['propietario'] ?? '') === (string) $owner->id) ? 'selected' : ''; ?>>
                                             <?= e($owner->nombre); ?>
                                         </option>
                                     <?php endforeach; ?>

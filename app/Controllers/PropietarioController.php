@@ -11,6 +11,9 @@ use App\Core\Flash;
 use App\Core\View;
 use App\Http\Request;
 use App\Http\Response;
+use App\Http\ViewModels\PropietarioCreateViewModel;
+use App\Http\ViewModels\PropietarioEditViewModel;
+use App\Http\ViewModels\PropietarioIndexViewModel;
 use App\Services\PropietarioService;
 use InvalidArgumentException;
 
@@ -25,19 +28,19 @@ final class PropietarioController
     {
         Auth::requireLogin();
 
-        View::render('propietarios/index', [
-            'lista_propietarios' => $this->service->all(),
-        ]);
+        View::renderWith('propietarios/index', new PropietarioIndexViewModel(
+            listaPropietarios: $this->service->all(),
+        ));
     }
 
     public function create(): void
     {
         Auth::requireLogin();
 
-        View::render('propietarios/create', [
-            'old' => ['nombre' => '', 'telefono' => ''],
-            'error' => '',
-        ]);
+        View::renderWith('propietarios/create', new PropietarioCreateViewModel(
+            old: ['nombre' => '', 'telefono' => ''],
+            error: '',
+        ));
     }
 
     public function store(): void
@@ -55,10 +58,10 @@ final class PropietarioController
             Flash::set('success', 'Registro Agregado');
             Response::redirect(app_url('/propietarios'));
         } catch (InvalidArgumentException $exception) {
-            View::render('propietarios/create', [
-                'old' => $old,
-                'error' => $exception->getMessage(),
-            ]);
+            View::renderWith('propietarios/create', new PropietarioCreateViewModel(
+                old: $old,
+                error: $exception->getMessage(),
+            ));
         }
     }
 
@@ -73,10 +76,10 @@ final class PropietarioController
             ErrorHandler::abort(404, 'Propietario no encontrado.');
         }
 
-        View::render('propietarios/edit', [
-            'propietario' => $propietario,
-            'error' => '',
-        ]);
+        View::renderWith('propietarios/edit', new PropietarioEditViewModel(
+            propietario: $propietario,
+            error: '',
+        ));
     }
 
     public function update(): void
@@ -98,10 +101,10 @@ final class PropietarioController
             Flash::set('success', 'Registro Actualizado');
             Response::redirect(app_url('/propietarios'));
         } catch (InvalidArgumentException $exception) {
-            View::render('propietarios/edit', [
-                'propietario' => $propietario,
-                'error' => $exception->getMessage(),
-            ]);
+            View::renderWith('propietarios/edit', new PropietarioEditViewModel(
+                propietario: $propietario,
+                error: $exception->getMessage(),
+            ));
         }
     }
 

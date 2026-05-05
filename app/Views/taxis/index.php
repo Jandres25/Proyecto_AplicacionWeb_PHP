@@ -41,7 +41,7 @@
                     <tbody>
                         <?php
                         $counter = 1;
-                        foreach ($lista_taxis as $registro) : ?>
+                        foreach (\$vm->listaTaxis as $registro) : ?>
                             <tr>
                                 <td class="text-center fw-bold text-primary"><?= $counter++; ?></td>
                                 <td><?= e($registro->modelo); ?></td>

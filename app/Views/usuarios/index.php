@@ -41,7 +41,7 @@
                     <tbody>
                         <?php
                         $counter = 1;
-                        foreach ($lista_usuarios as $registro) : ?>
+                        foreach ($vm->listaUsuarios as $registro) : ?>
                             <tr>
                                 <td class="text-center text-muted fw-bold"><?= $counter++; ?></td>
                                 <td>

@@ -40,7 +40,7 @@
                     <tbody>
                         <?php
                         $counter = 1;
-                        foreach ($lista_propietarios as $registro) : ?>
+                        foreach ($vm->listaPropietarios as $registro) : ?>
                             <tr>
                                 <td class="text-center text-muted fw-bold"><?= $counter++; ?></td>
                                 <td>

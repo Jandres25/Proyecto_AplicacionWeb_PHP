@@ -10,6 +10,7 @@ use App\Core\Csrf;
 use App\Core\View;
 use App\Http\Request;
 use App\Http\Response;
+use App\Http\ViewModels\LoginViewModel;
 
 final class AuthController
 {
@@ -24,7 +25,9 @@ final class AuthController
             Response::redirect(app_url('/'));
         }
 
-        View::render('auth/login', ['mensaje' => $this->request->get('error')], false);
+        View::renderWith('auth/login', new LoginViewModel(
+            mensaje: $this->request->get('error'),
+        ), false);
     }
 
     public function login(): void
@@ -36,7 +39,9 @@ final class AuthController
         $user = $this->service->attempt($username, $password);
 
         if ($user === null) {
-            View::render('auth/login', ['mensaje' => 'Error: El usuario o contraseña son incorrectos'], false);
+            View::renderWith('auth/login', new LoginViewModel(
+                mensaje: 'Error: El usuario o contraseña son incorrectos',
+            ), false);
             return;
         }
 

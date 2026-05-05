@@ -31,9 +31,9 @@
                 <input type="hidden" name="_token" value="<?php echo e(\App\Core\Csrf::token()); ?>">
                 <img src="<?php echo e(app_url('/img/avatar.svg')); ?>" alt="Imagen Usuario">
                 <h2 class="title">BIENVENIDO</h2>
-                <?php if (!empty($mensaje)) { ?>
+                <?php if (!empty($vm->mensaje)) { ?>
                     <div class="alert alert-danger" role="alert">
-                        <strong><?php echo e($mensaje); ?></strong>
+                        <strong><?php echo e($vm->mensaje); ?></strong>
                     </div>
                 <?php } ?>
                 <div class="input-div one">

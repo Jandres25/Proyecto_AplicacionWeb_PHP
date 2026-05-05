@@ -41,7 +41,7 @@
                     <tbody>
                         <?php
                         $counter = 1;
-                        foreach ($lista_conductores as $registro) : ?>
+                        foreach ($vm->listaConductores as $registro) : ?>
                             <tr>
                                 <td class="text-center text-muted fw-bold"><?= $counter++; ?></td>
                                 <td>

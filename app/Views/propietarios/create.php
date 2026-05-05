@@ -27,10 +27,10 @@
                         </h5>
                     </div>
                     <div class="card-body p-4">
-                        <?php if (!empty($error)) : ?>
+                        <?php if (!empty($vm->error)) : ?>
                             <div class="alert alert-danger d-flex align-items-center" role="alert">
                                 <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                                <div><?= e($error); ?></div>
+                                <div><?= e($vm->error); ?></div>
                             </div>
                         <?php endif; ?>
 
@@ -38,7 +38,7 @@
                             <label for="nombre" class="form-label fw-bold text-muted small text-uppercase">Nombres Completos</label>
                             <div class="input-group">
                                 <span class="input-group-text bg-light"><i class="bi bi-person"></i></span>
-                                <input type="text" class="form-control" name="nombre" id="nombre" value="<?= e($old['nombre'] ?? ''); ?>" placeholder="Ej: Juan Perez" required>
+                                <input type="text" class="form-control" name="nombre" id="nombre" value="<?= e($vm->old['nombre'] ?? ''); ?>" placeholder="Ej: Juan Perez" required>
                             </div>
                             <div class="form-text small">Escriba los nombres del propietario del taxi.</div>
                         </div>
@@ -47,7 +47,7 @@
                             <label for="telefono" class="form-label fw-bold text-muted small text-uppercase">Teléfono de Contacto</label>
                             <div class="input-group">
                                 <span class="input-group-text bg-light"><i class="bi bi-telephone"></i></span>
-                                <input type="text" class="form-control" name="telefono" id="telefono" value="<?= e($old['telefono'] ?? ''); ?>" placeholder="Ej: 75555555" required>
+                                <input type="text" class="form-control" name="telefono" id="telefono" value="<?= e($vm->old['telefono'] ?? ''); ?>" placeholder="Ej: 75555555" required>
                             </div>
                             <div class="form-text small">Ingrese un número telefónico válido.</div>
                         </div>

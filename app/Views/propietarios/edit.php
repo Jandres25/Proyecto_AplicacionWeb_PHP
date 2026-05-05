@@ -20,19 +20,19 @@
         <div class="col-lg-8">
             <form action="<?= e(app_url('/propietarios/editar')); ?>" method="post">
                 <input type="hidden" name="_token" value="<?= e(\App\Core\Csrf::token()); ?>">
-                <input type="hidden" name="id" value="<?= e($propietario->id); ?>">
+                <input type="hidden" name="id" value="<?= e($vm->propietario->id); ?>">
                 <div class="card shadow-sm border-0">
                     <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
                         <h5 class="card-title mb-0 fw-bold text-primary">
                             <i class="bi bi-person-gear me-2"></i>Modificar Registro
                         </h5>
-                        <span class="badge bg-light text-primary border px-3 py-2">ID: <?= e($propietario->id); ?></span>
+                        <span class="badge bg-light text-primary border px-3 py-2">ID: <?= e($vm->propietario->id); ?></span>
                     </div>
                     <div class="card-body p-4">
-                        <?php if (!empty($error)) : ?>
+                        <?php if (!empty($vm->error)) : ?>
                             <div class="alert alert-danger d-flex align-items-center" role="alert">
                                 <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                                <div><?= e($error); ?></div>
+                                <div><?= e($vm->error); ?></div>
                             </div>
                         <?php endif; ?>
 
@@ -40,7 +40,7 @@
                             <label for="nombre" class="form-label fw-bold text-muted small text-uppercase">Nombres Completos</label>
                             <div class="input-group">
                                 <span class="input-group-text bg-light"><i class="bi bi-person"></i></span>
-                                <input type="text" value="<?= e($propietario->nombre); ?>" class="form-control" name="nombre" id="nombre" required>
+                                <input type="text" value="<?= e($vm->propietario->nombre); ?>" class="form-control" name="nombre" id="nombre" required>
                             </div>
                         </div>
 
@@ -48,7 +48,7 @@
                             <label for="telefono" class="form-label fw-bold text-muted small text-uppercase">Teléfono de Contacto</label>
                             <div class="input-group">
                                 <span class="input-group-text bg-light"><i class="bi bi-telephone"></i></span>
-                                <input type="text" value="<?= e($propietario->telefono); ?>" class="form-control" name="telefono" id="telefono" required>
+                                <input type="text" value="<?= e($vm->propietario->telefono); ?>" class="form-control" name="telefono" id="telefono" required>
                             </div>
                         </div>
                     </div>

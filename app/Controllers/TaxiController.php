@@ -11,6 +11,9 @@ use App\Core\Flash;
 use App\Core\View;
 use App\Http\Request;
 use App\Http\Response;
+use App\Http\ViewModels\TaxiCreateViewModel;
+use App\Http\ViewModels\TaxiEditViewModel;
+use App\Http\ViewModels\TaxiIndexViewModel;
 use App\Services\TaxiService;
 use InvalidArgumentException;
 
@@ -25,20 +28,20 @@ final class TaxiController
     {
         Auth::requireAdmin();
 
-        View::render('taxis/index', [
-            'lista_taxis' => $this->service->allWithOwner(),
-        ]);
+        View::renderWith('taxis/index', new TaxiIndexViewModel(
+            listaTaxis: $this->service->allWithOwner(),
+        ));
     }
 
     public function create(): void
     {
         Auth::requireAdmin();
 
-        View::render('taxis/create', [
-            'old' => ['modelo' => '', 'marca' => '', 'propietario' => ''],
-            'owners' => $this->service->ownerOptions(),
-            'error' => '',
-        ]);
+        View::renderWith('taxis/create', new TaxiCreateViewModel(
+            old: ['modelo' => '', 'marca' => '', 'propietario' => ''],
+            owners: $this->service->ownerOptions(),
+            error: '',
+        ));
     }
 
     public function store(): void
@@ -57,11 +60,11 @@ final class TaxiController
             Flash::set('success', 'Registro Agregado');
             Response::redirect(app_url('/taxis'));
         } catch (InvalidArgumentException $exception) {
-            View::render('taxis/create', [
-                'old' => $old,
-                'owners' => $this->service->ownerOptions(),
-                'error' => $exception->getMessage(),
-            ]);
+            View::renderWith('taxis/create', new TaxiCreateViewModel(
+                old: $old,
+                owners: $this->service->ownerOptions(),
+                error: $exception->getMessage(),
+            ));
         }
     }
 
@@ -76,11 +79,11 @@ final class TaxiController
             ErrorHandler::abort(404, 'Taxi no encontrado.');
         }
 
-        View::render('taxis/edit', [
-            'taxi' => $taxi,
-            'owners' => $this->service->ownerOptions(),
-            'error' => '',
-        ]);
+        View::renderWith('taxis/edit', new TaxiEditViewModel(
+            taxi: $taxi,
+            owners: $this->service->ownerOptions(),
+            error: '',
+        ));
     }
 
     public function update(): void
@@ -103,11 +106,11 @@ final class TaxiController
             Flash::set('success', 'Registro Actualizado');
             Response::redirect(app_url('/taxis'));
         } catch (InvalidArgumentException $exception) {
-            View::render('taxis/edit', [
-                'taxi' => $taxi,
-                'owners' => $this->service->ownerOptions(),
-                'error' => $exception->getMessage(),
-            ]);
+            View::renderWith('taxis/edit', new TaxiEditViewModel(
+                taxi: $taxi,
+                owners: $this->service->ownerOptions(),
+                error: $exception->getMessage(),
+            ));
         }
     }
 

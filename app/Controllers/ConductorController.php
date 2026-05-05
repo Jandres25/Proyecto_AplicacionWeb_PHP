@@ -11,6 +11,9 @@ use App\Core\Flash;
 use App\Core\View;
 use App\Http\Request;
 use App\Http\Response;
+use App\Http\ViewModels\ConductorCreateViewModel;
+use App\Http\ViewModels\ConductorEditViewModel;
+use App\Http\ViewModels\ConductorIndexViewModel;
 use App\Services\ConductorService;
 use InvalidArgumentException;
 
@@ -24,19 +27,19 @@ final class ConductorController
     public function index(): void
     {
         Auth::requireLogin();
-        View::render('conductores/index', [
-            'lista_conductores' => $this->service->all(),
-        ]);
+        View::renderWith('conductores/index', new ConductorIndexViewModel(
+            listaConductores: $this->service->all(),
+        ));
     }
 
     public function create(): void
     {
         Auth::requireLogin();
-        View::render('conductores/create', [
-            'old' => ['nombre' => '', 'telefono' => '', 'placa' => ''],
-            'taxis' => $this->service->taxiOptions(),
-            'error' => '',
-        ]);
+        View::renderWith('conductores/create', new ConductorCreateViewModel(
+            old: ['nombre' => '', 'telefono' => '', 'placa' => ''],
+            taxis: $this->service->taxiOptions(),
+            error: '',
+        ));
     }
 
     public function store(): void
@@ -55,11 +58,11 @@ final class ConductorController
             Flash::set('success', 'Registro Agregado');
             Response::redirect(app_url('/conductores'));
         } catch (InvalidArgumentException $exception) {
-            View::render('conductores/create', [
-                'old' => $old,
-                'taxis' => $this->service->taxiOptions(),
-                'error' => $exception->getMessage(),
-            ]);
+            View::renderWith('conductores/create', new ConductorCreateViewModel(
+                old: $old,
+                taxis: $this->service->taxiOptions(),
+                error: $exception->getMessage(),
+            ));
         }
     }
 
@@ -73,11 +76,11 @@ final class ConductorController
             ErrorHandler::abort(404, 'Conductor no encontrado.');
         }
 
-        View::render('conductores/edit', [
-            'conductor' => $conductor,
-            'taxis' => $this->service->taxiOptions(),
-            'error' => '',
-        ]);
+        View::renderWith('conductores/edit', new ConductorEditViewModel(
+            conductor: $conductor,
+            taxis: $this->service->taxiOptions(),
+            error: '',
+        ));
     }
 
     public function update(): void
@@ -101,11 +104,11 @@ final class ConductorController
             Flash::set('success', 'Registro Actualizado');
             Response::redirect(app_url('/conductores'));
         } catch (InvalidArgumentException $exception) {
-            View::render('conductores/edit', [
-                'conductor' => $conductor,
-                'taxis' => $this->service->taxiOptions(),
-                'error' => $exception->getMessage(),
-            ]);
+            View::renderWith('conductores/edit', new ConductorEditViewModel(
+                conductor: $conductor,
+                taxis: $this->service->taxiOptions(),
+                error: $exception->getMessage(),
+            ));
         }
     }
 

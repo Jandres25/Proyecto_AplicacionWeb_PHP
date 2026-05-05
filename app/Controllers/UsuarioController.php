@@ -11,6 +11,9 @@ use App\Core\Flash;
 use App\Core\View;
 use App\Http\Request;
 use App\Http\Response;
+use App\Http\ViewModels\UsuarioCreateViewModel;
+use App\Http\ViewModels\UsuarioEditViewModel;
+use App\Http\ViewModels\UsuarioIndexViewModel;
 use App\Services\UsuarioService;
 use InvalidArgumentException;
 
@@ -24,18 +27,18 @@ final class UsuarioController
     public function index(): void
     {
         Auth::requireAdmin();
-        View::render('usuarios/index', [
-            'lista_usuarios' => $this->service->all(),
-        ]);
+        View::renderWith('usuarios/index', new UsuarioIndexViewModel(
+            listaUsuarios: $this->service->all(),
+        ));
     }
 
     public function create(): void
     {
         Auth::requireAdmin();
-        View::render('usuarios/create', [
-            'old' => ['nombres' => '', 'apellidos' => '', 'usuario' => '', 'correo' => ''],
-            'error' => '',
-        ]);
+        View::renderWith('usuarios/create', new UsuarioCreateViewModel(
+            old: ['nombres' => '', 'apellidos' => '', 'usuario' => '', 'correo' => ''],
+            error: '',
+        ));
     }
 
     public function store(): void
@@ -56,10 +59,10 @@ final class UsuarioController
             Flash::set('success', 'Registro Agregado');
             Response::redirect(app_url('/usuarios'));
         } catch (InvalidArgumentException $exception) {
-            View::render('usuarios/create', [
-                'old' => $old,
-                'error' => $exception->getMessage(),
-            ]);
+            View::renderWith('usuarios/create', new UsuarioCreateViewModel(
+                old: $old,
+                error: $exception->getMessage(),
+            ));
         }
     }
 
@@ -73,10 +76,10 @@ final class UsuarioController
             ErrorHandler::abort(404, 'Usuario no encontrado.');
         }
 
-        View::render('usuarios/edit', [
-            'usuario' => $usuario,
-            'error' => '',
-        ]);
+        View::renderWith('usuarios/edit', new UsuarioEditViewModel(
+            usuario: $usuario,
+            error: '',
+        ));
     }
 
     public function update(): void
@@ -102,10 +105,10 @@ final class UsuarioController
             Flash::set('success', 'Registro Actualizado');
             Response::redirect(app_url('/usuarios'));
         } catch (InvalidArgumentException $exception) {
-            View::render('usuarios/edit', [
-                'usuario' => $usuario,
-                'error' => $exception->getMessage(),
-            ]);
+            View::renderWith('usuarios/edit', new UsuarioEditViewModel(
+                usuario: $usuario,
+                error: $exception->getMessage(),
+            ));
         }
     }
 

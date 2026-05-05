@@ -20,19 +20,19 @@
         <div class="col-lg-8">
             <form action="<?= e(app_url('/conductores/editar')); ?>" method="post">
                 <input type="hidden" name="_token" value="<?= e(\App\Core\Csrf::token()); ?>">
-                <input type="hidden" name="id" value="<?= e($conductor->id); ?>">
+                <input type="hidden" name="id" value="<?= e($vm->conductor->id); ?>">
                 <div class="card shadow-sm border-0">
                     <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
                         <h5 class="card-title mb-0 fw-bold text-primary">
                             <i class="bi bi-person-gear me-2"></i>Modificar Registro
                         </h5>
-                        <span class="badge bg-light text-primary border px-3 py-2">ID: <?= e($conductor->id); ?></span>
+                        <span class="badge bg-light text-primary border px-3 py-2">ID: <?= e($vm->conductor->id); ?></span>
                     </div>
                     <div class="card-body p-4">
-                        <?php if (!empty($error)) : ?>
+                        <?php if (!empty($vm->error)) : ?>
                             <div class="alert alert-danger d-flex align-items-center" role="alert">
                                 <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                                <div><?= e($error); ?></div>
+                                <div><?= e($vm->error); ?></div>
                             </div>
                         <?php endif; ?>
 
@@ -41,14 +41,14 @@
                                 <label for="nombre" class="form-label fw-bold text-muted small text-uppercase">Nombres Completos</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-light"><i class="bi bi-person"></i></span>
-                                    <input type="text" value="<?= e($conductor->nombres); ?>" class="form-control" name="nombre" id="nombre" required>
+                                    <input type="text" value="<?= e($vm->conductor->nombres); ?>" class="form-control" name="nombre" id="nombre" required>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="telefono" class="form-label fw-bold text-muted small text-uppercase">Teléfono</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-light"><i class="bi bi-telephone"></i></span>
-                                    <input type="text" value="<?= e($conductor->telefono); ?>" class="form-control" name="telefono" id="telefono" required>
+                                    <input type="text" value="<?= e($vm->conductor->telefono); ?>" class="form-control" name="telefono" id="telefono" required>
                                 </div>
                             </div>
                         </div>
@@ -59,8 +59,8 @@
                                 <span class="input-group-text bg-light"><i class="bi bi-car-front"></i></span>
                                 <select class="form-select" name="placa" id="placa" required>
                                     <option value="">Selecciona una placa</option>
-                                    <?php foreach ($taxis as $taxi) : ?>
-                                        <option value="<?= e($taxi->placa); ?>" <?= ($conductor->placa === $taxi->placa) ? 'selected' : ''; ?>>
+                                    <?php foreach ($vm->taxis as $taxi) : ?>
+                                        <option value="<?= e($taxi->placa); ?>" <?= ($vm->conductor->placa === $taxi->placa) ? 'selected' : ''; ?>>
                                             <?= e($taxi->placa); ?> - <?= e($taxi->marca); ?> <?= e($taxi->modelo); ?>
                                         </option>
                                     <?php endforeach; ?>

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Core;
 
 use App\Http\ViewModel;
+use App\Http\ViewModels\LayoutViewModel;
 use RuntimeException;
 
 final class View
@@ -19,6 +20,7 @@ final class View
         }
 
         if ($withLayout) {
+            $layout = self::buildLayoutViewModel();
             require $basePath . '/app/Views/layout/header.php';
         }
 
@@ -29,25 +31,47 @@ final class View
         }
     }
 
-    public static function render(string $view, array $data = [], bool $withLayout = true): void
+    private static function buildLayoutViewModel(): LayoutViewModel
     {
-        $basePath = dirname(__DIR__, 2);
-        $viewPath = $basePath . '/app/Views/' . $view . '.php';
+        $baseUrl = app_url('/');
+        $navigationItems = [
+            ['href' => $baseUrl, 'label' => 'Inicio'],
+            ['href' => $baseUrl . 'conductores', 'label' => 'Conductores'],
+            ['href' => $baseUrl . 'propietarios', 'label' => 'Propietarios'],
+            ['href' => $baseUrl . 'taxis', 'label' => 'Taxis'],
+        ];
 
-        if (!file_exists($viewPath)) {
-            throw new RuntimeException("La vista {$view} no existe.");
+        if (Auth::username() === 'Administrador') {
+            $navigationItems[] = ['href' => $baseUrl . 'usuarios', 'label' => 'Usuarios'];
         }
 
-        extract($data, EXTR_SKIP);
+        $toastMessages = [];
+        if (!self::isAjaxRequest()) {
+            $success = Flash::get('success');
+            $error = Flash::get('error');
 
-        if ($withLayout) {
-            require $basePath . '/app/Views/layout/header.php';
+            if ($success !== null) {
+                $toastMessages[] = ['type' => 'success', 'message' => $success];
+            }
+
+            if ($error !== null) {
+                $toastMessages[] = ['type' => 'error', 'message' => $error];
+            }
         }
 
-        require $viewPath;
+        return new LayoutViewModel(
+            baseUrl: $baseUrl,
+            fullName: Auth::fullName(),
+            csrfToken: Csrf::token(),
+            currentYear: (int) date('Y'),
+            navigationItems: $navigationItems,
+            toastMessages: $toastMessages,
+        );
+    }
 
-        if ($withLayout) {
-            require $basePath . '/app/Views/layout/footer.php';
-        }
+    private static function isAjaxRequest(): bool
+    {
+        return isset($_SERVER['HTTP_X_REQUESTED_WITH'])
+            && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest';
     }
 }

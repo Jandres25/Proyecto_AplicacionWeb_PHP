@@ -5,7 +5,7 @@
         <div class="row align-items-center">
             <div class="col-md-12">
                 <p class="mb-0 small text-white-50">
-                    &copy; <?= date('Y'); ?> Derechos reservados <strong>UPDS</strong>. &middot;
+                    &copy; <?= e((string) $layout->currentYear); ?> Derechos reservados <strong>UPDS</strong>. &middot;
                     <a href="#" class="text-white-50 text-decoration-none border-bottom">Privacidad</a>
                 </p>
             </div>
@@ -22,7 +22,18 @@
 <script src="https://cdn.datatables.net/responsive/2.4.1/js/responsive.bootstrap5.min.js"></script>
 
 <!-- Custom Scripts -->
-<script src="<?= e(app_url('/js/layout.js')); ?>"></script>
+<script src="<?= e($layout->baseUrl . 'js/toast-config.js'); ?>"></script>
+<script src="<?= e($layout->baseUrl . 'js/layout.js'); ?>"></script>
+<?php if (!empty($layout->toastMessages)) : ?>
+    <script>
+        <?php foreach ($layout->toastMessages as $toast) : ?>
+            window.showToast(
+                <?= json_encode($toast['type'], JSON_UNESCAPED_UNICODE); ?>,
+                <?= json_encode($toast['message'], JSON_UNESCAPED_UNICODE); ?>
+            );
+        <?php endforeach; ?>
+    </script>
+<?php endif; ?>
 </body>
 
 </html>

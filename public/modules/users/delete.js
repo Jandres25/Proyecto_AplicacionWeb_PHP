@@ -43,23 +43,18 @@ export function deleteUser(id, token, baseUrl) {
                 })
                 .then(data => {
                     if (data.success) {
-                        Swal.fire({
-                            title: '¡Eliminado!',
-                            text: data.message,
-                            icon: 'success',
-                            timer: 3000,
-                            showConfirmButton: false
-                        }).then(() => {
+                        window.showToastSuccess(data.message || 'Registro eliminado');
+                        setTimeout(() => {
                             window.location.reload();
-                        });
+                        }, 700);
                     } else {
-                        Swal.fire('Error', data.message || 'No se pudo eliminar el registro', 'error');
+                        window.showToastError(data.message || 'No se pudo eliminar el registro');
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
                     const message = error.message || 'Ocurrió un error al intentar eliminar el registro';
-                    Swal.fire('Error', message, 'error');
+                    window.showToastError(message);
                 });
         }
     });

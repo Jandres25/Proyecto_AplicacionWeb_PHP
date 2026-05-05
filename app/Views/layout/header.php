@@ -1,12 +1,3 @@
-<?php
-require_once __DIR__ . '/../../Core/Autoloader.php';
-App\Core\Autoloader::register();
-
-$url_base = app_url('/');
-$nombresusuario = App\Core\Auth::fullName();
-$usuarioVerificado = App\Core\Auth::username();
-?>
-
 <!doctype html>
 <html lang="es">
 
@@ -19,8 +10,8 @@ $usuarioVerificado = App\Core\Auth::username();
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
-  <link href="<?= e(app_url('/img/compras.png')); ?>" rel="shortcut icon">
-  <link rel="stylesheet" href="<?= e(app_url('/css/layout.css')); ?>">
+  <link href="<?= e($layout->baseUrl . 'img/compras.png'); ?>" rel="shortcut icon">
+  <link rel="stylesheet" href="<?= e($layout->baseUrl . 'css/layout.css'); ?>">
 
   <!-- Scripts base -->
   <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
@@ -38,7 +29,7 @@ $usuarioVerificado = App\Core\Auth::username();
   <header>
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark shadow">
       <div class="container-fluid">
-        <a class="navbar-brand d-flex align-items-center" href="<?= e($url_base); ?>">
+        <a class="navbar-brand d-flex align-items-center" href="<?= e($layout->baseUrl); ?>">
           <img src="https://images.unsplash.com/photo-1641846948845-60e99fa0f072?auto=format&fit=crop&w=100&q=80" alt="Logo" width="30" height="30" class="rounded-circle me-2 border border-secondary">
           <span class="fw-bold">Proyecto</span>
         </a>
@@ -49,33 +40,21 @@ $usuarioVerificado = App\Core\Auth::username();
 
         <div class="collapse navbar-collapse" id="navbarMain">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link" href="<?= e($url_base); ?>">Inicio</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="<?= e($url_base); ?>conductores">Conductores</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="<?= e($url_base); ?>propietarios">Propietarios</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="<?= e($url_base); ?>taxis">Taxis</a>
-            </li>
-            <?php if ($usuarioVerificado == 'Administrador') : ?>
+            <?php foreach ($layout->navigationItems as $item) : ?>
               <li class="nav-item">
-                <a class="nav-link" href="<?= e($url_base); ?>usuarios">Usuarios</a>
+                <a class="nav-link" href="<?= e($item['href']); ?>"><?= e($item['label']); ?></a>
               </li>
-            <?php endif; ?>
+            <?php endforeach; ?>
           </ul>
           <hr class="d-lg-none text-white-50">
           <ul class="navbar-nav align-items-lg-center">
             <li class="nav-item text-white-50 px-lg-3 mb-2 mb-lg-0">
-              <i class="bi bi-person-circle me-1"></i><?= e($nombresusuario); ?>
+              <i class="bi bi-person-circle me-1"></i><?= e($layout->fullName); ?>
 
             </li>
             <li class="nav-item">
-              <form method="post" action="<?= e($url_base); ?>logout" class="d-inline">
-                <input type="hidden" name="_token" value="<?= e(App\Core\Csrf::token()); ?>">
+              <form method="post" action="<?= e($layout->baseUrl . 'logout'); ?>" class="d-inline">
+                <input type="hidden" name="_token" value="<?= e($layout->csrfToken); ?>">
                 <button type="submit" class="btn btn-outline-light btn-sm w-100">
                   <i class="bi bi-box-arrow-right me-1"></i> Cerrar Sesión
                 </button>
@@ -87,21 +66,3 @@ $usuarioVerificado = App\Core\Auth::username();
     </nav>
   </header>
   <main>
-    <?php $flashSuccess = App\Core\Flash::get('success'); ?>
-    <?php $flashError = App\Core\Flash::get('error'); ?>
-    <?php if ($flashSuccess !== null) : ?>
-      <script>
-        Swal.fire({
-          icon: "success",
-          title: <?= json_encode($flashSuccess, JSON_UNESCAPED_UNICODE); ?>
-        });
-      </script>
-    <?php endif; ?>
-    <?php if ($flashError !== null) : ?>
-      <script>
-        Swal.fire({
-          icon: "error",
-          title: <?= json_encode($flashError, JSON_UNESCAPED_UNICODE); ?>
-        });
-      </script>
-    <?php endif; ?>

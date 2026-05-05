@@ -12,14 +12,14 @@ final class UserRepository implements UserRepositoryInterface
 {
     public function __construct(private readonly PDO $connection) {}
 
-    public function findByUsername(string $username): ?array
+    public function findByUsername(string $username): ?Usuario
     {
         $statement = $this->connection->prepare('SELECT * FROM usuarios WHERE Usuario = :Usuario LIMIT 1');
         $statement->bindValue(':Usuario', $username);
         $statement->execute();
 
         $user = $statement->fetch();
-        return $user ?: null;
+        return $user !== null ? Usuario::fromRow($user) : null;
     }
 
     public function updatePasswordHash(int $id, string $hashedPassword): void
@@ -51,21 +51,25 @@ final class UserRepository implements UserRepositoryInterface
         $this->connection->exec('ALTER TABLE usuarios MODIFY Clave VARCHAR(255) NOT NULL');
     }
 
+    /** @return Usuario[] */
     public function all(): array
     {
         $statement = $this->connection->prepare('SELECT * FROM usuarios ORDER BY ID DESC');
         $statement->execute();
-        return $statement->fetchAll();
+        return array_map(
+            static fn(array $row) => Usuario::fromRow($row),
+            $statement->fetchAll()
+        );
     }
 
-    public function findById(int $id): ?array
+    public function findById(int $id): ?Usuario
     {
         $statement = $this->connection->prepare('SELECT * FROM usuarios WHERE ID = :ID LIMIT 1');
         $statement->bindValue(':ID', $id, PDO::PARAM_INT);
         $statement->execute();
 
         $row = $statement->fetch();
-        return $row ?: null;
+        return $row !== null ? Usuario::fromRow($row) : null;
     }
 
     public function create(
@@ -129,26 +133,7 @@ final class UserRepository implements UserRepositoryInterface
         return (int) $statement->fetchColumn() > 0;
     }
 
-    /** @return Usuario[] */
-    public function allAsModel(): array
-    {
-        return array_map(
-            static fn(array $row) => Usuario::fromRow($row),
-            $this->all()
-        );
-    }
 
-    public function findByIdAsModel(int $id): ?Usuario
-    {
-        $row = $this->findById($id);
-        return $row !== null ? Usuario::fromRow($row) : null;
-    }
-
-    public function findByUsernameAsModel(string $username): ?Usuario
-    {
-        $row = $this->findByUsername($username);
-        return $row !== null ? Usuario::fromRow($row) : null;
-    }
 
     public function existsEmail(string $email, ?int $exceptId = null): bool
     {

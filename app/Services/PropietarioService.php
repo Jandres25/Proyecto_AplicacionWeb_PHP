@@ -15,12 +15,12 @@ final class PropietarioService
     /** @return Propietario[] */
     public function all(): array
     {
-        return $this->propietarios->allAsModel();
+        return $this->propietarios->all();
     }
 
     public function findById(int $id): ?Propietario
     {
-        return $this->propietarios->findByIdAsModel($id);
+        return $this->propietarios->findById($id);
     }
 
     public function create(string $nombre, string $telefono): void

@@ -9,9 +9,9 @@ use App\Models\Conductor;
 interface ConductorRepositoryInterface
 {
     /** @return Conductor[] */
-    public function allAsModel(): array;
+    public function all(): array;
 
-    public function findByIdAsModel(int $id): ?Conductor;
+    public function findById(int $id): ?Conductor;
 
     public function create(string $nombres, string $telefono, int $placa): void;
 

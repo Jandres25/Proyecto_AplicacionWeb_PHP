@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Core;
 
+use App\Core\View;
+use App\Http\ViewModels\ErrorViewModel;
 use Throwable;
 
 final class ErrorHandler
@@ -46,11 +48,7 @@ final class ErrorHandler
             http_response_code($statusCode);
         }
 
-        View::render($error['view'], [
-            'statusCode' => $statusCode,
-            'title' => $error['title'],
-            'message' => $finalMessage,
-        ], false);
+        View::renderWith($error['view'], new ErrorViewModel($statusCode, $error['title'], $finalMessage), false);
         exit;
     }
 

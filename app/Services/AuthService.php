@@ -18,7 +18,7 @@ final class AuthService implements AuthServiceInterface
             return null;
         }
 
-        $storedPassword = (string) ($user['Clave'] ?? '');
+        $storedPassword = $user->claveHash;
         $isHashed = password_get_info($storedPassword)['algo'] !== null;
         $isValid = $isHashed
             ? password_verify($password, $storedPassword)
@@ -28,12 +28,18 @@ final class AuthService implements AuthServiceInterface
             return null;
         }
 
-        if (!$isHashed && isset($user['ID'])) {
+        if (!$isHashed) {
             $newHash = password_hash($password, PASSWORD_DEFAULT);
-            $this->users->updatePasswordHash((int) $user['ID'], $newHash);
-            $user['Clave'] = $newHash;
+            $this->users->updatePasswordHash($user->id, $newHash);
         }
 
-        return $user;
+        return [
+            'ID' => $user->id,
+            'Nombres' => $user->nombres,
+            'Apellidos' => $user->apellidos,
+            'Usuario' => $user->usuario,
+            'Correo' => $user->correo,
+            'Clave' => $isHashed ? $storedPassword : password_hash($password, PASSWORD_DEFAULT),
+        ];
     }
 }

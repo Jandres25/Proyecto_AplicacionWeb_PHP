@@ -9,13 +9,11 @@ use App\Models\Usuario;
 interface UserRepositoryInterface
 {
     /** @return Usuario[] */
-    public function allAsModel(): array;
+    public function all(): array;
 
-    public function findByIdAsModel(int $id): ?Usuario;
+    public function findById(int $id): ?Usuario;
 
-    public function findByUsernameAsModel(string $username): ?Usuario;
-
-    public function findByUsername(string $username): ?array;
+    public function findByUsername(string $username): ?Usuario;
 
     public function create(string $nombres, string $apellidos, string $usuario, string $claveHash, string $correo): void;
 

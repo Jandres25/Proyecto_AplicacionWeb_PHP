@@ -9,12 +9,12 @@ use App\Models\Taxi;
 interface TaxiRepositoryInterface
 {
     /** @return Taxi[] */
-    public function allWithOwnerAsModel(): array;
+    public function allWithOwner(): array;
 
     /** @return Taxi[] */
-    public function allAsModel(): array;
+    public function all(): array;
 
-    public function findByPlacaAsModel(int $placa): ?Taxi;
+    public function findByPlaca(int $placa): ?Taxi;
 
     public function create(string $modelo, string $marca, int $ownerId): void;
 

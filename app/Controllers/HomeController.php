@@ -6,12 +6,13 @@ namespace App\Controllers;
 
 use App\Core\Auth;
 use App\Core\View;
+use App\Http\ViewModels\EmptyViewModel;
 
 final class HomeController
 {
     public function index(): void
     {
         Auth::requireLogin();
-        View::render('home');
+        View::renderWith('home', new EmptyViewModel());
     }
 }

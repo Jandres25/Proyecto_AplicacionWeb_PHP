@@ -20,18 +20,18 @@ final class TaxiService
     /** @return Taxi[] */
     public function allWithOwner(): array
     {
-        return $this->taxis->allWithOwnerAsModel();
+        return $this->taxis->allWithOwner();
     }
 
     /** @return Propietario[] */
     public function ownerOptions(): array
     {
-        return $this->propietarios->allAsModel();
+        return $this->propietarios->all();
     }
 
     public function findByPlaca(int $placa): ?Taxi
     {
-        return $this->taxis->findByPlacaAsModel($placa);
+        return $this->taxis->findByPlaca($placa);
     }
 
     public function create(string $modelo, string $marca, int $ownerId): void
@@ -76,7 +76,7 @@ final class TaxiService
             throw new InvalidArgumentException('Modelo o marca exceden la longitud permitida.');
         }
 
-        if ($ownerId <= 0 || $this->propietarios->findByIdAsModel($ownerId) === null) {
+        if ($ownerId <= 0 || $this->propietarios->findById($ownerId) === null) {
             throw new InvalidArgumentException('Debe seleccionar un propietario válido.');
         }
 

@@ -15,12 +15,12 @@ final class UsuarioService
     /** @return Usuario[] */
     public function all(): array
     {
-        return $this->users->allAsModel();
+        return $this->users->all();
     }
 
     public function findById(int $id): ?Usuario
     {
-        return $this->users->findByIdAsModel($id);
+        return $this->users->findById($id);
     }
 
     public function create(

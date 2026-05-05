@@ -12,35 +12,6 @@ final class TaxiRepository implements TaxiRepositoryInterface
 {
     public function __construct(private readonly PDO $connection) {}
 
-    public function allWithOwner(): array
-    {
-        $statement = $this->connection->prepare(
-            'SELECT t.*, p.Nombre AS propietario
-             FROM taxis t
-             INNER JOIN propietarios p ON p.Idpropietario = t.Idpropietario
-             ORDER BY t.Placa DESC'
-        );
-        $statement->execute();
-        return $statement->fetchAll();
-    }
-
-    public function all(): array
-    {
-        $statement = $this->connection->prepare('SELECT * FROM taxis ORDER BY Placa DESC');
-        $statement->execute();
-        return $statement->fetchAll();
-    }
-
-    public function findByPlaca(int $placa): ?array
-    {
-        $statement = $this->connection->prepare('SELECT * FROM taxis WHERE Placa = :Placa LIMIT 1');
-        $statement->bindValue(':Placa', $placa, PDO::PARAM_INT);
-        $statement->execute();
-
-        $row = $statement->fetch();
-        return $row ?: null;
-    }
-
     public function create(string $modelo, string $marca, int $ownerId): void
     {
         $statement = $this->connection->prepare(
@@ -72,26 +43,39 @@ final class TaxiRepository implements TaxiRepositoryInterface
     }
 
     /** @return Taxi[] */
-    public function allWithOwnerAsModel(): array
+    public function allWithOwner(): array
     {
+        $statement = $this->connection->prepare(
+            'SELECT t.*, p.Nombre AS propietario
+             FROM taxis t
+             INNER JOIN propietarios p ON p.Idpropietario = t.Idpropietario
+             ORDER BY t.Placa DESC'
+        );
+        $statement->execute();
         return array_map(
             static fn(array $row) => Taxi::fromRow($row),
-            $this->allWithOwner()
+            $statement->fetchAll()
         );
     }
 
-    public function findByPlacaAsModel(int $placa): ?Taxi
+    public function findByPlaca(int $placa): ?Taxi
     {
-        $row = $this->findByPlaca($placa);
+        $statement = $this->connection->prepare('SELECT * FROM taxis WHERE Placa = :Placa LIMIT 1');
+        $statement->bindValue(':Placa', $placa, PDO::PARAM_INT);
+        $statement->execute();
+
+        $row = $statement->fetch();
         return $row !== null ? Taxi::fromRow($row) : null;
     }
 
     /** @return Taxi[] */
-    public function allAsModel(): array
+    public function all(): array
     {
+        $statement = $this->connection->prepare('SELECT * FROM taxis ORDER BY Placa DESC');
+        $statement->execute();
         return array_map(
             static fn(array $row) => Taxi::fromRow($row),
-            $this->all()
+            $statement->fetchAll()
         );
     }
 }

@@ -9,9 +9,9 @@ use App\Models\Propietario;
 interface PropietarioRepositoryInterface
 {
     /** @return Propietario[] */
-    public function allAsModel(): array;
+    public function all(): array;
 
-    public function findByIdAsModel(int $id): ?Propietario;
+    public function findById(int $id): ?Propietario;
 
     public function create(string $nombre, string $telefono): void;
 

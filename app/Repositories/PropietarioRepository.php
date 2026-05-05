@@ -12,21 +12,25 @@ final class PropietarioRepository implements PropietarioRepositoryInterface
 {
     public function __construct(private readonly PDO $connection) {}
 
+    /** @return Propietario[] */
     public function all(): array
     {
         $statement = $this->connection->prepare('SELECT * FROM propietarios ORDER BY Idpropietario DESC');
         $statement->execute();
-        return $statement->fetchAll();
+        return array_map(
+            static fn(array $row) => Propietario::fromRow($row),
+            $statement->fetchAll()
+        );
     }
 
-    public function findById(int $id): ?array
+    public function findById(int $id): ?Propietario
     {
         $statement = $this->connection->prepare('SELECT * FROM propietarios WHERE Idpropietario = :Idpropietario LIMIT 1');
         $statement->bindValue(':Idpropietario', $id, PDO::PARAM_INT);
         $statement->execute();
 
         $row = $statement->fetch();
-        return $row ?: null;
+        return $row !== null ? Propietario::fromRow($row) : null;
     }
 
     public function create(string $nombre, string $telefono): void
@@ -57,18 +61,5 @@ final class PropietarioRepository implements PropietarioRepositoryInterface
         $statement->execute();
     }
 
-    /** @return Propietario[] */
-    public function allAsModel(): array
-    {
-        return array_map(
-            static fn(array $row) => Propietario::fromRow($row),
-            $this->all()
-        );
-    }
 
-    public function findByIdAsModel(int $id): ?Propietario
-    {
-        $row = $this->findById($id);
-        return $row !== null ? Propietario::fromRow($row) : null;
-    }
 }

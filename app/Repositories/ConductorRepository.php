@@ -12,21 +12,25 @@ final class ConductorRepository implements ConductorRepositoryInterface
 {
     public function __construct(private readonly PDO $connection) {}
 
+    /** @return Conductor[] */
     public function all(): array
     {
         $statement = $this->connection->prepare('SELECT * FROM conductores ORDER BY ID DESC');
         $statement->execute();
-        return $statement->fetchAll();
+        return array_map(
+            static fn(array $row) => Conductor::fromRow($row),
+            $statement->fetchAll()
+        );
     }
 
-    public function findById(int $id): ?array
+    public function findById(int $id): ?Conductor
     {
         $statement = $this->connection->prepare('SELECT * FROM conductores WHERE ID = :ID LIMIT 1');
         $statement->bindValue(':ID', $id, PDO::PARAM_INT);
         $statement->execute();
 
         $row = $statement->fetch();
-        return $row ?: null;
+        return $row !== null ? Conductor::fromRow($row) : null;
     }
 
     public function create(string $nombres, string $telefono, int $placa): void
@@ -59,18 +63,5 @@ final class ConductorRepository implements ConductorRepositoryInterface
         $statement->execute();
     }
 
-    /** @return Conductor[] */
-    public function allAsModel(): array
-    {
-        return array_map(
-            static fn(array $row) => Conductor::fromRow($row),
-            $this->all()
-        );
-    }
 
-    public function findByIdAsModel(int $id): ?Conductor
-    {
-        $row = $this->findById($id);
-        return $row !== null ? Conductor::fromRow($row) : null;
-    }
 }

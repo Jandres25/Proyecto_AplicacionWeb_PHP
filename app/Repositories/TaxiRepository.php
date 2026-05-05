@@ -5,18 +5,12 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Contracts\Repositories\TaxiRepositoryInterface;
-use App\Core\Database;
 use App\Models\Taxi;
 use PDO;
 
 final class TaxiRepository implements TaxiRepositoryInterface
 {
-    private PDO $connection;
-
-    public function __construct()
-    {
-        $this->connection = Database::getConnection();
-    }
+    public function __construct(private readonly PDO $connection) {}
 
     public function allWithOwner(): array
     {

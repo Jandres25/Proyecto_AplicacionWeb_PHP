@@ -14,12 +14,7 @@ use InvalidArgumentException;
 
 final class PropietarioController
 {
-    private PropietarioService $service;
-
-    public function __construct()
-    {
-        $this->service = new PropietarioService();
-    }
+    public function __construct(private readonly PropietarioService $service) {}
 
     public function index(): void
     {

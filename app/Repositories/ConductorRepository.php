@@ -5,18 +5,12 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Contracts\Repositories\ConductorRepositoryInterface;
-use App\Core\Database;
 use App\Models\Conductor;
 use PDO;
 
 final class ConductorRepository implements ConductorRepositoryInterface
 {
-    private PDO $connection;
-
-    public function __construct()
-    {
-        $this->connection = Database::getConnection();
-    }
+    public function __construct(private readonly PDO $connection) {}
 
     public function all(): array
     {

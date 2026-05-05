@@ -4,17 +4,12 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Contracts\Repositories\UserRepositoryInterface;
 use App\Contracts\Services\AuthServiceInterface;
-use App\Repositories\UserRepository;
 
 final class AuthService implements AuthServiceInterface
 {
-    private UserRepository $users;
-
-    public function __construct()
-    {
-        $this->users = new UserRepository();
-    }
+    public function __construct(private readonly UserRepositoryInterface $users) {}
 
     public function attempt(string $username, string $password): ?array
     {

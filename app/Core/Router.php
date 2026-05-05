@@ -12,6 +12,8 @@ final class Router
         'POST' => [],
     ];
 
+    public function __construct(private readonly Container $container) {}
+
     public function get(string $path, callable|array $handler): void
     {
         $this->add('GET', $path, $handler);
@@ -90,7 +92,7 @@ final class Router
     private function invoke(callable|array $handler): void
     {
         if (is_array($handler) && count($handler) === 2 && is_string($handler[0])) {
-            $controller = new $handler[0]();
+            $controller = $this->container->make($handler[0]);
             $method = $handler[1];
             $controller->$method();
             return;

@@ -6,17 +6,11 @@ namespace App\Services;
 
 use App\Contracts\Repositories\UserRepositoryInterface;
 use App\Models\Usuario;
-use App\Repositories\UserRepository;
 use InvalidArgumentException;
 
 final class UsuarioService
 {
-    private UserRepositoryInterface $users;
-
-    public function __construct()
-    {
-        $this->users = new UserRepository();
-    }
+    public function __construct(private readonly UserRepositoryInterface $users) {}
 
     /** @return Usuario[] */
     public function all(): array

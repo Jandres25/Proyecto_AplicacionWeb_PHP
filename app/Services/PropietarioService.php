@@ -6,17 +6,11 @@ namespace App\Services;
 
 use App\Contracts\Repositories\PropietarioRepositoryInterface;
 use App\Models\Propietario;
-use App\Repositories\PropietarioRepository;
 use InvalidArgumentException;
 
 final class PropietarioService
 {
-    private PropietarioRepositoryInterface $propietarios;
-
-    public function __construct()
-    {
-        $this->propietarios = new PropietarioRepository();
-    }
+    public function __construct(private readonly PropietarioRepositoryInterface $propietarios) {}
 
     /** @return Propietario[] */
     public function all(): array

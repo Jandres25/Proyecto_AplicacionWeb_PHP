@@ -8,10 +8,11 @@ use App\Contracts\Services\AuthServiceInterface;
 use App\Core\Auth;
 use App\Core\Csrf;
 use App\Core\View;
-use App\Services\AuthService;
 
 final class AuthController
 {
+    public function __construct(private readonly AuthServiceInterface $service) {}
+
     public function showLogin(): void
     {
         if (Auth::check()) {
@@ -28,9 +29,7 @@ final class AuthController
 
         $username = trim((string) ($_POST['usuario'] ?? ''));
         $password = (string) ($_POST['password'] ?? '');
-        /** @var AuthServiceInterface $service */
-        $service = new AuthService();
-        $user = $service->attempt($username, $password);
+        $user = $this->service->attempt($username, $password);
 
         if ($user === null) {
             View::render('auth/login', ['mensaje' => 'Error: El usuario o contraseña son incorrectos'], false);

@@ -8,20 +8,14 @@ use App\Contracts\Repositories\PropietarioRepositoryInterface;
 use App\Contracts\Repositories\TaxiRepositoryInterface;
 use App\Models\Propietario;
 use App\Models\Taxi;
-use App\Repositories\PropietarioRepository;
-use App\Repositories\TaxiRepository;
 use InvalidArgumentException;
 
 final class TaxiService
 {
-    private TaxiRepositoryInterface $taxis;
-    private PropietarioRepositoryInterface $propietarios;
-
-    public function __construct()
-    {
-        $this->taxis = new TaxiRepository();
-        $this->propietarios = new PropietarioRepository();
-    }
+    public function __construct(
+        private readonly TaxiRepositoryInterface $taxis,
+        private readonly PropietarioRepositoryInterface $propietarios,
+    ) {}
 
     /** @return Taxi[] */
     public function allWithOwner(): array

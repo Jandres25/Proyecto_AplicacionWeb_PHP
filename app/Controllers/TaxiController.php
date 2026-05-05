@@ -14,12 +14,7 @@ use InvalidArgumentException;
 
 final class TaxiController
 {
-    private TaxiService $service;
-
-    public function __construct()
-    {
-        $this->service = new TaxiService();
-    }
+    public function __construct(private readonly TaxiService $service) {}
 
     public function index(): void
     {

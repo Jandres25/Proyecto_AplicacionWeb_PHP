@@ -7,7 +7,10 @@ require_once __DIR__ . '/../app/Core/Autoloader.php';
 App\Core\Autoloader::register();
 set_exception_handler([App\Core\ErrorHandler::class, 'handleException']);
 
-$router = new App\Core\Router();
+$container = new App\Core\Container();
+(require __DIR__ . '/../app/Providers/bindings.php')($container);
+
+$router = new App\Core\Router($container);
 
 require __DIR__ . '/../routes/web.php';
 

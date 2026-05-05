@@ -8,20 +8,14 @@ use App\Contracts\Repositories\ConductorRepositoryInterface;
 use App\Contracts\Repositories\TaxiRepositoryInterface;
 use App\Models\Conductor;
 use App\Models\Taxi;
-use App\Repositories\ConductorRepository;
-use App\Repositories\TaxiRepository;
 use InvalidArgumentException;
 
 final class ConductorService
 {
-    private ConductorRepositoryInterface $conductores;
-    private TaxiRepositoryInterface $taxis;
-
-    public function __construct()
-    {
-        $this->conductores = new ConductorRepository();
-        $this->taxis = new TaxiRepository();
-    }
+    public function __construct(
+        private readonly ConductorRepositoryInterface $conductores,
+        private readonly TaxiRepositoryInterface $taxis,
+    ) {}
 
     /** @return Conductor[] */
     public function all(): array

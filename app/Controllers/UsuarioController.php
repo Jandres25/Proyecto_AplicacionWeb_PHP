@@ -14,12 +14,7 @@ use InvalidArgumentException;
 
 final class UsuarioController
 {
-    private UsuarioService $service;
-
-    public function __construct()
-    {
-        $this->service = new UsuarioService();
-    }
+    public function __construct(private readonly UsuarioService $service) {}
 
     public function index(): void
     {

@@ -14,12 +14,7 @@ use InvalidArgumentException;
 
 final class ConductorController
 {
-    private ConductorService $service;
-
-    public function __construct()
-    {
-        $this->service = new ConductorService();
-    }
+    public function __construct(private readonly ConductorService $service) {}
 
     public function index(): void
     {

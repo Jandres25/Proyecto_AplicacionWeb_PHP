@@ -5,18 +5,12 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Contracts\Repositories\UserRepositoryInterface;
-use App\Core\Database;
 use App\Models\Usuario;
 use PDO;
 
 final class UserRepository implements UserRepositoryInterface
 {
-    private PDO $connection;
-
-    public function __construct()
-    {
-        $this->connection = Database::getConnection();
-    }
+    public function __construct(private readonly PDO $connection) {}
 
     public function findByUsername(string $username): ?array
     {

@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
+use App\Contracts\Repositories\PropietarioRepositoryInterface;
 use App\Core\Database;
 use App\Models\Propietario;
 use PDO;
 
-final class PropietarioRepository
+final class PropietarioRepository implements PropietarioRepositoryInterface
 {
     private PDO $connection;
 

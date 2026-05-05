@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
+use App\Contracts\Repositories\ConductorRepositoryInterface;
 use App\Core\Database;
 use App\Models\Conductor;
 use PDO;
 
-final class ConductorRepository
+final class ConductorRepository implements ConductorRepositoryInterface
 {
     private PDO $connection;
 

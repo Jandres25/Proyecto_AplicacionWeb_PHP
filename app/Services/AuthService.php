@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Contracts\Services\AuthServiceInterface;
 use App\Repositories\UserRepository;
 
-final class AuthService
+final class AuthService implements AuthServiceInterface
 {
     private UserRepository $users;
 

@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
+use App\Contracts\Repositories\TaxiRepositoryInterface;
 use App\Core\Database;
 use App\Models\Taxi;
 use PDO;
 
-final class TaxiRepository
+final class TaxiRepository implements TaxiRepositoryInterface
 {
     private PDO $connection;
 

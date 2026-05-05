@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Contracts\Repositories\PropietarioRepositoryInterface;
 use App\Models\Propietario;
 use App\Repositories\PropietarioRepository;
 use InvalidArgumentException;
 
 final class PropietarioService
 {
-    private PropietarioRepository $propietarios;
+    private PropietarioRepositoryInterface $propietarios;
 
     public function __construct()
     {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Contracts\Services\AuthServiceInterface;
 use App\Core\Auth;
 use App\Core\Csrf;
 use App\Core\View;
@@ -27,6 +28,7 @@ final class AuthController
 
         $username = trim((string) ($_POST['usuario'] ?? ''));
         $password = (string) ($_POST['password'] ?? '');
+        /** @var AuthServiceInterface $service */
         $service = new AuthService();
         $user = $service->attempt($username, $password);
 

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Contracts\Repositories\PropietarioRepositoryInterface;
+use App\Contracts\Repositories\TaxiRepositoryInterface;
 use App\Models\Propietario;
 use App\Models\Taxi;
 use App\Repositories\PropietarioRepository;
@@ -12,8 +14,8 @@ use InvalidArgumentException;
 
 final class TaxiService
 {
-    private TaxiRepository $taxis;
-    private PropietarioRepository $propietarios;
+    private TaxiRepositoryInterface $taxis;
+    private PropietarioRepositoryInterface $propietarios;
 
     public function __construct()
     {

@@ -1,0 +1,24 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Contracts\Repositories;
+
+use App\Models\Taxi;
+
+interface TaxiRepositoryInterface
+{
+    /** @return Taxi[] */
+    public function allWithOwnerAsModel(): array;
+
+    /** @return Taxi[] */
+    public function allAsModel(): array;
+
+    public function findByPlacaAsModel(int $placa): ?Taxi;
+
+    public function create(string $modelo, string $marca, int $ownerId): void;
+
+    public function update(int $placa, string $modelo, string $marca, int $ownerId): void;
+
+    public function delete(int $placa): void;
+}

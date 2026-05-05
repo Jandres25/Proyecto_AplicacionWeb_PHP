@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Contracts\Repositories\UserRepositoryInterface;
 use App\Models\Usuario;
 use App\Repositories\UserRepository;
 use InvalidArgumentException;
 
 final class UsuarioService
 {
-    private UserRepository $users;
+    private UserRepositoryInterface $users;
 
     public function __construct()
     {

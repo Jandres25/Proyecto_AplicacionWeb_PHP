@@ -91,11 +91,11 @@ final class PropietarioController
             ErrorHandler::abort(404, 'Propietario no encontrado.');
         }
 
-        $propietario['Nombre'] = (string) ($_POST['nombre'] ?? '');
-        $propietario['Telefono'] = (string) ($_POST['telefono'] ?? '');
+        $nombre = (string) ($_POST['nombre'] ?? '');
+        $telefono = (string) ($_POST['telefono'] ?? '');
 
         try {
-            $this->service->update($id, $propietario['Nombre'], $propietario['Telefono']);
+            $this->service->update($id, $nombre, $telefono);
             Flash::set('success', 'Registro Actualizado');
             header('Location: ' . app_url('/propietarios'));
             exit;

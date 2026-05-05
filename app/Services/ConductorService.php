@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Models\Conductor;
+use App\Models\Taxi;
 use App\Repositories\ConductorRepository;
 use App\Repositories\TaxiRepository;
 use InvalidArgumentException;
@@ -19,19 +21,21 @@ final class ConductorService
         $this->taxis = new TaxiRepository();
     }
 
+    /** @return Conductor[] */
     public function all(): array
     {
-        return $this->conductores->all();
+        return $this->conductores->allAsModel();
     }
 
+    /** @return Taxi[] */
     public function taxiOptions(): array
     {
-        return $this->taxis->all();
+        return $this->taxis->allAsModel();
     }
 
-    public function findById(int $id): ?array
+    public function findById(int $id): ?Conductor
     {
-        return $this->conductores->findById($id);
+        return $this->conductores->findByIdAsModel($id);
     }
 
     public function create(string $nombres, string $telefono, int $placa): void
@@ -76,7 +80,7 @@ final class ConductorService
             throw new InvalidArgumentException('El teléfono debe contener entre 7 y 10 dígitos.');
         }
 
-        if ($placa <= 0 || $this->taxis->findByPlaca($placa) === null) {
+        if ($placa <= 0 || $this->taxis->findByPlacaAsModel($placa) === null) {
             throw new InvalidArgumentException('Debe seleccionar una placa válida.');
         }
 

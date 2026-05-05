@@ -93,12 +93,12 @@ final class ConductorController
             ErrorHandler::abort(404, 'Conductor no encontrado.');
         }
 
-        $conductor['Nombres'] = (string) ($_POST['nombre'] ?? '');
-        $conductor['Telefono'] = (string) ($_POST['telefono'] ?? '');
-        $conductor['Placa'] = (int) ($_POST['placa'] ?? 0);
+        $nombres = (string) ($_POST['nombre'] ?? '');
+        $telefono = (string) ($_POST['telefono'] ?? '');
+        $placa = (int) ($_POST['placa'] ?? 0);
 
         try {
-            $this->service->update($id, $conductor['Nombres'], $conductor['Telefono'], (int) $conductor['Placa']);
+            $this->service->update($id, $nombres, $telefono, $placa);
             Flash::set('success', 'Registro Actualizado');
             header('Location: ' . app_url('/conductores'));
             exit;

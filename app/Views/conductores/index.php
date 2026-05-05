@@ -49,26 +49,26 @@
                                         <div class="bg-light rounded-circle border d-flex align-items-center justify-content-center me-3 d-none d-sm-flex" style="width: 35px; height: 35px; flex-shrink: 0;">
                                             <i class="bi bi-person-badge text-secondary"></i>
                                         </div>
-                                        <div class="fw-bold"><?= e($registro['Nombres']); ?></div>
+                                        <div class="fw-bold"><?= e($registro->nombres); ?></div>
                                     </div>
                                 </td>
                                 <td class="text-center">
-                                    <a href="https://wa.me/<?= e($registro['Telefono']); ?>" class="badge bg-light text-dark border fw-normal" target="_blank" title="Contactar por WhatsApp">
-                                        <i class="bi bi-telephone me-1 text-success"></i><?= e($registro['Telefono']); ?>
+                                    <a href="https://wa.me/<?= e($registro->telefono); ?>" class="badge bg-light text-dark border fw-normal" target="_blank" title="Contactar por WhatsApp">
+                                        <i class="bi bi-telephone me-1 text-success"></i><?= e($registro->telefono); ?>
                                     </a>
                                 </td>
                                 <td>
                                     <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-3">
-                                        <i class="bi bi-car-front-fill me-1"></i><?= e($registro['Placa']); ?>
+                                        <i class="bi bi-car-front-fill me-1"></i><?= e($registro->placa); ?>
                                     </span>
                                 </td>
                                 <td class="text-center">
                                     <div class="btn-group shadow-sm" role="group">
-                                        <a class="btn btn-light btn-sm border" href="<?= e(app_url('/conductores/editar')); ?>?id=<?= e($registro['ID']); ?>" title="Editar">
+                                        <a class="btn btn-light btn-sm border" href="<?= e(app_url('/conductores/editar')); ?>?id=<?= e($registro->id); ?>" title="Editar">
                                             <i class="bi bi-pencil-square text-success"></i>
                                         </a>
                                         <button type="button" class="btn btn-light btn-sm border btn-eliminar"
-                                            data-id="<?= e($registro['ID']); ?>"
+                                            data-id="<?= e($registro->id); ?>"
                                             data-token="<?= e(\App\Core\Csrf::token()); ?>"
                                             title="Eliminar">
                                             <i class="bi bi-trash-fill text-danger"></i>

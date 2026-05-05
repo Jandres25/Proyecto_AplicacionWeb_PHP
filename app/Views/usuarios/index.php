@@ -49,24 +49,24 @@
                                         <div class="bg-light rounded-circle border d-flex align-items-center justify-content-center me-3 d-none d-sm-flex" style="width: 35px; height: 35px; flex-shrink: 0;">
                                             <i class="bi bi-person text-secondary"></i>
                                         </div>
-                                        <div class="fw-bold"><?= e($registro['Nombres'] . ' ' . $registro['Apellidos']); ?></div>
+                                        <div class="fw-bold"><?= e($registro->nombres . ' ' . $registro->apellidos); ?></div>
                                     </div>
                                 </td>
                                 <td>
-                                    <span class="badge bg-light text-dark border fw-normal"><?= e($registro['Usuario']); ?></span>
+                                    <span class="badge bg-light text-dark border fw-normal"><?= e($registro->usuario); ?></span>
                                 </td>
                                 <td>
-                                    <a href="mailto:<?= e($registro['Correo']); ?>" class="text-decoration-none text-muted small">
-                                        <i class="bi bi-envelope me-1"></i><?= e($registro['Correo']); ?>
+                                    <a href="mailto:<?= e($registro->correo); ?>" class="text-decoration-none text-muted small">
+                                        <i class="bi bi-envelope me-1"></i><?= e($registro->correo); ?>
                                     </a>
                                 </td>
                                 <td class="text-center">
                                     <div class="btn-group shadow-sm" role="group">
-                                        <a class="btn btn-light btn-sm border" href="<?= e(app_url('/usuarios/editar')); ?>?id=<?= e($registro['ID']); ?>" title="Editar">
+                                        <a class="btn btn-light btn-sm border" href="<?= e(app_url('/usuarios/editar')); ?>?id=<?= e($registro->id); ?>" title="Editar">
                                             <i class="bi bi-pencil-square text-success"></i>
                                         </a>
                                         <button type="button" class="btn btn-light btn-sm border btn-eliminar"
-                                            data-id="<?= e($registro['ID']); ?>"
+                                            data-id="<?= e($registro->id); ?>"
                                             data-token="<?= e(\App\Core\Csrf::token()); ?>"
                                             title="Eliminar">
                                             <i class="bi bi-trash-fill text-danger"></i>

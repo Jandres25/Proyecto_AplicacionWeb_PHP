@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Models\Usuario;
 use App\Repositories\UserRepository;
 use InvalidArgumentException;
 
@@ -16,14 +17,15 @@ final class UsuarioService
         $this->users = new UserRepository();
     }
 
+    /** @return Usuario[] */
     public function all(): array
     {
-        return $this->users->all();
+        return $this->users->allAsModel();
     }
 
-    public function findById(int $id): ?array
+    public function findById(int $id): ?Usuario
     {
-        return $this->users->findById($id);
+        return $this->users->findByIdAsModel($id);
     }
 
     public function create(

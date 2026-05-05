@@ -20,13 +20,13 @@
         <div class="col-lg-8">
             <form action="<?= e(app_url('/taxis/editar')); ?>" method="post">
                 <input type="hidden" name="_token" value="<?= e(\App\Core\Csrf::token()); ?>">
-                <input type="hidden" name="placa" value="<?= e($taxi['Placa']); ?>">
+                <input type="hidden" name="placa" value="<?= e($taxi->placa); ?>">
                 <div class="card shadow-sm border-0">
                     <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
                         <h5 class="card-title mb-0 fw-bold text-primary">
                             <i class="bi bi-car-front me-2"></i>Modificar Vehículo
                         </h5>
-                        <span class="badge bg-light text-primary border px-3 py-2">Placa: <?= e($taxi['Placa']); ?></span>
+                        <span class="badge bg-light text-primary border px-3 py-2">Placa: <?= e($taxi->placa); ?></span>
                     </div>
                     <div class="card-body p-4">
                         <?php if (!empty($error)) : ?>
@@ -41,14 +41,14 @@
                                 <label for="modelo" class="form-label fw-bold text-muted small text-uppercase">Modelo</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-light"><i class="bi bi-tag"></i></span>
-                                    <input type="text" value="<?= e($taxi['Modelo']); ?>" class="form-control" name="modelo" id="modelo" required>
+                                    <input type="text" value="<?= e($taxi->modelo); ?>" class="form-control" name="modelo" id="modelo" required>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="marca" class="form-label fw-bold text-muted small text-uppercase">Marca</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-light"><i class="bi bi-briefcase"></i></span>
-                                    <input type="text" value="<?= e($taxi['Marca']); ?>" class="form-control" name="marca" id="marca" required>
+                                    <input type="text" value="<?= e($taxi->marca); ?>" class="form-control" name="marca" id="marca" required>
                                 </div>
                             </div>
                         </div>
@@ -60,8 +60,8 @@
                                 <select class="form-select" name="propietario" id="propietario" required>
                                     <option value="">Selecciona un propietario</option>
                                     <?php foreach ($owners as $owner) : ?>
-                                        <option value="<?= e($owner['Idpropietario']); ?>" <?= ((string) $taxi['Idpropietario'] === (string) $owner['Idpropietario']) ? 'selected' : ''; ?>>
-                                            <?= e($owner['Nombre']); ?>
+                                        <option value="<?= e($owner->id); ?>" <?= ($taxi->idPropietario === $owner->id) ? 'selected' : ''; ?>>
+                                            <?= e($owner->nombre); ?>
                                         </option>
                                     <?php endforeach; ?>
                                 </select>

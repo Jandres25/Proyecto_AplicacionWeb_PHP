@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Core\Database;
+use App\Models\Conductor;
 use PDO;
 
 final class ConductorRepository
@@ -61,5 +62,20 @@ final class ConductorRepository
         $statement = $this->connection->prepare('DELETE FROM conductores WHERE ID = :ID');
         $statement->bindValue(':ID', $id, PDO::PARAM_INT);
         $statement->execute();
+    }
+
+    /** @return Conductor[] */
+    public function allAsModel(): array
+    {
+        return array_map(
+            static fn(array $row) => Conductor::fromRow($row),
+            $this->all()
+        );
+    }
+
+    public function findByIdAsModel(int $id): ?Conductor
+    {
+        $row = $this->findById($id);
+        return $row !== null ? Conductor::fromRow($row) : null;
     }
 }

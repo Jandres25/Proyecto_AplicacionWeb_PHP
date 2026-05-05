@@ -60,8 +60,8 @@
                                 <select class="form-select" name="propietario" id="propietario" required>
                                     <option value="">Selecciona un propietario</option>
                                     <?php foreach ($owners as $owner) : ?>
-                                        <option value="<?= e($owner['Idpropietario']); ?>" <?= ((string) ($old['propietario'] ?? '') === (string) $owner['Idpropietario']) ? 'selected' : ''; ?>>
-                                            <?= e($owner['Nombre']); ?>
+                                        <option value="<?= e($owner->id); ?>" <?= ((string) ($old['propietario'] ?? '') === (string) $owner->id) ? 'selected' : ''; ?>>
+                                            <?= e($owner->nombre); ?>
                                         </option>
                                     <?php endforeach; ?>
                                 </select>

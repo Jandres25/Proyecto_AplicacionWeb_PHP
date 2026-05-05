@@ -95,12 +95,12 @@ final class TaxiController
             ErrorHandler::abort(404, 'Taxi no encontrado.');
         }
 
-        $taxi['Modelo'] = (string) ($_POST['modelo'] ?? '');
-        $taxi['Marca'] = (string) ($_POST['marca'] ?? '');
-        $taxi['Idpropietario'] = (int) ($_POST['propietario'] ?? 0);
+        $modelo = (string) ($_POST['modelo'] ?? '');
+        $marca = (string) ($_POST['marca'] ?? '');
+        $idPropietario = (int) ($_POST['propietario'] ?? 0);
 
         try {
-            $this->service->update($placa, $taxi['Modelo'], $taxi['Marca'], (int) $taxi['Idpropietario']);
+            $this->service->update($placa, $modelo, $marca, $idPropietario);
             Flash::set('success', 'Registro Actualizado');
             header('Location: ' . app_url('/taxis'));
             exit;

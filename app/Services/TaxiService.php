@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Models\Propietario;
+use App\Models\Taxi;
 use App\Repositories\PropietarioRepository;
 use App\Repositories\TaxiRepository;
 use InvalidArgumentException;
@@ -19,19 +21,21 @@ final class TaxiService
         $this->propietarios = new PropietarioRepository();
     }
 
+    /** @return Taxi[] */
     public function allWithOwner(): array
     {
-        return $this->taxis->allWithOwner();
+        return $this->taxis->allWithOwnerAsModel();
     }
 
+    /** @return Propietario[] */
     public function ownerOptions(): array
     {
-        return $this->propietarios->all();
+        return $this->propietarios->allAsModel();
     }
 
-    public function findByPlaca(int $placa): ?array
+    public function findByPlaca(int $placa): ?Taxi
     {
-        return $this->taxis->findByPlaca($placa);
+        return $this->taxis->findByPlacaAsModel($placa);
     }
 
     public function create(string $modelo, string $marca, int $ownerId): void
@@ -76,7 +80,7 @@ final class TaxiService
             throw new InvalidArgumentException('Modelo o marca exceden la longitud permitida.');
         }
 
-        if ($ownerId <= 0 || $this->propietarios->findById($ownerId) === null) {
+        if ($ownerId <= 0 || $this->propietarios->findByIdAsModel($ownerId) === null) {
             throw new InvalidArgumentException('Debe seleccionar un propietario válido.');
         }
 

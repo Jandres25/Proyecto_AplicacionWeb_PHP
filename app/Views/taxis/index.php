@@ -44,21 +44,21 @@
                         foreach ($lista_taxis as $registro) : ?>
                             <tr>
                                 <td class="text-center fw-bold text-primary"><?= $counter++; ?></td>
-                                <td><?= e($registro['Modelo']); ?></td>
-                                <td><?= e($registro['Marca']); ?></td>
+                                <td><?= e($registro->modelo); ?></td>
+                                <td><?= e($registro->marca); ?></td>
                                 <td>
                                     <div class="d-flex align-items-center">
                                         <i class="bi bi-person-badge me-2 text-secondary"></i>
-                                        <?= e($registro['propietario']); ?>
+                                        <?= e($registro->nombrePropietario ?? ''); ?>
                                     </div>
                                 </td>
                                 <td class="text-center">
                                     <div class="btn-group shadow-sm" role="group">
-                                        <a class="btn btn-light btn-sm border" href="<?= e(app_url('/taxis/editar')); ?>?placa=<?= e($registro['Placa']); ?>" title="Editar">
+                                        <a class="btn btn-light btn-sm border" href="<?= e(app_url('/taxis/editar')); ?>?placa=<?= e($registro->placa); ?>" title="Editar">
                                             <i class="bi bi-pencil-square text-success"></i>
                                         </a>
                                         <button type="button" class="btn btn-light btn-sm border btn-eliminar"
-                                            data-placa="<?= e($registro['Placa']); ?>"
+                                            data-placa="<?= e($registro->placa); ?>"
                                             data-token="<?= e(\App\Core\Csrf::token()); ?>"
                                             title="Eliminar">
                                             <i class="bi bi-trash-fill text-danger"></i>

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Core\Database;
+use App\Models\Usuario;
 use PDO;
 
 final class UserRepository
@@ -131,6 +132,27 @@ final class UserRepository
 
         $statement->execute();
         return (int) $statement->fetchColumn() > 0;
+    }
+
+    /** @return Usuario[] */
+    public function allAsModel(): array
+    {
+        return array_map(
+            static fn(array $row) => Usuario::fromRow($row),
+            $this->all()
+        );
+    }
+
+    public function findByIdAsModel(int $id): ?Usuario
+    {
+        $row = $this->findById($id);
+        return $row !== null ? Usuario::fromRow($row) : null;
+    }
+
+    public function findByUsernameAsModel(string $username): ?Usuario
+    {
+        $row = $this->findByUsername($username);
+        return $row !== null ? Usuario::fromRow($row) : null;
     }
 
     public function existsEmail(string $email, ?int $exceptId = null): bool

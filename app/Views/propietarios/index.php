@@ -48,21 +48,21 @@
                                         <div class="bg-light rounded-circle border d-flex align-items-center justify-content-center me-3 d-none d-sm-flex" style="width: 35px; height: 35px; flex-shrink: 0;">
                                             <i class="bi bi-person text-secondary"></i>
                                         </div>
-                                        <div class="fw-bold"><?= e($registro['Nombre']); ?></div>
+                                        <div class="fw-bold"><?= e($registro->nombre); ?></div>
                                     </div>
                                 </td>
                                 <td class="text-center">
-                                    <a href="https://wa.me/<?= e($registro['Telefono']); ?>" class="badge bg-light text-dark border fw-normal" target="_blank" title="Contactar por WhatsApp">
-                                        <i class="bi bi-telephone me-1 text-success"></i><?= e($registro['Telefono']); ?>
+                                    <a href="https://wa.me/<?= e($registro->telefono); ?>" class="badge bg-light text-dark border fw-normal" target="_blank" title="Contactar por WhatsApp">
+                                        <i class="bi bi-telephone me-1 text-success"></i><?= e($registro->telefono); ?>
                                     </a>
                                 </td>
                                 <td class="text-center">
                                     <div class="btn-group shadow-sm" role="group">
-                                        <a class="btn btn-light btn-sm border" href="<?= e(app_url('/propietarios/editar')); ?>?id=<?= e($registro['Idpropietario']); ?>" title="Editar">
+                                        <a class="btn btn-light btn-sm border" href="<?= e(app_url('/propietarios/editar')); ?>?id=<?= e($registro->id); ?>" title="Editar">
                                             <i class="bi bi-pencil-square text-success"></i>
                                         </a>
                                         <button type="button" class="btn btn-light btn-sm border btn-eliminar"
-                                            data-id="<?= e($registro['Idpropietario']); ?>"
+                                            data-id="<?= e($registro->id); ?>"
                                             data-token="<?= e(\App\Core\Csrf::token()); ?>"
                                             title="Eliminar">
                                             <i class="bi bi-trash-fill text-danger"></i>

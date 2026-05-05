@@ -58,8 +58,8 @@
                                 <select class="form-select" name="placa" id="placa" required>
                                     <option value="">Selecciona una placa</option>
                                     <?php foreach ($taxis as $taxi) : ?>
-                                        <option value="<?= e($taxi['Placa']); ?>" <?= ((string) ($old['placa'] ?? '') === (string) $taxi['Placa']) ? 'selected' : ''; ?>>
-                                            <?= e($taxi['Placa']); ?> - <?= e($taxi['Marca']); ?> <?= e($taxi['Modelo']); ?>
+                                        <option value="<?= e($taxi->placa); ?>" <?= ((string) ($old['placa'] ?? '') === (string) $taxi->placa) ? 'selected' : ''; ?>>
+                                            <?= e($taxi->placa); ?> - <?= e($taxi->marca); ?> <?= e($taxi->modelo); ?>
                                         </option>
                                     <?php endforeach; ?>
                                 </select>

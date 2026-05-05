@@ -92,20 +92,20 @@ final class UsuarioController
             ErrorHandler::abort(404, 'Usuario no encontrado.');
         }
 
-        $usuario['Nombres'] = (string) ($_POST['nombres'] ?? '');
-        $usuario['Apellidos'] = (string) ($_POST['apellidos'] ?? '');
-        $usuario['Usuario'] = (string) ($_POST['usuario'] ?? '');
-        $usuario['Correo'] = (string) ($_POST['correo'] ?? '');
+        $nombres = (string) ($_POST['nombres'] ?? '');
+        $apellidos = (string) ($_POST['apellidos'] ?? '');
+        $usuarioNombre = (string) ($_POST['usuario'] ?? '');
+        $correo = (string) ($_POST['correo'] ?? '');
         $clave = (string) ($_POST['clave'] ?? '');
 
         try {
             $this->service->update(
                 $id,
-                $usuario['Nombres'],
-                $usuario['Apellidos'],
-                $usuario['Usuario'],
+                $nombres,
+                $apellidos,
+                $usuarioNombre,
                 $clave,
-                $usuario['Correo']
+                $correo
             );
             Flash::set('success', 'Registro Actualizado');
             header('Location: ' . app_url('/usuarios'));
@@ -137,7 +137,7 @@ final class UsuarioController
             ErrorHandler::abort(404, 'Usuario no encontrado.');
         }
 
-        if ((string) $current['Usuario'] === Auth::username()) {
+        if ($current->usuario === Auth::username()) {
             if ($isAjax) {
                 header('Content-Type: application/json');
                 echo json_encode(['success' => false, 'message' => 'No puedes eliminar tu propio usuario']);

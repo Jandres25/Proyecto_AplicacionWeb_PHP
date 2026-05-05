@@ -20,13 +20,13 @@
         <div class="col-lg-8">
             <form action="<?php echo e(app_url('/usuarios/editar')); ?>" method="post">
                 <input type="hidden" name="_token" value="<?php echo e(\App\Core\Csrf::token()); ?>">
-                <input type="hidden" name="id" value="<?php echo e($usuario['ID']); ?>">
+                <input type="hidden" name="id" value="<?php echo e($usuario->id); ?>">
                 <div class="card shadow-sm border-0">
                     <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
                         <h5 class="card-title mb-0 fw-bold text-primary">
                             <i class="bi bi-person-gear me-2"></i>Modificar Registro
                         </h5>
-                        <span class="badge bg-light text-primary border px-3 py-2">ID: <?= e($usuario['ID']); ?></span>
+                        <span class="badge bg-light text-primary border px-3 py-2">ID: <?= e($usuario->id); ?></span>
                     </div>
                     <div class="card-body p-4">
                         <?php if (!empty($error)) : ?>
@@ -43,14 +43,14 @@
                                 <label for="nombres" class="form-label fw-bold text-muted small text-uppercase">Nombres</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-light"><i class="bi bi-person"></i></span>
-                                    <input type="text" value="<?php echo e($usuario['Nombres']); ?>" class="form-control" name="nombres" id="nombres" required>
+                                    <input type="text" value="<?php echo e($usuario->nombres); ?>" class="form-control" name="nombres" id="nombres" required>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="apellidos" class="form-label fw-bold text-muted small text-uppercase">Apellidos</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-light"><i class="bi bi-person"></i></span>
-                                    <input type="text" value="<?php echo e($usuario['Apellidos']); ?>" class="form-control" name="apellidos" id="apellidos" required>
+                                    <input type="text" value="<?php echo e($usuario->apellidos); ?>" class="form-control" name="apellidos" id="apellidos" required>
                                 </div>
                             </div>
                         </div>
@@ -60,7 +60,7 @@
                                 <label for="usuario" class="form-label fw-bold text-muted small text-uppercase">Nombre de Usuario</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-light"><i class="bi bi-at"></i></span>
-                                    <input type="text" value="<?php echo e($usuario['Usuario']); ?>" class="form-control" name="usuario" id="usuario" required>
+                                    <input type="text" value="<?php echo e($usuario->usuario); ?>" class="form-control" name="usuario" id="usuario" required>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
@@ -77,7 +77,7 @@
                             <label for="correo" class="form-label fw-bold text-muted small text-uppercase">Correo Electrónico</label>
                             <div class="input-group">
                                 <span class="input-group-text bg-light"><i class="bi bi-envelope"></i></span>
-                                <input type="email" value="<?php echo e($usuario['Correo']); ?>" class="form-control" name="correo" id="correo" required>
+                                <input type="email" value="<?php echo e($usuario->correo); ?>" class="form-control" name="correo" id="correo" required>
                             </div>
                         </div>
                     </div>

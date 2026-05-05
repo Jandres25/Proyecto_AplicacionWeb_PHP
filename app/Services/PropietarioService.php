@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Models\Propietario;
 use App\Repositories\PropietarioRepository;
 use InvalidArgumentException;
 
@@ -16,14 +17,15 @@ final class PropietarioService
         $this->propietarios = new PropietarioRepository();
     }
 
+    /** @return Propietario[] */
     public function all(): array
     {
-        return $this->propietarios->all();
+        return $this->propietarios->allAsModel();
     }
 
-    public function findById(int $id): ?array
+    public function findById(int $id): ?Propietario
     {
-        return $this->propietarios->findById($id);
+        return $this->propietarios->findByIdAsModel($id);
     }
 
     public function create(string $nombre, string $telefono): void

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Core\Database;
+use App\Models\Taxi;
 use PDO;
 
 final class TaxiRepository
@@ -73,5 +74,29 @@ final class TaxiRepository
         $statement = $this->connection->prepare('DELETE FROM taxis WHERE Placa = :Placa');
         $statement->bindValue(':Placa', $placa, PDO::PARAM_INT);
         $statement->execute();
+    }
+
+    /** @return Taxi[] */
+    public function allWithOwnerAsModel(): array
+    {
+        return array_map(
+            static fn(array $row) => Taxi::fromRow($row),
+            $this->allWithOwner()
+        );
+    }
+
+    public function findByPlacaAsModel(int $placa): ?Taxi
+    {
+        $row = $this->findByPlaca($placa);
+        return $row !== null ? Taxi::fromRow($row) : null;
+    }
+
+    /** @return Taxi[] */
+    public function allAsModel(): array
+    {
+        return array_map(
+            static fn(array $row) => Taxi::fromRow($row),
+            $this->all()
+        );
     }
 }

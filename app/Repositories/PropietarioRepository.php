@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Core\Database;
+use App\Models\Propietario;
 use PDO;
 
 final class PropietarioRepository
@@ -59,5 +60,20 @@ final class PropietarioRepository
         $statement = $this->connection->prepare('DELETE FROM propietarios WHERE Idpropietario = :Idpropietario');
         $statement->bindValue(':Idpropietario', $id, PDO::PARAM_INT);
         $statement->execute();
+    }
+
+    /** @return Propietario[] */
+    public function allAsModel(): array
+    {
+        return array_map(
+            static fn(array $row) => Propietario::fromRow($row),
+            $this->all()
+        );
+    }
+
+    public function findByIdAsModel(int $id): ?Propietario
+    {
+        $row = $this->findById($id);
+        return $row !== null ? Propietario::fromRow($row) : null;
     }
 }

@@ -20,7 +20,24 @@ final class TaxiService
     /** @return Taxi[] */
     public function allWithOwner(): array
     {
-        return $this->taxis->allWithOwner();
+        $taxis = $this->taxis->all();
+        $propietarios = $this->propietarios->all();
+
+        $nameMap = [];
+        foreach ($propietarios as $p) {
+            $nameMap[$p->id] = $p->nombre;
+        }
+
+        return array_map(
+            static fn(Taxi $t) => new Taxi(
+                placa: $t->placa,
+                modelo: $t->modelo,
+                marca: $t->marca,
+                idPropietario: $t->idPropietario,
+                nombrePropietario: $nameMap[$t->idPropietario] ?? null,
+            ),
+            $taxis
+        );
     }
 
     /** @return Propietario[] */
@@ -36,8 +53,9 @@ final class TaxiService
 
     public function create(string $modelo, string $marca, int $ownerId): void
     {
-        $data = $this->validate($modelo, $marca, $ownerId);
-        $this->taxis->create($data['modelo'], $data['marca'], $data['ownerId']);
+        $this->validateOwner($ownerId);
+        $taxi = Taxi::create($modelo, $marca, $ownerId);
+        $this->taxis->create($taxi->modelo, $taxi->marca, $taxi->idPropietario);
     }
 
     public function update(int $placa, string $modelo, string $marca, int $ownerId): void
@@ -46,8 +64,9 @@ final class TaxiService
             throw new InvalidArgumentException('Placa inválida.');
         }
 
-        $data = $this->validate($modelo, $marca, $ownerId);
-        $this->taxis->update($placa, $data['modelo'], $data['marca'], $data['ownerId']);
+        $this->validateOwner($ownerId);
+        $taxi = Taxi::create($modelo, $marca, $ownerId);
+        $this->taxis->update($placa, $taxi->modelo, $taxi->marca, $taxi->idPropietario);
     }
 
     public function delete(int $placa): void
@@ -59,31 +78,10 @@ final class TaxiService
         $this->taxis->delete($placa);
     }
 
-    private function validate(string $modelo, string $marca, int $ownerId): array
+    private function validateOwner(int $ownerId): void
     {
-        $cleanModel = trim($modelo);
-        $cleanBrand = trim($marca);
-
-        if ($cleanModel === '') {
-            throw new InvalidArgumentException('El modelo del taxi es obligatorio.');
-        }
-
-        if ($cleanBrand === '') {
-            throw new InvalidArgumentException('La marca del taxi es obligatoria.');
-        }
-
-        if (mb_strlen($cleanModel) > 100 || mb_strlen($cleanBrand) > 100) {
-            throw new InvalidArgumentException('Modelo o marca exceden la longitud permitida.');
-        }
-
         if ($ownerId <= 0 || $this->propietarios->findById($ownerId) === null) {
             throw new InvalidArgumentException('Debe seleccionar un propietario válido.');
         }
-
-        return [
-            'modelo' => $cleanModel,
-            'marca' => $cleanBrand,
-            'ownerId' => $ownerId,
-        ];
     }
 }

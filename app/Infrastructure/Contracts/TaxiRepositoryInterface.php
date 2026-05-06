@@ -9,9 +9,6 @@ use App\Domain\Models\Taxi;
 interface TaxiRepositoryInterface
 {
     /** @return Taxi[] */
-    public function allWithOwner(): array;
-
-    /** @return Taxi[] */
     public function all(): array;
 
     public function findByPlaca(int $placa): ?Taxi;

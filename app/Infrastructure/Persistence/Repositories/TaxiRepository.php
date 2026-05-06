@@ -42,22 +42,6 @@ final class TaxiRepository implements TaxiRepositoryInterface
         $statement->execute();
     }
 
-    /** @return Taxi[] */
-    public function allWithOwner(): array
-    {
-        $statement = $this->connection->prepare(
-            'SELECT t.*, p.Nombre AS propietario
-             FROM taxis t
-             INNER JOIN propietarios p ON p.Idpropietario = t.Idpropietario
-             ORDER BY t.Placa DESC'
-        );
-        $statement->execute();
-        return array_map(
-            static fn(array $row) => Taxi::fromRow($row),
-            $statement->fetchAll()
-        );
-    }
-
     public function findByPlaca(int $placa): ?Taxi
     {
         $statement = $this->connection->prepare('SELECT * FROM taxis WHERE Placa = :Placa LIMIT 1');

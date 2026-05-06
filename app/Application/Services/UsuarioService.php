@@ -30,26 +30,26 @@ final class UsuarioService
         string $clave,
         string $correo
     ): void {
-        $data = $this->validate($nombres, $apellidos, $usuario, $correo);
-
         if (trim($clave) === '') {
             throw new InvalidArgumentException('La clave del usuario es obligatoria.');
         }
 
-        if ($this->users->existsUsername($data['usuario'])) {
+        $u = Usuario::create($nombres, $apellidos, $usuario, $correo);
+
+        if ($this->users->existsUsername($u->usuario)) {
             throw new InvalidArgumentException('El nombre de usuario ya existe.');
         }
 
-        if ($this->users->existsEmail($data['correo'])) {
+        if ($this->users->existsEmail($u->correo)) {
             throw new InvalidArgumentException('El correo ya está registrado.');
         }
 
         $this->users->create(
-            $data['nombres'],
-            $data['apellidos'],
-            $data['usuario'],
+            $u->nombres,
+            $u->apellidos,
+            $u->usuario,
             password_hash($clave, PASSWORD_DEFAULT),
-            $data['correo']
+            $u->correo
         );
     }
 
@@ -65,23 +65,17 @@ final class UsuarioService
             throw new InvalidArgumentException('ID de usuario inválido.');
         }
 
-        $data = $this->validate($nombres, $apellidos, $usuario, $correo);
+        $u = Usuario::create($nombres, $apellidos, $usuario, $correo);
 
-        if ($this->users->existsUsername($data['usuario'], $id)) {
+        if ($this->users->existsUsername($u->usuario, $id)) {
             throw new InvalidArgumentException('El nombre de usuario ya existe.');
         }
 
-        if ($this->users->existsEmail($data['correo'], $id)) {
+        if ($this->users->existsEmail($u->correo, $id)) {
             throw new InvalidArgumentException('El correo ya está registrado.');
         }
 
-        $this->users->update(
-            $id,
-            $data['nombres'],
-            $data['apellidos'],
-            $data['usuario'],
-            $data['correo']
-        );
+        $this->users->update($id, $u->nombres, $u->apellidos, $u->usuario, $u->correo);
 
         if (trim($clave) !== '') {
             $this->users->updatePasswordHash($id, password_hash($clave, PASSWORD_DEFAULT));
@@ -95,36 +89,5 @@ final class UsuarioService
         }
 
         $this->users->delete($id);
-    }
-
-    private function validate(string $nombres, string $apellidos, string $usuario, string $correo): array
-    {
-        $cleanNames = trim($nombres);
-        $cleanLastnames = trim($apellidos);
-        $cleanUser = trim($usuario);
-        $cleanEmail = trim($correo);
-
-        if ($cleanNames === '' || mb_strlen($cleanNames) > 100) {
-            throw new InvalidArgumentException('Los nombres son obligatorios y deben tener máximo 100 caracteres.');
-        }
-
-        if ($cleanLastnames === '' || mb_strlen($cleanLastnames) > 100) {
-            throw new InvalidArgumentException('Los apellidos son obligatorios y deben tener máximo 100 caracteres.');
-        }
-
-        if ($cleanUser === '' || mb_strlen($cleanUser) > 50) {
-            throw new InvalidArgumentException('El usuario es obligatorio y debe tener máximo 50 caracteres.');
-        }
-
-        if ($cleanEmail === '' || mb_strlen($cleanEmail) > 100 || !filter_var($cleanEmail, FILTER_VALIDATE_EMAIL)) {
-            throw new InvalidArgumentException('Debe ingresar un correo válido.');
-        }
-
-        return [
-            'nombres' => $cleanNames,
-            'apellidos' => $cleanLastnames,
-            'usuario' => $cleanUser,
-            'correo' => $cleanEmail,
-        ];
     }
 }

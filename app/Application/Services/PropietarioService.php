@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Services;
+namespace App\Application\Services;
 
 use App\Contracts\Repositories\PropietarioRepositoryInterface;
 use App\Models\Propietario;

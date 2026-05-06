@@ -14,7 +14,7 @@ use App\Presentation\Http\Response;
 use App\Presentation\ViewModels\UsuarioCreateViewModel;
 use App\Presentation\ViewModels\UsuarioEditViewModel;
 use App\Presentation\ViewModels\UsuarioIndexViewModel;
-use App\Services\UsuarioService;
+use App\Application\Services\UsuarioService;
 use InvalidArgumentException;
 
 final class UsuarioController

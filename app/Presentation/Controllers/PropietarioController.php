@@ -14,7 +14,7 @@ use App\Presentation\Http\Response;
 use App\Presentation\ViewModels\PropietarioCreateViewModel;
 use App\Presentation\ViewModels\PropietarioEditViewModel;
 use App\Presentation\ViewModels\PropietarioIndexViewModel;
-use App\Services\PropietarioService;
+use App\Application\Services\PropietarioService;
 use InvalidArgumentException;
 
 final class PropietarioController

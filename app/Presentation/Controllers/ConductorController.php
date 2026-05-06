@@ -14,7 +14,7 @@ use App\Presentation\Http\Response;
 use App\Presentation\ViewModels\ConductorCreateViewModel;
 use App\Presentation\ViewModels\ConductorEditViewModel;
 use App\Presentation\ViewModels\ConductorIndexViewModel;
-use App\Services\ConductorService;
+use App\Application\Services\ConductorService;
 use InvalidArgumentException;
 
 final class ConductorController

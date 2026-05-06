@@ -14,7 +14,7 @@ use App\Presentation\Http\Response;
 use App\Presentation\ViewModels\TaxiCreateViewModel;
 use App\Presentation\ViewModels\TaxiEditViewModel;
 use App\Presentation\ViewModels\TaxiIndexViewModel;
-use App\Services\TaxiService;
+use App\Application\Services\TaxiService;
 use InvalidArgumentException;
 
 final class TaxiController

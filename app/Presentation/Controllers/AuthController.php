@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Presentation\Controllers;
 
-use App\Contracts\Services\AuthServiceInterface;
+use App\Application\Contracts\AuthServiceInterface;
 use App\Core\Auth;
 use App\Core\Csrf;
 use App\Core\View;

@@ -6,14 +6,14 @@ use App\Contracts\Repositories\ConductorRepositoryInterface;
 use App\Contracts\Repositories\PropietarioRepositoryInterface;
 use App\Contracts\Repositories\TaxiRepositoryInterface;
 use App\Contracts\Repositories\UserRepositoryInterface;
-use App\Contracts\Services\AuthServiceInterface;
+use App\Application\Contracts\AuthServiceInterface;
 use App\Core\Container;
 use App\Presentation\Http\Request;
 use App\Repositories\ConductorRepository;
 use App\Repositories\PropietarioRepository;
 use App\Repositories\TaxiRepository;
 use App\Repositories\UserRepository;
-use App\Services\AuthService;
+use App\Application\Services\AuthService;
 
 /** @param Container $container */
 return static function (Container $container): void {

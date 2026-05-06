@@ -13,6 +13,26 @@ final class Conductor
         public readonly int $placa,
     ) {}
 
+    public static function create(string $nombres, string $telefono, int $placa): self
+    {
+        $cleanName = trim($nombres);
+        $cleanPhone = trim($telefono);
+
+        if ($cleanName === '') {
+            throw new \InvalidArgumentException('El nombre del conductor es obligatorio.');
+        }
+
+        if (mb_strlen($cleanName) > 255) {
+            throw new \InvalidArgumentException('El nombre excede la longitud permitida.');
+        }
+
+        if ($cleanPhone === '' || !preg_match('/^[0-9]{7,10}$/', $cleanPhone)) {
+            throw new \InvalidArgumentException('El teléfono debe contener entre 7 y 10 dígitos.');
+        }
+
+        return new self(id: 0, nombres: $cleanName, telefono: $cleanPhone, placa: $placa);
+    }
+
     public static function fromRow(array $row): self
     {
         return new self(

@@ -36,8 +36,9 @@ final class ConductorService
 
     public function create(string $nombres, string $telefono, int $placa): void
     {
-        $data = $this->validate($nombres, $telefono, $placa);
-        $this->conductores->create($data['nombres'], $data['telefono'], $data['placa']);
+        $this->validatePlaca($placa);
+        $c = Conductor::create($nombres, $telefono, $placa);
+        $this->conductores->create($c->nombres, $c->telefono, $c->placa);
     }
 
     public function update(int $id, string $nombres, string $telefono, int $placa): void
@@ -46,8 +47,9 @@ final class ConductorService
             throw new InvalidArgumentException('ID de conductor inválido.');
         }
 
-        $data = $this->validate($nombres, $telefono, $placa);
-        $this->conductores->update($id, $data['nombres'], $data['telefono'], $data['placa']);
+        $this->validatePlaca($placa);
+        $c = Conductor::create($nombres, $telefono, $placa);
+        $this->conductores->update($id, $c->nombres, $c->telefono, $c->placa);
     }
 
     public function delete(int $id): void
@@ -59,31 +61,10 @@ final class ConductorService
         $this->conductores->delete($id);
     }
 
-    private function validate(string $nombres, string $telefono, int $placa): array
+    private function validatePlaca(int $placa): void
     {
-        $cleanName = trim($nombres);
-        $cleanPhone = trim($telefono);
-
-        if ($cleanName === '') {
-            throw new InvalidArgumentException('El nombre del conductor es obligatorio.');
-        }
-
-        if (mb_strlen($cleanName) > 255) {
-            throw new InvalidArgumentException('El nombre excede la longitud permitida.');
-        }
-
-        if ($cleanPhone === '' || !preg_match('/^[0-9]{7,10}$/', $cleanPhone)) {
-            throw new InvalidArgumentException('El teléfono debe contener entre 7 y 10 dígitos.');
-        }
-
         if ($placa <= 0 || $this->taxis->findByPlaca($placa) === null) {
             throw new InvalidArgumentException('Debe seleccionar una placa válida.');
         }
-
-        return [
-            'nombres' => $cleanName,
-            'telefono' => $cleanPhone,
-            'placa' => $placa,
-        ];
     }
 }

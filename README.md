@@ -2,20 +2,19 @@
 
 Aplicación web desarrollada con **PHP** y **Bootstrap**, orientada a la gestión de conductores, propietarios, taxis y usuarios, con autenticación por sesión y panel administrativo.
 
-Actualmente usa una arquitectura por capas (mini-MVC): **Controller -> Service -> Repository -> View** con modelos tipados y ViewModels.
+Arquitectura por capas clásica (N-Layer): **Presentation → Application → Domain → Infrastructure**, con framework interno propio en `core/`.
 
-## ✨ Características Recientes
+## ✨ Características
 
-- **Diseño Moderno y Responsivo:** Interfaz de usuario renovada en todos los módulos. La página de inicio ahora cuenta con un carrusel totalmente adaptativo que ajusta su altura y contenido dinámicamente según el dispositivo.
-- **Estilos Modulares:** Implementación de hojas de estilo específicas por vista (`public/css/home.css`) para evitar colisiones y mantener un `layout.css` limpio y global.
-- **Gestión AJAX:** Eliminación de registros optimizada mediante peticiones asíncronas (Fetch API) y SweetAlert2.
-- **Repositorios Tipados:** Los repositorios exponen métodos con nombres limpios (`all`, `findById`, etc.) y retornan modelos de dominio tipados.
-- **Renderizado Tipado de Vistas:** `View::renderWith()` usa `ViewModel` en toda la aplicación (se eliminó `View::render()` legacy con arrays).
-- **Layout Desacoplado:** El layout (`header/footer`) consume un `LayoutViewModel` preparado desde `App\Core\View`, evitando lógica de aplicación dentro de la plantilla.
-- **Toasts Centralizados:** Configuración global en `public/js/toast-config.js` con helpers reutilizables (`showToast`, `showToastSuccess`, `showToastError`) para respuestas CRUD.
-- **Seguridad Mejorada:** Validación de CSRF en todas las acciones sensibles y control de acceso basado en roles (Administrador).
-- **Arquitectura Modular:** Lógica de frontend desacoplada en módulos ES6 (`public/modules/`).
-- **Manejo de Errores HTTP:** Vistas dedicadas para errores comunes (404, 500 y genéricas para 403/405/419).
+- **Arquitectura N-Layer:** Capas Presentation, Application, Domain e Infrastructure claramente separadas. Framework interno en `core/` desacoplado de la lógica de negocio.
+- **Modelos de Dominio Ricos:** Cada modelo expone `Model::create()` con validaciones propias. Los Services orquestan reglas cross-domain (existencia de FK) y delegan al modelo para el resto.
+- **Sin JOINs Cross-Domain:** Los repositorios consultan una sola tabla. El ensamblado de datos entre dominios ocurre en el Service (e.g. `TaxiService::allWithOwner()`).
+- **Renderizado Tipado de Vistas:** `View::renderWith()` recibe un `ViewModel` tipado; no se usa `extract()` ni arrays crudos.
+- **Layout Desacoplado:** El layout consume un `LayoutViewModel` preparado en `core/View`, sin lógica de aplicación en la plantilla.
+- **Gestión AJAX:** Eliminación de registros mediante Fetch API con feedback visual vía SweetAlert2.
+- **Toasts Centralizados:** Helpers reutilizables en `public/js/toast-config.js` (`showToast`, `showToastSuccess`, `showToastError`).
+- **Seguridad:** CSRF en todas las acciones POST y control de acceso basado en roles (Administrador).
+- **Manejo de Errores HTTP:** Vistas dedicadas para 404, 500 y errores genéricos.
 
 ## 🛠 Tecnologías
 
@@ -65,17 +64,38 @@ Abrir en el navegador:
 
 ## 📁 Estructura del Proyecto
 
-- `public/index.php`: Front Controller y punto de entrada.
-- `public/modules/`: Módulos JavaScript para lógica de frontend (eliminaciones AJAX).
-- `public/js/toast-config.js`: Configuración global de SweetAlert2 para toasts.
-- `public/css`, `public/js`, `public/img`: Recursos estáticos (estilos, scripts base e imágenes).
-- `routes/web.php`: Definición de rutas del sistema.
-- `app/Controllers/`: Manejo de peticiones HTTP y lógica de control.
-- `app/Services/`: Reglas de negocio, validaciones y orquestación.
-- `app/Repositories/`: Abstracción de acceso a datos (PDO) con retorno de modelos tipados.
-- `app/Http/ViewModels/`: ViewModels de cada pantalla y `LayoutViewModel`.
-- `app/Views/`: Plantillas de vista organizadas por módulos.
-- `app/Core/`: Núcleo del sistema (Router, Auth, Csrf, Flash, Database, View, Autoloader, Env).
+```
+app/
+  Presentation/
+    Controllers/       ← Controladores HTTP
+    Http/              ← Request, Response
+    ViewModels/        ← ViewModels tipados (uno por vista)
+    Views/             ← Plantillas PHP
+  Application/
+    Contracts/         ← Interfaces de servicios
+    Services/          ← Servicios de aplicación (orquestación)
+  Domain/
+    Models/            ← Modelos de dominio con Model::create() y validaciones
+  Infrastructure/
+    Contracts/         ← Interfaces de repositorios
+    Persistence/
+      Repositories/    ← Implementaciones PDO
+      Database.php     ← Singleton PDO
+core/                  ← Framework interno (Router, Container, Auth, Csrf, Flash, View…)
+config/
+  bindings.php         ← Registro de dependencias (DI container)
+bootstrap/
+  app.php              ← Bootstrap: autoloader, container, router
+routes/
+  web.php              ← Definición de rutas
+public/
+  index.php            ← Front controller
+  css/, js/, img/      ← Recursos estáticos
+  modules/             ← Módulos ES6 (lógica AJAX)
+database/
+  schema.sql
+  seeder.sql
+```
 
 ## 🛣️ Módulos y Rutas
 

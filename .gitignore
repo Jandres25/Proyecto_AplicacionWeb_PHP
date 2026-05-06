@@ -20,3 +20,9 @@ bash.exe.stackdump
 *.sql
 !database/schema.sql
 !database/seeder.sql
+
+# Claude
+.claude
+
+# Docs (tracked intentionally — do not ignore)
+!docs/

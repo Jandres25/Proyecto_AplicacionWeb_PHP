@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Application\Services;
 
 use App\Infrastructure\Contracts\UserRepositoryInterface;
-use App\Models\Usuario;
+use App\Domain\Models\Usuario;
 use InvalidArgumentException;
 
 final class UsuarioService

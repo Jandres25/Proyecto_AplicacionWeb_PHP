@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Persistence\Repositories;
 
 use App\Infrastructure\Contracts\TaxiRepositoryInterface;
-use App\Models\Taxi;
+use App\Domain\Models\Taxi;
 use PDO;
 
 final class TaxiRepository implements TaxiRepositoryInterface

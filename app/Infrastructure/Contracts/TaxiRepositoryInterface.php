@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Contracts;
 
-use App\Models\Taxi;
+use App\Domain\Models\Taxi;
 
 interface TaxiRepositoryInterface
 {

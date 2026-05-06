@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Presentation\ViewModels;
 
 use App\Presentation\ViewModels\ViewModel;
-use App\Models\Conductor;
-use App\Models\Taxi;
+use App\Domain\Models\Conductor;
+use App\Domain\Models\Taxi;
 
 final class ConductorEditViewModel extends ViewModel
 {

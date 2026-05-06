@@ -6,8 +6,8 @@ namespace App\Application\Services;
 
 use App\Infrastructure\Contracts\PropietarioRepositoryInterface;
 use App\Infrastructure\Contracts\TaxiRepositoryInterface;
-use App\Models\Propietario;
-use App\Models\Taxi;
+use App\Domain\Models\Propietario;
+use App\Domain\Models\Taxi;
 use InvalidArgumentException;
 
 final class TaxiService

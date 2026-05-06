@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Contracts;
 
-use App\Models\Propietario;
+use App\Domain\Models\Propietario;
 
 interface PropietarioRepositoryInterface
 {

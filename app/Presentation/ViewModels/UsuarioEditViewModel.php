@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Presentation\ViewModels;
 
 use App\Presentation\ViewModels\ViewModel;
-use App\Models\Usuario;
+use App\Domain\Models\Usuario;
 
 final class UsuarioEditViewModel extends ViewModel
 {

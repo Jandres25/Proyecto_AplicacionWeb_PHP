@@ -6,8 +6,8 @@ namespace App\Application\Services;
 
 use App\Infrastructure\Contracts\ConductorRepositoryInterface;
 use App\Infrastructure\Contracts\TaxiRepositoryInterface;
-use App\Models\Conductor;
-use App\Models\Taxi;
+use App\Domain\Models\Conductor;
+use App\Domain\Models\Taxi;
 use InvalidArgumentException;
 
 final class ConductorService

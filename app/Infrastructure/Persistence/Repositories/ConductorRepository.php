@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Persistence\Repositories;
 
 use App\Infrastructure\Contracts\ConductorRepositoryInterface;
-use App\Models\Conductor;
+use App\Domain\Models\Conductor;
 use PDO;
 
 final class ConductorRepository implements ConductorRepositoryInterface

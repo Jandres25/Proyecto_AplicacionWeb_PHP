@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Persistence\Repositories;
 
 use App\Infrastructure\Contracts\UserRepositoryInterface;
-use App\Models\Usuario;
+use App\Domain\Models\Usuario;
 use PDO;
 
 final class UserRepository implements UserRepositoryInterface

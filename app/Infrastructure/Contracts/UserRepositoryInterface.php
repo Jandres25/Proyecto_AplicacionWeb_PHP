@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Contracts;
 
-use App\Models\Usuario;
+use App\Domain\Models\Usuario;
 
 interface UserRepositoryInterface
 {

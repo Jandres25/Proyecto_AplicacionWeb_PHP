@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Persistence\Repositories;
 
 use App\Infrastructure\Contracts\PropietarioRepositoryInterface;
-use App\Models\Propietario;
+use App\Domain\Models\Propietario;
 use PDO;
 
 final class PropietarioRepository implements PropietarioRepositoryInterface

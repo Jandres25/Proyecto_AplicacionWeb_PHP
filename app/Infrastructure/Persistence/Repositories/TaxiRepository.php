@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Repositories;
+namespace App\Infrastructure\Persistence\Repositories;
 
-use App\Contracts\Repositories\TaxiRepositoryInterface;
+use App\Infrastructure\Contracts\TaxiRepositoryInterface;
 use App\Models\Taxi;
 use PDO;
 

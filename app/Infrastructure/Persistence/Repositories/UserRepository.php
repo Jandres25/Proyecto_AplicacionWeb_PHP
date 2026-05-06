@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Repositories;
+namespace App\Infrastructure\Persistence\Repositories;
 
-use App\Contracts\Repositories\UserRepositoryInterface;
+use App\Infrastructure\Contracts\UserRepositoryInterface;
 use App\Models\Usuario;
 use PDO;
 

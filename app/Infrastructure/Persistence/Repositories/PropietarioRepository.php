@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Repositories;
+namespace App\Infrastructure\Persistence\Repositories;
 
-use App\Contracts\Repositories\PropietarioRepositoryInterface;
+use App\Infrastructure\Contracts\PropietarioRepositoryInterface;
 use App\Models\Propietario;
 use PDO;
 

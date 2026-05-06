@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Contracts\Repositories;
+namespace App\Infrastructure\Contracts;
 
 use App\Models\Usuario;
 

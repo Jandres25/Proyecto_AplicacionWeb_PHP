@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Services;
 
-use App\Contracts\Repositories\UserRepositoryInterface;
+use App\Infrastructure\Contracts\UserRepositoryInterface;
 use App\Application\Contracts\AuthServiceInterface;
 
 final class AuthService implements AuthServiceInterface

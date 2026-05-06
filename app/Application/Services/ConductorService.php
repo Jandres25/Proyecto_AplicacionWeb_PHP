@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Application\Services;
 
-use App\Contracts\Repositories\ConductorRepositoryInterface;
-use App\Contracts\Repositories\TaxiRepositoryInterface;
+use App\Infrastructure\Contracts\ConductorRepositoryInterface;
+use App\Infrastructure\Contracts\TaxiRepositoryInterface;
 use App\Models\Conductor;
 use App\Models\Taxi;
 use InvalidArgumentException;

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Repositories;
+namespace App\Infrastructure\Persistence\Repositories;
 
-use App\Contracts\Repositories\ConductorRepositoryInterface;
+use App\Infrastructure\Contracts\ConductorRepositoryInterface;
 use App\Models\Conductor;
 use PDO;
 

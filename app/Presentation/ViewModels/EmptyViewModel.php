@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-namespace App\Http\ViewModels;
+namespace App\Presentation\ViewModels;
 
-use App\Http\ViewModel;
+use App\Presentation\ViewModels\ViewModel;
 
 final class EmptyViewModel extends ViewModel {}

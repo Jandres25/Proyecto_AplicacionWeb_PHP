@@ -8,7 +8,7 @@ use App\Contracts\Repositories\TaxiRepositoryInterface;
 use App\Contracts\Repositories\UserRepositoryInterface;
 use App\Contracts\Services\AuthServiceInterface;
 use App\Core\Container;
-use App\Http\Request;
+use App\Presentation\Http\Request;
 use App\Repositories\ConductorRepository;
 use App\Repositories\PropietarioRepository;
 use App\Repositories\TaxiRepository;

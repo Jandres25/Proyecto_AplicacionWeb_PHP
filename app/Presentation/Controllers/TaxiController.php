@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace App\Controllers;
+namespace App\Presentation\Controllers;
 
 use App\Core\Auth;
 use App\Core\Csrf;
 use App\Core\ErrorHandler;
 use App\Core\Flash;
 use App\Core\View;
-use App\Http\Request;
-use App\Http\Response;
-use App\Http\ViewModels\TaxiCreateViewModel;
-use App\Http\ViewModels\TaxiEditViewModel;
-use App\Http\ViewModels\TaxiIndexViewModel;
+use App\Presentation\Http\Request;
+use App\Presentation\Http\Response;
+use App\Presentation\ViewModels\TaxiCreateViewModel;
+use App\Presentation\ViewModels\TaxiEditViewModel;
+use App\Presentation\ViewModels\TaxiIndexViewModel;
 use App\Services\TaxiService;
 use InvalidArgumentException;
 

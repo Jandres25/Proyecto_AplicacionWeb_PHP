@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Core;
 
 use App\Core\View;
-use App\Http\ViewModels\ErrorViewModel;
+use App\Presentation\ViewModels\ErrorViewModel;
 use Throwable;
 
 final class ErrorHandler

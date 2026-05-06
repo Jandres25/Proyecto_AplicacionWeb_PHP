@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Core;
 
-use App\Http\ViewModel;
-use App\Http\ViewModels\LayoutViewModel;
+use App\Presentation\ViewModels\LayoutViewModel;
+use App\Presentation\ViewModels\ViewModel;
 use RuntimeException;
 
 final class View
@@ -13,7 +13,7 @@ final class View
     public static function renderWith(string $view, ViewModel $vm, bool $withLayout = true): void
     {
         $basePath = dirname(__DIR__, 2);
-        $viewPath = $basePath . '/app/Views/' . $view . '.php';
+        $viewPath = $basePath . '/app/Presentation/Views/' . $view . '.php';
 
         if (!file_exists($viewPath)) {
             throw new RuntimeException("La vista {$view} no existe.");
@@ -21,13 +21,13 @@ final class View
 
         if ($withLayout) {
             $layout = self::buildLayoutViewModel();
-            require $basePath . '/app/Views/layout/header.php';
+            require $basePath . '/app/Presentation/Views/layout/header.php';
         }
 
         require $viewPath;
 
         if ($withLayout) {
-            require $basePath . '/app/Views/layout/footer.php';
+            require $basePath . '/app/Presentation/Views/layout/footer.php';
         }
     }
 

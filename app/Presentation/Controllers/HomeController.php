@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Controllers;
+namespace App\Presentation\Controllers;
 
 use App\Core\Auth;
 use App\Core\View;
-use App\Http\ViewModels\EmptyViewModel;
+use App\Presentation\ViewModels\EmptyViewModel;
 
 final class HomeController
 {

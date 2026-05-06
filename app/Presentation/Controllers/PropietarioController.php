@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace App\Controllers;
+namespace App\Presentation\Controllers;
 
 use App\Core\Auth;
 use App\Core\Csrf;
 use App\Core\ErrorHandler;
 use App\Core\Flash;
 use App\Core\View;
-use App\Http\Request;
-use App\Http\Response;
-use App\Http\ViewModels\PropietarioCreateViewModel;
-use App\Http\ViewModels\PropietarioEditViewModel;
-use App\Http\ViewModels\PropietarioIndexViewModel;
+use App\Presentation\Http\Request;
+use App\Presentation\Http\Response;
+use App\Presentation\ViewModels\PropietarioCreateViewModel;
+use App\Presentation\ViewModels\PropietarioEditViewModel;
+use App\Presentation\ViewModels\PropietarioIndexViewModel;
 use App\Services\PropietarioService;
 use InvalidArgumentException;
 

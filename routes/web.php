@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-use App\Controllers\HomeController;
-use App\Controllers\AuthController;
-use App\Controllers\PropietarioController;
-use App\Controllers\TaxiController;
-use App\Controllers\ConductorController;
-use App\Controllers\UsuarioController;
+use App\Presentation\Controllers\HomeController;
+use App\Presentation\Controllers\AuthController;
+use App\Presentation\Controllers\PropietarioController;
+use App\Presentation\Controllers\TaxiController;
+use App\Presentation\Controllers\ConductorController;
+use App\Presentation\Controllers\UsuarioController;
 
 $router->get('/login', [AuthController::class, 'showLogin']);
 $router->post('/login', [AuthController::class, 'login']);

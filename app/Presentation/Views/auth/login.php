@@ -28,7 +28,7 @@
     <div class="container d-flex justify-content-center align-items-center login-form">
         <div class="login-content">
             <form method="post" action="<?php echo e(app_url('/login')); ?>">
-                <input type="hidden" name="_token" value="<?php echo e(\App\Core\Csrf::token()); ?>">
+                <input type="hidden" name="_token" value="<?php echo e(\Core\Csrf::token()); ?>">
                 <img src="<?php echo e(app_url('/img/avatar.svg')); ?>" alt="Imagen Usuario">
                 <h2 class="title">BIENVENIDO</h2>
                 <?php if (!empty($vm->mensaje)) { ?>

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Presentation\Controllers;
 
-use App\Core\Auth;
-use App\Core\Csrf;
-use App\Core\ErrorHandler;
-use App\Core\Flash;
-use App\Core\View;
+use Core\Auth;
+use Core\Csrf;
+use Core\ErrorHandler;
+use Core\Flash;
+use Core\View;
 use App\Presentation\Http\Request;
 use App\Presentation\Http\Response;
 use App\Presentation\ViewModels\TaxiCreateViewModel;

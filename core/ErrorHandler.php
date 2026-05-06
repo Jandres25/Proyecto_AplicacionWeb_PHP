@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Core;
+namespace Core;
 
-use App\Core\View;
+use Core\View;
 use App\Presentation\ViewModels\ErrorViewModel;
 use Throwable;
 

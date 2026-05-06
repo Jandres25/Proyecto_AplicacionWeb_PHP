@@ -53,7 +53,7 @@ if (!function_exists('env')) {
 }
 
 try {
-    loadEnv(dirname(__DIR__, 2) . '/.env');
+    loadEnv(dirname(__DIR__) . '/.env');
 } catch (Exception $e) {
     die('Error loading the .env file: ' . $e->getMessage());
 }

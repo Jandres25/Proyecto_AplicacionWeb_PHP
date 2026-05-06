@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Core;
+namespace Core;
 
 require_once __DIR__ . '/Env.php';
 

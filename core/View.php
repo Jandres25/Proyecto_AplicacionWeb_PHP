@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Core;
+namespace Core;
 
 use App\Presentation\ViewModels\LayoutViewModel;
 use App\Presentation\ViewModels\ViewModel;
@@ -12,7 +12,7 @@ final class View
 {
     public static function renderWith(string $view, ViewModel $vm, bool $withLayout = true): void
     {
-        $basePath = dirname(__DIR__, 2);
+        $basePath = dirname(__DIR__);
         $viewPath = $basePath . '/app/Presentation/Views/' . $view . '.php';
 
         if (!file_exists($viewPath)) {

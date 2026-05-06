@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Core;
+namespace Core;
 
 final class Autoloader
 {
@@ -20,7 +20,7 @@ final class Autoloader
         require_once __DIR__ . '/Env.php';
         require_once __DIR__ . '/helpers.php';
 
-        self::$prefixes['App\\'] = dirname(__DIR__);
+        self::$prefixes['App\\'] = dirname(__DIR__) . '/app';
 
         spl_autoload_register(static function (string $class): void {
             foreach (self::$prefixes as $prefix => $baseDir) {

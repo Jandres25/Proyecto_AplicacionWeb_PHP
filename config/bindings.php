@@ -7,7 +7,7 @@ use App\Infrastructure\Contracts\PropietarioRepositoryInterface;
 use App\Infrastructure\Contracts\TaxiRepositoryInterface;
 use App\Infrastructure\Contracts\UserRepositoryInterface;
 use App\Application\Contracts\AuthServiceInterface;
-use App\Core\Container;
+use Core\Container;
 use App\Presentation\Http\Request;
 use App\Infrastructure\Persistence\Repositories\ConductorRepository;
 use App\Infrastructure\Persistence\Repositories\PropietarioRepository;

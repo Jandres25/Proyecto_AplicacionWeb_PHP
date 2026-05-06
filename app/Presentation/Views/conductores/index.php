@@ -69,7 +69,7 @@
                                         </a>
                                         <button type="button" class="btn btn-light btn-sm border btn-eliminar"
                                             data-id="<?= e($registro->id); ?>"
-                                            data-token="<?= e(\App\Core\Csrf::token()); ?>"
+                                            data-token="<?= e(\Core\Csrf::token()); ?>"
                                             title="Eliminar">
                                             <i class="bi bi-trash-fill text-danger"></i>
                                         </button>

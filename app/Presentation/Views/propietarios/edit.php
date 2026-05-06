@@ -19,7 +19,7 @@
     <div class="row justify-content-center">
         <div class="col-lg-8">
             <form action="<?= e(app_url('/propietarios/editar')); ?>" method="post">
-                <input type="hidden" name="_token" value="<?= e(\App\Core\Csrf::token()); ?>">
+                <input type="hidden" name="_token" value="<?= e(\Core\Csrf::token()); ?>">
                 <input type="hidden" name="id" value="<?= e($vm->propietario->id); ?>">
                 <div class="card shadow-sm border-0">
                     <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">

@@ -16,4 +16,12 @@
         window.showToast('success', title, options);
     window.showToastError = (title, options = {}) =>
         window.showToast('error', title, options);
+    const pending = sessionStorage.getItem('pendingToast');
+    if (pending) {
+        sessionStorage.removeItem('pendingToast');
+        try {
+            const { type, message } = JSON.parse(pending);
+            window.showToast(type, message);
+        } catch (_) {}
+    }
 })();

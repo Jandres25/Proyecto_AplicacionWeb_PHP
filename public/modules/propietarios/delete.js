@@ -43,10 +43,8 @@ export function deletePropietario(id, token, baseUrl) {
                 })
                 .then(data => {
                     if (data.success) {
-                        window.showToastSuccess(data.message || 'Registro eliminado');
-                        setTimeout(() => {
-                            window.location.reload();
-                        }, 700);
+                        sessionStorage.setItem('pendingToast', JSON.stringify({ type: 'success', message: data.message || 'Registro eliminado' }));
+                        window.location.reload();
                     } else {
                         window.showToastError(data.message || 'No se pudo eliminar el registro');
                     }

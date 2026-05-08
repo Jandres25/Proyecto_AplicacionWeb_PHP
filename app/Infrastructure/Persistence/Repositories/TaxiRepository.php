@@ -49,7 +49,7 @@ final class TaxiRepository implements TaxiRepositoryInterface
         $statement->execute();
 
         $row = $statement->fetch();
-        return $row !== null ? Taxi::fromRow($row) : null;
+        return $row !== false ? Taxi::fromRow($row) : null;
     }
 
     /** @return Taxi[] */

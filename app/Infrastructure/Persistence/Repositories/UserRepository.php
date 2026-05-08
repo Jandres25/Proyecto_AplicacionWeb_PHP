@@ -19,7 +19,7 @@ final class UserRepository implements UserRepositoryInterface
         $statement->execute();
 
         $user = $statement->fetch();
-        return $user !== null ? Usuario::fromRow($user) : null;
+        return $user !== false ? Usuario::fromRow($user) : null;
     }
 
     public function updatePasswordHash(int $id, string $hashedPassword): void
@@ -69,7 +69,7 @@ final class UserRepository implements UserRepositoryInterface
         $statement->execute();
 
         $row = $statement->fetch();
-        return $row !== null ? Usuario::fromRow($row) : null;
+        return $row !== false ? Usuario::fromRow($row) : null;
     }
 
     public function create(

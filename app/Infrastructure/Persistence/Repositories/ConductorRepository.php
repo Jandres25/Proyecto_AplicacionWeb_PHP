@@ -30,7 +30,7 @@ final class ConductorRepository implements ConductorRepositoryInterface
         $statement->execute();
 
         $row = $statement->fetch();
-        return $row !== null ? Conductor::fromRow($row) : null;
+        return $row !== false ? Conductor::fromRow($row) : null;
     }
 
     public function create(string $nombres, string $telefono, int $placa): void

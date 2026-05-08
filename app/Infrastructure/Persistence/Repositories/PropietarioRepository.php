@@ -30,7 +30,7 @@ final class PropietarioRepository implements PropietarioRepositoryInterface
         $statement->execute();
 
         $row = $statement->fetch();
-        return $row !== null ? Propietario::fromRow($row) : null;
+        return $row !== false ? Propietario::fromRow($row) : null;
     }
 
     public function create(string $nombre, string $telefono): void
@@ -60,6 +60,4 @@ final class PropietarioRepository implements PropietarioRepositoryInterface
         $statement->bindValue(':Idpropietario', $id, PDO::PARAM_INT);
         $statement->execute();
     }
-
-
 }

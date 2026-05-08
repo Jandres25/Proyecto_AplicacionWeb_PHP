@@ -28,17 +28,26 @@ Arquitectura por capas clásica (N-Layer): **Presentation → Application → Do
 ## 📋 Requisitos
 
 - XAMPP (Apache + MySQL)
-- PHP 7.4 o superior
+- PHP 8.1 o superior
 - Base de datos MySQL
+- [Composer](https://getcomposer.org/) (gestor de dependencias PHP)
 
 ## ⚙️ Configuración
 
 1. Clonar o copiar el proyecto en:
    `/opt/lampp/htdocs/Proyecto_AplicacionWeb_PHP`
-2. Importar el archivo `proyecto.sql` en MySQL/phpMyAdmin (si está disponible en la raíz o carpeta `database/`).
-3. Crear el archivo `.env` en la raíz del proyecto usando `.env.example` como base.
-4. Configurar las credenciales de base de datos en `.env`.
-5. Iniciar Apache y MySQL desde XAMPP.
+2. Instalar dependencias PHP:
+   ```bash
+   composer install --no-dev --optimize-autoloader
+   ```
+3. Importar la base de datos en MySQL/phpMyAdmin: primero `database/schema.sql`, luego `database/seeder.sql`.
+4. Crear el archivo `.env` en la raíz del proyecto usando `.env.example` como base.
+5. Configurar las credenciales de base de datos en `.env`.
+6. Dar permisos de escritura al directorio de logs:
+   - **Linux** (XAMPP): `chown -R daemon:daemon storage/logs`
+   - **macOS** (XAMPP): `chmod -R 777 storage/logs`
+   - **Windows**: no se requiere acción — XAMPP ya tiene acceso de escritura por defecto.
+7. Iniciar Apache y MySQL desde XAMPP.
 
 ## 🔑 Variables de entorno
 

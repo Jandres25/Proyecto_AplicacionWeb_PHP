@@ -6,19 +6,21 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This project runs on XAMPP (Apache + MySQL). There is no build step — PHP files are served directly.
 
+- **Dependencies**: Run `composer install` (dev) or `composer install --no-dev --optimize-autoloader` (production) before starting Apache.
 - **Start**: Launch Apache and MySQL from XAMPP, then open `http://localhost/Proyecto_AplicacionWeb_PHP/public/`
 - **Database setup**: Import `database/schema.sql` then `database/seeder.sql` into MySQL
 - **Config**: Copy `.env.example` to `.env` and set DB credentials. `APP_URL` must include `/public` (e.g., `APP_URL=http://localhost/Proyecto_AplicacionWeb_PHP/public`)
+- **Logs**: Structured logs are written to `storage/logs/app.log` (rotated daily, 14 days). Ensure Apache's user has write permission on that directory.
 
-There are no automated tests, no linters, and no package managers configured.
+There are no automated tests and no linters.
 
 ## Architecture
 
-Custom PHP framework with no external dependencies, organized as a classic N-Layer architecture (Presentation / Application / Domain / Infrastructure). Entry point: `public/index.php`.
+Custom PHP framework managed via **Composer** (PSR-4 autoload), organized as a classic N-Layer architecture (Presentation / Application / Domain / Infrastructure). Entry point: `public/index.php`.
 
 **Request lifecycle:**
 
-1. `public/index.php` requires `bootstrap/app.php`, which registers the autoloader, binds dependencies via `config/bindings.php`, instantiates `Router`, loads `routes/web.php`, and returns the router.
+1. `public/index.php` requires `bootstrap/app.php`, which loads `vendor/autoload.php` (Composer PSR-4), initializes phpdotenv, binds dependencies via `config/bindings.php`, instantiates `Router`, loads `routes/web.php`, and returns the router.
 2. `Router` resolves the controller from the `Container` (with autowiring) and calls the action method.
 3. Controllers call `Service` → `Repository` (typed domain models) → return `ViewModel` → `View::renderWith()`.
 4. `View::renderWith()` builds a `LayoutViewModel` (nav, auth, CSRF, flash toasts) and includes `header.php`, the view file, and `footer.php`.

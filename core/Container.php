@@ -10,6 +10,21 @@ use RuntimeException;
 
 final class Container
 {
+    private static ?self $instance = null;
+
+    public static function getInstance(): self
+    {
+        if (self::$instance === null) {
+            throw new RuntimeException('Container has not been initialized.');
+        }
+        return self::$instance;
+    }
+
+    public static function setInstance(self $container): void
+    {
+        self::$instance = $container;
+    }
+
     /** @var array<string, Closure> */
     private array $bindings = [];
 

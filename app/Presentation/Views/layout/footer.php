@@ -22,8 +22,8 @@
 <script src="https://cdn.datatables.net/responsive/2.4.1/js/responsive.bootstrap5.min.js"></script>
 
 <!-- Custom Scripts -->
-<script src="<?= e($layout->baseUrl . 'js/toast-config.js'); ?>"></script>
-<script src="<?= e($layout->baseUrl . 'js/layout.js'); ?>"></script>
+<script src="<?= e(app_url('/js/toast-config.js')); ?>"></script>
+<script src="<?= e(app_url('/js/layout.js')); ?>"></script>
 <?php if (!empty($layout->toastMessages)) : ?>
     <script>
         <?php foreach ($layout->toastMessages as $toast) : ?>

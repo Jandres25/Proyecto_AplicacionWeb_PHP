@@ -46,6 +46,11 @@ final class AuthController
         }
 
         Auth::login($user);
+
+        if ($this->request->post('remember') === '1') {
+            Auth::issueRememberCookie((int) $user['ID']);
+        }
+
         Response::redirect(app_url('/'));
     }
 

@@ -337,3 +337,27 @@ a:hover {
 	position: relative;
 	z-index: 2;
 }
+
+.remember-me {
+	margin-top: 22px;
+	margin-bottom: 4px;
+	text-align: left;
+}
+
+.remember-me label {
+	color: #999;
+	font-size: 0.95rem;
+	font-family: 'Poppins', sans-serif;
+	cursor: pointer;
+	transition: color .3s;
+}
+
+.remember-me label:hover {
+	color: #04a1fc;
+}
+
+.icheck-primary > input:first-child:checked + label::before,
+.icheck-primary > input:first-child:checked + input[type="hidden"] + label::before {
+	background-color: #04a1fc;
+	border-color: #04a1fc;
+}

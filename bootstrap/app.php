@@ -9,6 +9,7 @@ $dotenv->load();
 $dotenv->required(['DB_HOST', 'DB_DATABASE', 'DB_USERNAME', 'APP_URL'])->notEmpty();
 
 $container = new Core\Container();
+Core\Container::setInstance($container);
 (require __DIR__ . '/../config/bindings.php')($container);
 
 Core\ErrorHandler::setLogger($container->make(\Psr\Log\LoggerInterface::class));

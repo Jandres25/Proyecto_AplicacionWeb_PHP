@@ -10,8 +10,8 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
-  <link href="<?= e($layout->baseUrl . 'img/compras.png'); ?>" rel="shortcut icon">
-  <link rel="stylesheet" href="<?= e($layout->baseUrl . 'css/layout.css'); ?>">
+  <link href="<?= e(app_url('/img/compras.png')); ?>" rel="shortcut icon">
+  <link rel="stylesheet" href="<?= e(app_url('/css/layout.css')); ?>">
 
   <!-- Scripts base -->
   <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
@@ -29,7 +29,7 @@
   <header>
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark shadow">
       <div class="container-fluid">
-        <a class="navbar-brand d-flex align-items-center" href="<?= e($layout->baseUrl); ?>">
+        <a class="navbar-brand d-flex align-items-center" href="<?= e(app_url('/')); ?>">
           <img src="https://images.unsplash.com/photo-1641846948845-60e99fa0f072?auto=format&fit=crop&w=100&q=80" alt="Logo" width="30" height="30" class="rounded-circle me-2 border border-secondary">
           <span class="fw-bold">Proyecto</span>
         </a>
@@ -53,7 +53,7 @@
 
             </li>
             <li class="nav-item">
-              <form method="post" action="<?= e($layout->baseUrl . 'logout'); ?>" class="d-inline">
+              <form method="post" action="<?= e(app_url('/logout')); ?>" class="d-inline">
                 <input type="hidden" name="_token" value="<?= e($layout->csrfToken); ?>">
                 <button type="submit" class="btn btn-outline-light btn-sm w-100">
                   <i class="bi bi-box-arrow-right me-1"></i> Cerrar Sesión

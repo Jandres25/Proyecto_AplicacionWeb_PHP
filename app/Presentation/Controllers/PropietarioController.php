@@ -55,7 +55,7 @@ final class PropietarioController
 
         try {
             $this->service->create($old['nombre'], $old['telefono']);
-            Flash::set('success', 'Registro Agregado');
+            Flash::set('success', 'Propietario creado exitosamente');
             Response::redirect(app_url('/propietarios'));
         } catch (InvalidArgumentException $exception) {
             View::renderWith('propietarios/create', new PropietarioCreateViewModel(
@@ -98,7 +98,7 @@ final class PropietarioController
 
         try {
             $this->service->update($id, $nombre, $telefono);
-            Flash::set('success', 'Registro Actualizado');
+            Flash::set('success', 'Propietario actualizado exitosamente');
             Response::redirect(app_url('/propietarios'));
         } catch (InvalidArgumentException $exception) {
             View::renderWith('propietarios/edit', new PropietarioEditViewModel(
@@ -126,10 +126,10 @@ final class PropietarioController
         $this->service->delete($id);
 
         if ($this->request->isAjax()) {
-            Response::json(['success' => true, 'message' => 'Registro Eliminado']);
+            Response::json(['success' => true, 'message' => 'Propietario eliminado exitosamente']);
         }
 
-        Flash::set('success', 'Registro Eliminado');
+        Flash::set('success', 'Propietario eliminado exitosamente');
         Response::redirect(app_url('/propietarios'));
     }
 }

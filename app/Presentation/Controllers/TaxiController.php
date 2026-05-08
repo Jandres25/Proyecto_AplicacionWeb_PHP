@@ -57,7 +57,7 @@ final class TaxiController
 
         try {
             $this->service->create($old['modelo'], $old['marca'], (int) $old['propietario']);
-            Flash::set('success', 'Registro Agregado');
+            Flash::set('success', 'Taxi creado exitosamente');
             Response::redirect(app_url('/taxis'));
         } catch (InvalidArgumentException $exception) {
             View::renderWith('taxis/create', new TaxiCreateViewModel(
@@ -103,7 +103,7 @@ final class TaxiController
 
         try {
             $this->service->update($placa, $modelo, $marca, $idPropietario);
-            Flash::set('success', 'Registro Actualizado');
+            Flash::set('success', 'Taxi actualizado exitosamente');
             Response::redirect(app_url('/taxis'));
         } catch (InvalidArgumentException $exception) {
             View::renderWith('taxis/edit', new TaxiEditViewModel(
@@ -132,10 +132,10 @@ final class TaxiController
         $this->service->delete($placa);
 
         if ($this->request->isAjax()) {
-            Response::json(['success' => true, 'message' => 'Registro Eliminado']);
+            Response::json(['success' => true, 'message' => 'Taxi eliminado exitosamente']);
         }
 
-        Flash::set('success', 'Registro Eliminado');
+        Flash::set('success', 'Taxi eliminado exitosamente');
         Response::redirect(app_url('/taxis'));
     }
 }

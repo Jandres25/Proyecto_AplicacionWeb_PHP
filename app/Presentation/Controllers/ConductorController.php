@@ -55,7 +55,7 @@ final class ConductorController
 
         try {
             $this->service->create($old['nombre'], $old['telefono'], (int) $old['placa']);
-            Flash::set('success', 'Registro Agregado');
+            Flash::set('success', 'Conductor creado exitosamente');
             Response::redirect(app_url('/conductores'));
         } catch (InvalidArgumentException $exception) {
             View::renderWith('conductores/create', new ConductorCreateViewModel(
@@ -101,7 +101,7 @@ final class ConductorController
 
         try {
             $this->service->update($id, $nombres, $telefono, $placa);
-            Flash::set('success', 'Registro Actualizado');
+            Flash::set('success', 'Conductor actualizado exitosamente');
             Response::redirect(app_url('/conductores'));
         } catch (InvalidArgumentException $exception) {
             View::renderWith('conductores/edit', new ConductorEditViewModel(
@@ -130,10 +130,10 @@ final class ConductorController
         $this->service->delete($id);
 
         if ($this->request->isAjax()) {
-            Response::json(['success' => true, 'message' => 'Registro Eliminado']);
+            Response::json(['success' => true, 'message' => 'Conductor eliminado exitosamente']);
         }
 
-        Flash::set('success', 'Registro Eliminado');
+        Flash::set('success', 'Conductor eliminado exitosamente');
         Response::redirect(app_url('/conductores'));
     }
 }

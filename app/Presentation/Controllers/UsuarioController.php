@@ -56,7 +56,7 @@ final class UsuarioController
 
         try {
             $this->service->create($old['nombres'], $old['apellidos'], $old['usuario'], $clave, $old['correo']);
-            Flash::set('success', 'Registro Agregado');
+            Flash::set('success', 'Usuario creado exitosamente');
             Response::redirect(app_url('/usuarios'));
         } catch (InvalidArgumentException $exception) {
             View::renderWith('usuarios/create', new UsuarioCreateViewModel(
@@ -102,7 +102,7 @@ final class UsuarioController
 
         try {
             $this->service->update($id, $nombres, $apellidos, $usuarioNombre, $clave, $correo);
-            Flash::set('success', 'Registro Actualizado');
+            Flash::set('success', 'Usuario actualizado exitosamente');
             Response::redirect(app_url('/usuarios'));
         } catch (InvalidArgumentException $exception) {
             View::renderWith('usuarios/edit', new UsuarioEditViewModel(
@@ -138,10 +138,10 @@ final class UsuarioController
         $this->service->delete($id);
 
         if ($this->request->isAjax()) {
-            Response::json(['success' => true, 'message' => 'Registro Eliminado']);
+            Response::json(['success' => true, 'message' => 'Usuario eliminado exitosamente']);
         }
 
-        Flash::set('success', 'Registro Eliminado');
+        Flash::set('success', 'Usuario eliminado exitosamente');
         Response::redirect(app_url('/usuarios'));
     }
 }

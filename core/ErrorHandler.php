@@ -10,6 +10,13 @@ use Throwable;
 
 final class ErrorHandler
 {
+    private static ?\Psr\Log\LoggerInterface $logger = null;
+
+    public static function setLogger(\Psr\Log\LoggerInterface $logger): void
+    {
+        self::$logger = $logger;
+    }
+
     /** @var array<int, array{title: string, message: string, view: string}> */
     private const ERRORS = [
         403 => [
@@ -55,6 +62,7 @@ final class ErrorHandler
     public static function handleException(Throwable $exception): void
     {
         error_log((string) $exception);
+        self::$logger?->error($exception->getMessage(), ['exception' => $exception]);
         self::abort(500);
     }
 }

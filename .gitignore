@@ -4,6 +4,9 @@
 
 # System files
 /vendor/
+/storage/logs/*
+!/storage/logs/.gitkeep
+/composer.phar
 .DS_Store
 Thumbs.db
 bash.exe.stackdump

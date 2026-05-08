@@ -17,6 +17,16 @@ use App\Application\Services\AuthService;
 
 /** @param Container $container */
 return static function (Container $container): void {
+    $container->singleton(\Psr\Log\LoggerInterface::class, static function () {
+        $logger = new \Monolog\Logger('app');
+        $logger->pushHandler(new \Monolog\Handler\RotatingFileHandler(
+            dirname(__DIR__) . '/storage/logs/app.log',
+            14,
+            \Monolog\Level::Debug
+        ));
+        return $logger;
+    });
+
     $container->singleton(\PDO::class, static fn() => \App\Infrastructure\Persistence\Database::getConnection());
     $container->singleton(Request::class, static fn() => new Request());
 

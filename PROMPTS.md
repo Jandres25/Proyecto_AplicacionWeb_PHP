@@ -63,6 +63,7 @@ _______________
 - SQL: siempre bindValue() con PDO — nunca concatenar variables
 - Nuevos repositorios deben implementar una interface en app/Infrastructure/Contracts/
 - Registrar bindings en config/bindings.php
+- URLs internas en vistas: siempre app_url('/ruta') — nunca $layout->baseUrl ni rutas hardcodeadas
 
 [Formato de salida]
 _______________
@@ -114,6 +115,8 @@ Descripción: [describe qué debe hacer]
 - SQL: siempre bindValue() con tipos explícitos (PDO::PARAM_INT, etc.)
 - Los repositorios no hacen JOINs entre dominios — eso va en el Service
 - declare(strict_types=1) en todos los archivos PHP
+- URLs internas en vistas: siempre app_url('/ruta') — nunca $layout->baseUrl
+- Variables de entorno disponibles: SESSION_LIFETIME, REMEMBER_ME_ENABLED, REMEMBER_ME_TTL_DAYS, REMEMBER_ME_COOKIE_NAME
 
 [Formato de salida]
 Devuelve en este orden:
@@ -310,3 +313,18 @@ Devuelve en este orden:
 
 _Última actualización: 2026-05-08_
 _Mantener sincronizado con CLAUDE.md al inicio de cada sesión._
+
+---
+
+## Stack completo actual (referencia rápida)
+
+| Capa      | Tecnología                                                     |
+| --------- | -------------------------------------------------------------- |
+| Servidor  | XAMPP (Apache + MySQL)                                         |
+| Backend   | PHP 8.x, PDO, Composer (PSR-4)                                 |
+| Framework | Propio en `core/` (Router, Container, Auth, Csrf, Flash, View) |
+| Frontend  | Bootstrap 5.3, Bootstrap Icons, icheck-bootstrap 3             |
+| Tablas    | DataTables 1.13 + Responsive                                   |
+| Alertas   | SweetAlert2                                                    |
+| Logs      | Monolog (rotación diaria, 14 días)                             |
+| Auth      | Sesión PHP + cookie remember-me (SHA-256, rotación por uso)    |

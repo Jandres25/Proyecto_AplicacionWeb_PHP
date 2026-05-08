@@ -1,5 +1,14 @@
 <h1 align="center">Proyecto Aplicación Web PHP</h1>
 
+<p align="center">
+  <img src="https://img.shields.io/badge/PHP-8.x-777BB4?style=flat&logo=php&logoColor=white" alt="PHP">
+  <img src="https://img.shields.io/badge/MySQL-8.x-4479A1?style=flat&logo=mysql&logoColor=white" alt="MySQL">
+  <img src="https://img.shields.io/badge/Bootstrap-5.3-7952B3?style=flat&logo=bootstrap&logoColor=white" alt="Bootstrap">
+  <img src="https://img.shields.io/badge/Composer-dependencias-885630?style=flat&logo=composer&logoColor=white" alt="Composer">
+  <img src="https://img.shields.io/badge/XAMPP-Apache%20%2B%20MySQL-FB7A24?style=flat&logo=xampp&logoColor=white" alt="XAMPP">
+  <img src="https://img.shields.io/badge/arquitectura-N--Layer-0078D4?style=flat" alt="N-Layer">
+</p>
+
 Aplicación web desarrollada con **PHP** y **Bootstrap**, orientada a la gestión de conductores, propietarios, taxis y usuarios, con autenticación por sesión y panel administrativo.
 
 Arquitectura por capas clásica (N-Layer): **Presentation → Application → Domain → Infrastructure**, con framework interno propio en `core/`.
@@ -14,6 +23,8 @@ Arquitectura por capas clásica (N-Layer): **Presentation → Application → Do
 - **Gestión AJAX:** Eliminación de registros mediante Fetch API con feedback visual vía SweetAlert2.
 - **Toasts Centralizados:** Helpers reutilizables en `public/js/toast-config.js` (`showToast`, `showToastSuccess`, `showToastError`).
 - **Seguridad:** CSRF en todas las acciones POST y control de acceso basado en roles (Administrador).
+- **Recuérdame:** Cookie persistente de 30 días con token hasheado (SHA-256) y rotación en cada uso. Configurable via variables de entorno.
+- **Gestión de sesión:** Duración de sesión configurable via `SESSION_LIFETIME` (minutos).
 - **Manejo de Errores HTTP:** Vistas dedicadas para 404, 500 y errores genéricos.
 
 ## 🛠 Tecnologías
@@ -52,11 +63,20 @@ Arquitectura por capas clásica (N-Layer): **Presentation → Application → Do
 ## 🔑 Variables de entorno
 
 ```env
+# Base de datos
 DB_HOST=localhost
 DB_DATABASE=proyecto
 DB_USERNAME=root
 DB_PASSWORD=
 APP_URL=http://localhost/Proyecto_AplicacionWeb_PHP/public
+
+# Sesión
+SESSION_LIFETIME=120        # duración en minutos (default: 120)
+
+# Recuérdame
+REMEMBER_ME_ENABLED=true
+REMEMBER_ME_TTL_DAYS=30     # duración de la cookie en días (default: 30)
+REMEMBER_ME_COOKIE_NAME=remember_token
 ```
 
 ## 🚀 Ejecución

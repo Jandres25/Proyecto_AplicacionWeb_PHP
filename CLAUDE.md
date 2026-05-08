@@ -60,10 +60,10 @@ database/
 
 **Key core classes (`core/`):**
 
-- `Container` — DI container with `bind()`, `singleton()`, and reflection-based autowiring
+- `Container` — DI container with `bind()`, `singleton()`, and reflection-based autowiring. Exposes `Container::setInstance()` / `Container::getInstance()` for global static access (used by `Auth`)
 - `Router` — static GET/POST routing; resolves paths with or without `/public` prefix; supports `?route=` fallback
 - `View` — `View::renderWith(string $view, ViewModel $vm)` is the only rendering method; no `extract()`, data is passed as a typed `ViewModel`
-- `Auth` — session-based auth; `Auth::requireAdmin()` redirects if not logged in or not "Administrador"
+- `Auth` — session-based auth; `Auth::requireAdmin()` redirects if not logged in or not "Administrador". `Auth::requireLogin()` also attempts transparent re-login via remember-me cookie before redirecting. `Auth::issueRememberCookie(int $userId)` issues the persistent cookie. Uses `Container::getInstance()` internally to resolve `AuthServiceInterface`.
 - `Csrf` — `Csrf::token()` generates token, `Csrf::validateOrFail()` checks it in POST handlers
 - `Flash` — one-time session messages (`success`/`error`); consumed by `View::buildLayoutViewModel()` and rendered as toasts
 - `ErrorHandler` — `ErrorHandler::abort(int $code)` terminates with the appropriate HTTP error view
@@ -98,6 +98,12 @@ Exposes `window.showToast(type, title)`, `window.showToastSuccess(title)`, `wind
 8. Register repository and service bindings in `config/bindings.php`
 9. Add routes to `routes/web.php`
 10. Add the navigation item in `core/View.php` → `buildLayoutViewModel()`
+
+**Remember Me:**
+Cookie persistente `remember_token` (30 días por defecto). El token en claro va en la cookie; su hash SHA-256 se guarda en `usuarios.remember_token`. Se rota en cada uso. Configuración via `.env`: `REMEMBER_ME_ENABLED`, `REMEMBER_ME_TTL_DAYS`, `REMEMBER_ME_COOKIE_NAME`. `SESSION_LIFETIME` (minutos) controla `session.gc_maxlifetime` y se aplica en `Session::start()`.
+
+**URLs en vistas:**
+Usar siempre `app_url('/ruta')` — tanto en vistas standalone (login) como en el layout (header/footer). No usar `$layout->baseUrl` para construir URLs de assets o rutas.
 
 ## Conventions
 

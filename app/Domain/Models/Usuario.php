@@ -13,6 +13,8 @@ final class Usuario
         public readonly string $usuario,
         public readonly string $correo,
         public readonly string $claveHash,
+        public readonly ?string $rememberToken = null,
+        public readonly ?string $rememberTokenExpires = null,
     ) {}
 
     public static function create(
@@ -54,6 +56,8 @@ final class Usuario
             usuario: (string) $row['Usuario'],
             correo: (string) $row['Correo'],
             claveHash: (string) $row['Clave'],
+            rememberToken: isset($row['remember_token']) ? (string) $row['remember_token'] : null,
+            rememberTokenExpires: isset($row['remember_token_expires']) ? (string) $row['remember_token_expires'] : null,
         );
     }
 }

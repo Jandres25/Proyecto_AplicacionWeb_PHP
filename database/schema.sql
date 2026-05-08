@@ -41,8 +41,11 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
   `Apellidos` varchar(100) NOT NULL,
   `Usuario` varchar(50) NOT NULL,
   `Clave` varchar(255) NOT NULL,
+  `remember_token` varchar(64) DEFAULT NULL,
+  `remember_token_expires` datetime DEFAULT NULL,
   `Correo` varchar(100) NOT NULL,
-  PRIMARY KEY (`ID`)
+  PRIMARY KEY (`ID`),
+  KEY `idx_usuarios_remember_token` (`remember_token`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Restricciones

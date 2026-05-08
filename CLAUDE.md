@@ -6,9 +6,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This project runs on XAMPP (Apache + MySQL). There is no build step — PHP files are served directly.
 
-- **Start**: Launch Apache and MySQL from XAMPP, then open `http://localhost/Proyecto_AplicacionWeb_PHP/`
+- **Start**: Launch Apache and MySQL from XAMPP, then open `http://localhost/Proyecto_AplicacionWeb_PHP/public/`
 - **Database setup**: Import `database/schema.sql` then `database/seeder.sql` into MySQL
-- **Config**: Copy `.env.example` to `.env` and set DB credentials. `APP_URL` must be set **without** `/public` (e.g., `APP_URL=http://localhost/Proyecto_AplicacionWeb_PHP`)
+- **Config**: Copy `.env.example` to `.env` and set DB credentials. `APP_URL` must include `/public` (e.g., `APP_URL=http://localhost/Proyecto_AplicacionWeb_PHP/public`)
 
 There are no automated tests, no linters, and no package managers configured.
 
@@ -17,12 +17,14 @@ There are no automated tests, no linters, and no package managers configured.
 Custom PHP framework with no external dependencies, organized as a classic N-Layer architecture (Presentation / Application / Domain / Infrastructure). Entry point: `public/index.php`.
 
 **Request lifecycle:**
+
 1. `public/index.php` requires `bootstrap/app.php`, which registers the autoloader, binds dependencies via `config/bindings.php`, instantiates `Router`, loads `routes/web.php`, and returns the router.
 2. `Router` resolves the controller from the `Container` (with autowiring) and calls the action method.
 3. Controllers call `Service` → `Repository` (typed domain models) → return `ViewModel` → `View::renderWith()`.
 4. `View::renderWith()` builds a `LayoutViewModel` (nav, auth, CSRF, flash toasts) and includes `header.php`, the view file, and `footer.php`.
 
 **Directory layout:**
+
 ```
 app/
   Presentation/
@@ -55,6 +57,7 @@ database/
 ```
 
 **Key core classes (`core/`):**
+
 - `Container` — DI container with `bind()`, `singleton()`, and reflection-based autowiring
 - `Router` — static GET/POST routing; resolves paths with or without `/public` prefix; supports `?route=` fallback
 - `View` — `View::renderWith(string $view, ViewModel $vm)` is the only rendering method; no `extract()`, data is passed as a typed `ViewModel`
@@ -76,7 +79,10 @@ Repositories (`app/Infrastructure/Persistence/Repositories/`) implement interfac
 Repository methods must not JOIN across domain tables. `TaxiService::allWithOwner()` is the reference implementation: it calls `taxiRepository->all()` and `propietarioRepository->all()` separately, then combines in memory.
 
 **Deletion (AJAX):**
-`destroy()` methods detect `Request::isAjax()` and return `Response::json()` instead of redirecting. The frontend calls these via Fetch API and shows toast feedback using helpers from `public/js/toast-config.js` (`showToast`, `showToastSuccess`, `showToastError`).
+`destroy()` methods detect `Request::isAjax()` and return `Response::json()` instead of redirecting. The frontend calls these via Fetch API: on success it stores the message in `sessionStorage` and reloads the page; `toast-config.js` reads it on load and fires the toast. This ensures the toast appears after the list has refreshed. Error toasts (non-AJAX path) are shown inline via `showToastError()`.
+
+**Toast helpers (`public/js/toast-config.js`):**
+Exposes `window.showToast(type, title)`, `window.showToastSuccess(title)`, `window.showToastError(title)`. Also reads `sessionStorage.pendingToast` on every page load to display post-reload toasts (used by AJAX delete modules).
 
 ## Adding a New Module
 
@@ -96,7 +102,8 @@ Repository methods must not JOIN across domain tables. `TaxiService::allWithOwne
 - All PHP files use `declare(strict_types=1)`
 - Controllers validate CSRF on every POST: `Csrf::validateOrFail((string) $this->request->post('_token', ''))`
 - Admin-only routes call `Auth::requireAdmin()` at the start of every action
-- Flash messages use only `'success'` or `'error'` keys
+- Flash messages use only `'success'` or `'error'` keys; messages must be specific (e.g. `'Taxi creado exitosamente'`, not `'Registro Agregado'`)
+- Repositories: `PDO::fetch()` returns `false` (not `null`) when no row is found — always check `$row !== false` before calling `fromRow()`
 - `Response::redirect(app_url('/path'))` — use `app_url()` helper for all internal URLs
 - Navigation items are hardcoded in `core/View::buildLayoutViewModel()`; add new modules there
 - Domain models validate their own fields in `create()`; Services validate cross-domain rules (e.g. FK existence) before calling the factory

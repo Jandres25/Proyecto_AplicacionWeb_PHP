@@ -58,7 +58,7 @@ _______________
 - Rutas admin-only: Auth::requireAdmin() al inicio de cada método
 - Redirecciones: Response::redirect(app_url('/ruta'))
 - Respuestas AJAX: Response::json(['success' => bool, 'message' => '...'])
-- Flash messages: Flash::set('success'|'error', 'mensaje') — solo esas dos claves
+- Flash messages: Flash::set('success'|'error', 'mensaje') — solo esas dos claves; el mensaje debe ser específico (ej. 'Conductor creado exitosamente', no 'Registro Agregado')
 - Toasts frontend: showToastSuccess() / showToastError() de toast-config.js — nunca Swal.fire() directo
 - SQL: siempre bindValue() con PDO — nunca concatenar variables
 - Nuevos repositorios deben implementar una interface en app/Infrastructure/Contracts/
@@ -308,5 +308,5 @@ Devuelve en este orden:
 
 ---
 
-_Última actualización: 2026-05-06_
+_Última actualización: 2026-05-08_
 _Mantener sincronizado con CLAUDE.md al inicio de cada sesión._

@@ -47,20 +47,19 @@ DB_HOST=localhost
 DB_DATABASE=proyecto
 DB_USERNAME=root
 DB_PASSWORD=
-APP_URL=http://localhost/Proyecto_AplicacionWeb_PHP
+APP_URL=http://localhost/Proyecto_AplicacionWeb_PHP/public
 ```
 
 ## 🚀 Ejecución
 
 Abrir en el navegador:
-`http://localhost/Proyecto_AplicacionWeb_PHP/`
+`http://localhost/Proyecto_AplicacionWeb_PHP/public/`
 
 ## 🌐 Nota sobre `APP_URL` y `.htaccess`
 
-- Este proyecto está configurado para **mantener** el `.htaccess` en la raíz.
-- Con esta configuración, `APP_URL` debe quedar **sin** `/public`:
-  `APP_URL=http://localhost/Proyecto_AplicacionWeb_PHP`
-- El `.htaccess` de la raíz redirige internamente hacia `public/` para conservar URLs limpias.
+- El único `.htaccess` activo está en `public/` — enruta todas las peticiones a `index.php`.
+- `APP_URL` debe incluir `/public` al final: `APP_URL=http://localhost/Proyecto_AplicacionWeb_PHP/public`
+- No existe `.htaccess` en la raíz del proyecto.
 
 ## 📁 Estructura del Proyecto
 

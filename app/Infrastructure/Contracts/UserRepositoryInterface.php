@@ -26,4 +26,8 @@ interface UserRepositoryInterface
     public function existsUsername(string $username, ?int $exceptId = null): bool;
 
     public function existsEmail(string $email, ?int $exceptId = null): bool;
+
+    public function findByRememberToken(string $hashedToken): ?Usuario;
+
+    public function updateRememberToken(int $userId, ?string $hashedToken, ?string $expiresAt): void;
 }

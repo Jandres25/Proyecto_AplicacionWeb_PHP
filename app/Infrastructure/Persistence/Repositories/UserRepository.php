@@ -149,4 +149,34 @@ final class UserRepository implements UserRepositoryInterface
         $statement->execute();
         return (int) $statement->fetchColumn() > 0;
     }
+
+    public function findByRememberToken(string $hashedToken): ?Usuario
+    {
+        $statement = $this->connection->prepare(
+            'SELECT * FROM usuarios WHERE remember_token = :token AND remember_token_expires > NOW() LIMIT 1'
+        );
+        $statement->bindValue(':token', $hashedToken);
+        $statement->execute();
+
+        $row = $statement->fetch();
+        return $row !== false ? Usuario::fromRow($row) : null;
+    }
+
+    public function updateRememberToken(int $userId, ?string $hashedToken, ?string $expiresAt): void
+    {
+        $statement = $this->connection->prepare(
+            'UPDATE usuarios SET remember_token = :token, remember_token_expires = :expires WHERE ID = :id'
+        );
+
+        if ($hashedToken === null) {
+            $statement->bindValue(':token', null, PDO::PARAM_NULL);
+            $statement->bindValue(':expires', null, PDO::PARAM_NULL);
+        } else {
+            $statement->bindValue(':token', $hashedToken);
+            $statement->bindValue(':expires', $expiresAt);
+        }
+
+        $statement->bindValue(':id', $userId, PDO::PARAM_INT);
+        $statement->execute();
+    }
 }

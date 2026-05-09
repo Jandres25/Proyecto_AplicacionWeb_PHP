@@ -24,6 +24,10 @@ bash.exe.stackdump
 !database/schema.sql
 !database/seeder.sql
 
+# PHPUnit
+/.phpunit.cache/
+/.phpunit.result.cache
+
 # Claude
 .claude
 

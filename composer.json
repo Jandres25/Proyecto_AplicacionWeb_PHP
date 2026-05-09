@@ -2,6 +2,7 @@
   "name": "proyecto/aplicacion-web-php",
   "description": "Gestión de Flota - PHP custom N-Layer",
   "type": "project",
+  "license": "proprietary",
   "require": {
     "php": ">=8.1",
     "ext-pdo": "*",

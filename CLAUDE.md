@@ -12,7 +12,7 @@ This project runs on XAMPP (Apache + MySQL). There is no build step — PHP file
 - **Config**: Copy `.env.example` to `.env` and set DB credentials. `APP_URL` must include `/public` (e.g., `APP_URL=http://localhost/Proyecto_AplicacionWeb_PHP/public`)
 - **Logs**: Structured logs are written to `storage/logs/app.log` (rotated daily, 14 days). Ensure Apache's user has write permission on that directory.
 
-There are no automated tests and no linters.
+**Tests:** `composer test` runs the PHPUnit unit test suite (no DB, no Apache required). Tests live in `tests/Unit/` mirroring the `app/` structure. Domain models and services are covered; repositories are excluded (require real DB). CI runs on GitHub Actions on push/PR to `master`.
 
 ## Architecture
 

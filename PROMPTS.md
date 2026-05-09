@@ -311,8 +311,51 @@ Devuelve en este orden:
 
 ---
 
-_Última actualización: 2026-05-08_
+_Última actualización: 2026-05-09_
 _Mantener sincronizado con CLAUDE.md al inicio de cada sesión._
+
+---
+
+## Plantilla 5 — Agregar tests a un módulo nuevo
+
+Usar cuando: se agrega un módulo nuevo y hay que cubrir su modelo y service con unit tests.
+
+```
+[Rol]
+Actúa como desarrollador PHP Senior con experiencia en testing con PHPUnit y
+arquitectura por capas.
+
+[Contexto]
+Proyecto: Gestión de Flota — PHP 8.x custom, sin framework.
+Testing: PHPUnit 10.5, unit tests en tests/Unit/ (espejo de app/).
+Módulo nuevo: [nombre del módulo]
+Archivos ya implementados:
+- app/Domain/Models/[Modelo].php
+- app/Application/Services/[Modelo]Service.php
+- app/Infrastructure/Contracts/[Modelo]RepositoryInterface.php
+
+[Tarea]
+Crear los unit tests para el nuevo módulo:
+1. tests/Unit/Domain/Models/[Modelo]Test.php — tests del factory create() y fromRow()
+2. tests/Unit/Application/Services/[Modelo]ServiceTest.php — tests del service con mocks
+
+[Restricciones]
+- declare(strict_types=1) en todos los archivos
+- Usar atributos PHP 8: #[Test], #[DataProvider] — nunca docblocks @test
+- Cada clase extiende PHPUnit\Framework\TestCase
+- Mocks con $this->createMock([Modelo]RepositoryInterface::class) — no Mockery
+- Tests de modelos: sin mocks, solo validar create() y fromRow()
+- Tests de services: mockear repositorios, verificar llamadas con expects/with
+- Para hashes no deterministas usar $this->callback(fn($h) => password_verify(...))
+- Restaurar $_ENV en tearDown() si algún test lo modifica
+- No testear repositorios (requieren BD real)
+- Cubrir: happy path, errores de validación con datos concretos, delegaciones al repo
+
+[Formato de salida]
+1. tests/Unit/Domain/Models/[Modelo]Test.php
+2. tests/Unit/Application/Services/[Modelo]ServiceTest.php
+3. Comando para verificar: vendor/bin/phpunit --filter [Modelo]
+```
 
 ---
 
@@ -328,3 +371,5 @@ _Mantener sincronizado con CLAUDE.md al inicio de cada sesión._
 | Alertas   | SweetAlert2                                                    |
 | Logs      | Monolog (rotación diaria, 14 días)                             |
 | Auth      | Sesión PHP + cookie remember-me (SHA-256, rotación por uso)    |
+| Tests     | PHPUnit 10.5, unit tests en `tests/Unit/` (`composer test`)    |
+| CI        | GitHub Actions — PHP 8.2 / 8.3, sin BD                        |

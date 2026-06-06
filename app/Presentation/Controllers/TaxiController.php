@@ -125,6 +125,7 @@ final class TaxiController
         if ($current === null) {
             if ($this->request->isAjax()) {
                 Response::json(['success' => false, 'message' => 'Taxi no encontrado.'], 404);
+                return;
             }
             ErrorHandler::abort(404, 'Taxi no encontrado.');
         }
@@ -133,6 +134,7 @@ final class TaxiController
 
         if ($this->request->isAjax()) {
             Response::json(['success' => true, 'message' => 'Taxi eliminado exitosamente']);
+            return;
         }
 
         Flash::set('success', 'Taxi eliminado exitosamente');

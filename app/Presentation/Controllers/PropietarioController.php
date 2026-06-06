@@ -26,7 +26,7 @@ final class PropietarioController
 
     public function index(): void
     {
-        Auth::requireLogin();
+        Auth::requireAdmin();
 
         View::renderWith('propietarios/index', new PropietarioIndexViewModel(
             listaPropietarios: $this->service->all(),
@@ -35,7 +35,7 @@ final class PropietarioController
 
     public function create(): void
     {
-        Auth::requireLogin();
+        Auth::requireAdmin();
 
         View::renderWith('propietarios/create', new PropietarioCreateViewModel(
             old: ['nombre' => '', 'telefono' => ''],
@@ -45,7 +45,7 @@ final class PropietarioController
 
     public function store(): void
     {
-        Auth::requireLogin();
+        Auth::requireAdmin();
         Csrf::validateOrFail((string) $this->request->post('_token', ''));
 
         $old = [
@@ -67,7 +67,7 @@ final class PropietarioController
 
     public function edit(): void
     {
-        Auth::requireLogin();
+        Auth::requireAdmin();
 
         $id = (int) $this->request->get('id', 0);
         $propietario = $this->service->findById($id);
@@ -84,7 +84,7 @@ final class PropietarioController
 
     public function update(): void
     {
-        Auth::requireLogin();
+        Auth::requireAdmin();
         Csrf::validateOrFail((string) $this->request->post('_token', ''));
 
         $id = (int) $this->request->post('id', 0);
@@ -110,7 +110,7 @@ final class PropietarioController
 
     public function destroy(): void
     {
-        Auth::requireLogin();
+        Auth::requireAdmin();
         Csrf::validateOrFail((string) $this->request->post('_token', ''));
 
         $id = (int) $this->request->post('id', 0);
@@ -119,6 +119,7 @@ final class PropietarioController
         if ($current === null) {
             if ($this->request->isAjax()) {
                 Response::json(['success' => false, 'message' => 'Propietario no encontrado.'], 404);
+                return;
             }
             ErrorHandler::abort(404, 'Propietario no encontrado.');
         }
@@ -127,6 +128,7 @@ final class PropietarioController
 
         if ($this->request->isAjax()) {
             Response::json(['success' => true, 'message' => 'Propietario eliminado exitosamente']);
+            return;
         }
 
         Flash::set('success', 'Propietario eliminado exitosamente');

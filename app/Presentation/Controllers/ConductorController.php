@@ -26,7 +26,7 @@ final class ConductorController
 
     public function index(): void
     {
-        Auth::requireLogin();
+        Auth::requireAdmin();
         View::renderWith('conductores/index', new ConductorIndexViewModel(
             listaConductores: $this->service->all(),
         ));
@@ -34,7 +34,7 @@ final class ConductorController
 
     public function create(): void
     {
-        Auth::requireLogin();
+        Auth::requireAdmin();
         View::renderWith('conductores/create', new ConductorCreateViewModel(
             old: ['nombre' => '', 'telefono' => '', 'placa' => ''],
             taxis: $this->service->taxiOptions(),
@@ -44,7 +44,7 @@ final class ConductorController
 
     public function store(): void
     {
-        Auth::requireLogin();
+        Auth::requireAdmin();
         Csrf::validateOrFail((string) $this->request->post('_token', ''));
 
         $old = [
@@ -68,7 +68,7 @@ final class ConductorController
 
     public function edit(): void
     {
-        Auth::requireLogin();
+        Auth::requireAdmin();
         $id = (int) $this->request->get('id', 0);
         $conductor = $this->service->findById($id);
 
@@ -85,7 +85,7 @@ final class ConductorController
 
     public function update(): void
     {
-        Auth::requireLogin();
+        Auth::requireAdmin();
         Csrf::validateOrFail((string) $this->request->post('_token', ''));
 
         $id = (int) $this->request->post('id', 0);
@@ -114,7 +114,7 @@ final class ConductorController
 
     public function destroy(): void
     {
-        Auth::requireLogin();
+        Auth::requireAdmin();
         Csrf::validateOrFail((string) $this->request->post('_token', ''));
 
         $id = (int) $this->request->post('id', 0);
@@ -123,6 +123,7 @@ final class ConductorController
         if ($current === null) {
             if ($this->request->isAjax()) {
                 Response::json(['success' => false, 'message' => 'Conductor no encontrado.'], 404);
+                return;
             }
             ErrorHandler::abort(404, 'Conductor no encontrado.');
         }
@@ -131,6 +132,7 @@ final class ConductorController
 
         if ($this->request->isAjax()) {
             Response::json(['success' => true, 'message' => 'Conductor eliminado exitosamente']);
+            return;
         }
 
         Flash::set('success', 'Conductor eliminado exitosamente');

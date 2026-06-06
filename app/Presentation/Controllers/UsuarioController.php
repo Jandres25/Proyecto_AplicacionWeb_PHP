@@ -123,6 +123,7 @@ final class UsuarioController
         if ($current === null) {
             if ($this->request->isAjax()) {
                 Response::json(['success' => false, 'message' => 'Usuario no encontrado.'], 404);
+                return;
             }
             ErrorHandler::abort(404, 'Usuario no encontrado.');
         }
@@ -130,6 +131,7 @@ final class UsuarioController
         if ($current->usuario === Auth::username()) {
             if ($this->request->isAjax()) {
                 Response::json(['success' => false, 'message' => 'No puedes eliminar tu propio usuario'], 403);
+                return;
             }
             Flash::set('error', 'No puedes eliminar tu propio usuario');
             Response::redirect(app_url('/usuarios'));
@@ -139,6 +141,7 @@ final class UsuarioController
 
         if ($this->request->isAjax()) {
             Response::json(['success' => true, 'message' => 'Usuario eliminado exitosamente']);
+            return;
         }
 
         Flash::set('success', 'Usuario eliminado exitosamente');

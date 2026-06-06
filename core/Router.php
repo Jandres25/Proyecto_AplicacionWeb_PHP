@@ -55,7 +55,7 @@ final class Router
 
     private function resolvePath(string $uri, string $scriptName): string
     {
-        if (isset($_GET['route']) && is_string($_GET['route'])) {
+        if (isset($_GET['route']) && is_string($_GET['route']) && !str_contains($_GET['route'], '..')) {
             return $this->normalizePath($_GET['route']);
         }
 

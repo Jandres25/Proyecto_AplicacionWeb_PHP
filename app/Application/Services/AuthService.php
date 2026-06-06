@@ -34,12 +34,12 @@ final class AuthService implements AuthServiceInterface
         }
 
         return [
-            'ID' => $user->id,
-            'Nombres' => $user->nombres,
-            'Apellidos' => $user->apellidos,
-            'Usuario' => $user->usuario,
-            'Correo' => $user->correo,
-            'Clave' => $isHashed ? $storedPassword : password_hash($password, PASSWORD_DEFAULT),
+            'ID'       => $user->id,
+            'Nombres'  => $user->nombres,
+            'Apellidos'=> $user->apellidos,
+            'Usuario'  => $user->usuario,
+            'Correo'   => $user->correo,
+            'is_admin' => $user->isAdmin,
         ];
     }
 
@@ -86,6 +86,7 @@ final class AuthService implements AuthServiceInterface
                 'Apellidos'=> $user->apellidos,
                 'Usuario'  => $user->usuario,
                 'Correo'   => $user->correo,
+                'is_admin' => $user->isAdmin,
             ],
             'newPlainToken' => $newPlain,
             'expiresAt'     => $newExpires,

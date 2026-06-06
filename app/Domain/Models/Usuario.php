@@ -13,6 +13,7 @@ final class Usuario
         public readonly string $usuario,
         public readonly string $correo,
         public readonly string $claveHash,
+        public readonly bool $isAdmin = false,
         public readonly ?string $rememberToken = null,
         public readonly ?string $rememberTokenExpires = null,
     ) {}
@@ -44,7 +45,7 @@ final class Usuario
             throw new \InvalidArgumentException('Debe ingresar un correo válido.');
         }
 
-        return new self(id: 0, nombres: $cleanNames, apellidos: $cleanLastnames, usuario: $cleanUser, correo: $cleanEmail, claveHash: '');
+        return new self(id: 0, nombres: $cleanNames, apellidos: $cleanLastnames, usuario: $cleanUser, correo: $cleanEmail, claveHash: '', isAdmin: false);
     }
 
     public static function fromRow(array $row): self
@@ -56,6 +57,7 @@ final class Usuario
             usuario: (string) $row['Usuario'],
             correo: (string) $row['Correo'],
             claveHash: (string) $row['Clave'],
+            isAdmin: (bool) ($row['is_admin'] ?? false),
             rememberToken: isset($row['remember_token']) ? (string) $row['remember_token'] : null,
             rememberTokenExpires: isset($row['remember_token_expires']) ? (string) $row['remember_token_expires'] : null,
         );

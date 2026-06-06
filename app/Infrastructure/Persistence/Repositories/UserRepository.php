@@ -24,31 +24,10 @@ final class UserRepository implements UserRepositoryInterface
 
     public function updatePasswordHash(int $id, string $hashedPassword): void
     {
-        $this->ensurePasswordColumnCapacity();
-
         $statement = $this->connection->prepare('UPDATE usuarios SET Clave = :Clave WHERE ID = :ID');
         $statement->bindValue(':Clave', $hashedPassword);
         $statement->bindValue(':ID', $id, PDO::PARAM_INT);
         $statement->execute();
-    }
-
-    private function ensurePasswordColumnCapacity(): void
-    {
-        $column = $this->connection
-            ->query("SHOW COLUMNS FROM usuarios LIKE 'Clave'")
-            ->fetch();
-
-        $type = strtolower((string) ($column['Type'] ?? ''));
-        if (!preg_match('/^varchar\((\d+)\)$/', $type, $matches)) {
-            return;
-        }
-
-        $length = (int) $matches[1];
-        if ($length >= 255) {
-            return;
-        }
-
-        $this->connection->exec('ALTER TABLE usuarios MODIFY Clave VARCHAR(255) NOT NULL');
     }
 
     /** @return Usuario[] */

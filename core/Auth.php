@@ -22,6 +22,7 @@ final class Auth
         $_SESSION['user_id']  = (int) ($user['ID'] ?? 0);
         $_SESSION['usuario']  = (string) ($user['Usuario'] ?? '');
         $_SESSION['Nombres']  = (string) ($user['Nombres'] ?? '');
+        $_SESSION['is_admin'] = (bool) ($user['is_admin'] ?? false);
     }
 
     public static function logout(): void
@@ -56,9 +57,15 @@ final class Auth
     public static function requireAdmin(): void
     {
         self::requireLogin();
-        if (self::username() !== 'Administrador') {
+        if (!self::isAdmin()) {
             ErrorHandler::abort(403);
         }
+    }
+
+    public static function isAdmin(): bool
+    {
+        Session::start();
+        return (bool) ($_SESSION['is_admin'] ?? false);
     }
 
     public static function username(): string

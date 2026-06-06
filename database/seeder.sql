@@ -27,8 +27,8 @@ INSERT INTO `conductores` (`Nombres`, `Telefono`, `Placa`) VALUES
 ('Laura Isabel Castro', '61000005', 5);
 
 -- Datos para la tabla `usuarios`
--- Contraseña para todos: admin123 (el sistema la hasheará automáticamente al primer ingreso)
-INSERT INTO `usuarios` (`Nombres`, `Apellidos`, `Usuario`, `Clave`, `Correo`) VALUES
-('Sistema', 'Admin', 'Administrador', 'admin123', 'admin@example.com'),
-('Soporte', 'Técnico', 'support_user', 'admin123', 'support@example.com'),
-('Invitado', 'Especial', 'guest_view', 'admin123', 'guest@example.com');
+-- Contraseña para todos: admin123
+INSERT INTO `usuarios` (`Nombres`, `Apellidos`, `Usuario`, `Clave`, `Correo`, `is_admin`) VALUES
+('Sistema', 'Admin', 'Administrador', '$2y$10$UYGCkF/zfz4HeyQRCAYy5utUTjkChfTi4Tl9rL/mIt3X0XWs/nhm2', 'admin@example.com', 1),
+('Soporte', 'Técnico', 'support_user', '$2y$10$HZXfvwGGw/qQ.5JR3mEqWuc56sdQGN/8XzeRt9QoXn.i.UeM663QW', 'support@example.com', 0),
+('Invitado', 'Especial', 'guest_view', '$2y$10$UcwO2HSSpp93lTXKxUzmNuRroSqN/qj72IMkYBg7EljVDkKtvWDB6', 'guest@example.com', 0);

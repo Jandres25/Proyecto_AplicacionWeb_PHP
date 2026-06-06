@@ -192,15 +192,16 @@ Revisa el siguiente código antes del merge.
 
 [Restricciones]
 Evalúa específicamente:
-- Seguridad: SQL injection (bindValue), XSS (htmlspecialchars en vistas), CSRF en POST, acceso sin Auth::requireAdmin()
+- Seguridad: SQL injection (bindValue), XSS (htmlspecialchars en vistas), CSRF en POST, acceso sin Auth::requireAdmin(); admin check via columna is_admin — nunca comparando nombre de usuario
 - Capas: SQL fuera del Repository, lógica de negocio fuera del Service/Model, lógica de presentación fuera del Controller/ViewModel
 - Dominio: validaciones de campos propios en Model::create(); validaciones cross-domain (FK) en Service
 - JOINs cross-domain: los repositorios no deben cruzar tablas de otro dominio — combinar en el Service
 - ViewModels: vistas reciben ViewModel tipado, no arrays ni variables sueltas
 - Flash/Toasts: Flash::set() con clave 'success' o 'error'; frontend usa showToastSuccess/showToastError
-- AJAX delete: $request->isAjax() verificado, Response::json() con estructura {success, message}
+- AJAX delete: $request->isAjax() verificado, Response::json() con estructura {success, message}; siempre return después de Response::json()
 - Contratos: repositorio implementa interface en app/Infrastructure/Contracts/, binding en config/bindings.php
 - Convenciones: declare(strict_types=1), tipos explícitos en bindValue, app_url() para URLs internas
+- Seeder: contraseñas insertadas ya hasheadas (password_hash) — nunca texto plano en seed data
 
 [Formato de salida]
 OK  - Lo que está bien (al menos 2 puntos)
@@ -311,7 +312,7 @@ Devuelve en este orden:
 
 ---
 
-_Última actualización: 2026-05-09_
+_Última actualización: 2026-06-06_
 _Mantener sincronizado con CLAUDE.md al inicio de cada sesión._
 
 ---

@@ -63,7 +63,7 @@ database/
 - `Container` — DI container with `bind()`, `singleton()`, and reflection-based autowiring. Exposes `Container::setInstance()` / `Container::getInstance()` for global static access (used by `Auth`)
 - `Router` — static GET/POST routing; resolves paths with or without `/public` prefix; supports `?route=` fallback
 - `View` — `View::renderWith(string $view, ViewModel $vm)` is the only rendering method; no `extract()`, data is passed as a typed `ViewModel`
-- `Auth` — session-based auth; `Auth::requireAdmin()` redirects if not logged in or not "Administrador". `Auth::requireLogin()` also attempts transparent re-login via remember-me cookie before redirecting. `Auth::issueRememberCookie(int $userId)` issues the persistent cookie. Uses `Container::getInstance()` internally to resolve `AuthServiceInterface`.
+- `Auth` — session-based auth; `Auth::requireAdmin()` redirects if not logged in or if `$_SESSION['is_admin']` is not `true` (backed by the `is_admin TINYINT` column in `usuarios`). `Auth::isAdmin(): bool` exposes the flag. `Auth::requireLogin()` also attempts transparent re-login via remember-me cookie before redirecting. `Auth::issueRememberCookie(int $userId)` issues the persistent cookie. Uses `Container::getInstance()` internally to resolve `AuthServiceInterface`.
 - `Csrf` — `Csrf::token()` generates token, `Csrf::validateOrFail()` checks it in POST handlers
 - `Flash` — one-time session messages (`success`/`error`); consumed by `View::buildLayoutViewModel()` and rendered as toasts
 - `ErrorHandler` — `ErrorHandler::abort(int $code)` terminates with the appropriate HTTP error view
@@ -109,9 +109,11 @@ Usar siempre `app_url('/ruta')` — tanto en vistas standalone (login) como en e
 
 - All PHP files use `declare(strict_types=1)`
 - Controllers validate CSRF on every POST: `Csrf::validateOrFail((string) $this->request->post('_token', ''))`
-- Admin-only routes call `Auth::requireAdmin()` at the start of every action
+- Admin-only routes call `Auth::requireAdmin()` at the start of every action — this covers all modules (taxis, propietarios, conductores, usuarios). Admin access is determined by `is_admin = 1` in the `usuarios` table, not by username.
 - Flash messages use only `'success'` or `'error'` keys; messages must be specific (e.g. `'Taxi creado exitosamente'`, not `'Registro Agregado'`)
 - Repositories: `PDO::fetch()` returns `false` (not `null`) when no row is found — always check `$row !== false` before calling `fromRow()`
 - `Response::redirect(app_url('/path'))` — use `app_url()` helper for all internal URLs
 - Navigation items are hardcoded in `core/View::buildLayoutViewModel()`; add new modules there
 - Domain models validate their own fields in `create()`; Services validate cross-domain rules (e.g. FK existence) before calling the factory
+- `destroy()` methods: always add `return` after `Response::json()` — never rely on `exit` inside the callee to prevent fall-through
+- `seeder.sql` inserts passwords already hashed with `password_hash(..., PASSWORD_DEFAULT)` — no plain-text passwords in seed data

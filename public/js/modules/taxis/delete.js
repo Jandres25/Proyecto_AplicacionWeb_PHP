@@ -1,30 +1,30 @@
 /**
- * User deletion module
+ * Taxi deletion module
  */
 
 /**
- * Deletes a user via AJAX
- * @param {number|string} id - The user ID
+ * Deletes a taxi via AJAX
+ * @param {number|string} placa - The taxi Placa
  * @param {string} token - CSRF token
  * @param {string} baseUrl - Application base URL
  */
-export function deleteUser(id, token, baseUrl) {
+export function deleteTaxi(placa, token, baseUrl) {
     Swal.fire({
-        title: "¿Está seguro de borrar el registro?",
-        text: "¡Una vez borrado no se puede recuperar!",
+        title: "¿Eliminar taxi?",
+        text: "Se eliminará el taxi con placa " + placa + ". Esta acción no se puede deshacer.",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: '#d33',
         cancelButtonColor: '#6c757d',
-        confirmButtonText: "Sí, elimínelo",
+        confirmButtonText: "Sí, eliminar taxi",
         cancelButtonText: "Cancelar"
     }).then((result) => {
         if (result.isConfirmed) {
             const formData = new FormData();
-            formData.append('id', id);
+            formData.append('placa', placa);
             formData.append('_token', token);
 
-            const url = baseUrl.endsWith('/') ? `${baseUrl}usuarios/eliminar` : `${baseUrl}/usuarios/eliminar`;
+            const url = baseUrl.endsWith('/') ? `${baseUrl}taxis/eliminar` : `${baseUrl}/taxis/eliminar`;
 
             fetch(url, {
                 method: 'POST',
@@ -43,15 +43,15 @@ export function deleteUser(id, token, baseUrl) {
                 })
                 .then(data => {
                     if (data.success) {
-                        sessionStorage.setItem('pendingToast', JSON.stringify({ type: 'success', message: data.message || 'Registro eliminado' }));
+                        sessionStorage.setItem('pendingToast', JSON.stringify({ type: 'success', message: data.message || 'Taxi eliminado exitosamente' }));
                         window.location.reload();
                     } else {
-                        window.showToastError(data.message || 'No se pudo eliminar el registro');
+                        window.showToastError(data.message || 'No se pudo eliminar el taxi');
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    const message = error.message || 'Ocurrió un error al intentar eliminar el registro';
+                    const message = error.message || 'Ocurrió un error al intentar eliminar el taxi';
                     window.showToastError(message);
                 });
         }
@@ -59,16 +59,16 @@ export function deleteUser(id, token, baseUrl) {
 }
 
 /**
- * Initializes delete listeners for users
+ * Initializes delete listeners for taxis
  * @param {string} baseUrl 
  */
 export function initDeleteButtons(baseUrl) {
     document.addEventListener('click', function (event) {
         const btn = event.target.closest('.btn-eliminar');
         if (btn) {
-            const id = btn.getAttribute('data-id');
+            const placa = btn.getAttribute('data-placa');
             const token = btn.getAttribute('data-token');
-            deleteUser(id, token, baseUrl);
+            deleteTaxi(placa, token, baseUrl);
         }
     });
 }

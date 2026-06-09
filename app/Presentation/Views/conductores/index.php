@@ -27,66 +27,64 @@
             </div>
         </div>
         <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover table-sm" id="tabla_id" style="visibility: hidden;">
-                    <thead class="table-light">
+            <table class="table table-bordered table-hover table-sm" id="tabla_conductores" style="visibility: hidden;">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col" class="text-center" style="width: 50px;">#</th>
+                        <th scope="col">Nombre del Conductor</th>
+                        <th scope="col">Teléfono</th>
+                        <th scope="col">Taxi Asignado (Placa)</th>
+                        <th scope="col" class="text-center" style="width: 120px;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $counter = 1;
+                    foreach ($vm->listaConductores as $registro) : ?>
                         <tr>
-                            <th scope="col" class="text-center" style="width: 50px;">#</th>
-                            <th scope="col">Nombre del Conductor</th>
-                            <th scope="col">Teléfono</th>
-                            <th scope="col">Taxi Asignado (Placa)</th>
-                            <th scope="col" class="text-center" style="width: 120px;">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        $counter = 1;
-                        foreach ($vm->listaConductores as $registro) : ?>
-                            <tr>
-                                <td class="text-center text-muted fw-bold"><?= $counter++; ?></td>
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        <div class="bg-light rounded-circle border d-flex align-items-center justify-content-center me-3 d-none d-sm-flex" style="width: 35px; height: 35px; flex-shrink: 0;">
-                                            <i class="bi bi-person-badge text-secondary"></i>
-                                        </div>
-                                        <div class="fw-bold"><?= e($registro->nombres); ?></div>
+                            <td class="text-center text-muted fw-bold"><?= $counter++; ?></td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-light rounded-circle border d-flex align-items-center justify-content-center me-3 d-none d-sm-flex" style="width: 35px; height: 35px; flex-shrink: 0;">
+                                        <i class="bi bi-person-badge text-secondary"></i>
                                     </div>
-                                </td>
-                                <td class="text-center">
-                                    <a href="https://wa.me/<?= e($registro->telefono); ?>" class="badge bg-light text-dark border fw-normal" target="_blank" title="Contactar por WhatsApp">
-                                        <i class="bi bi-telephone me-1 text-success"></i><?= e($registro->telefono); ?>
+                                    <div class="fw-bold"><?= e($registro->nombres); ?></div>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <a href="https://wa.me/<?= e($registro->telefono); ?>" class="badge bg-light text-dark border fw-normal" target="_blank" title="Contactar por WhatsApp">
+                                    <i class="bi bi-telephone me-1 text-success"></i><?= e($registro->telefono); ?>
+                                </a>
+                            </td>
+                            <td>
+                                <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-3">
+                                    <i class="bi bi-car-front-fill me-1"></i><?= e($registro->placa); ?>
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <div class="btn-group shadow-sm" role="group">
+                                    <a class="btn btn-light btn-sm border" href="<?= e(app_url('/conductores/editar')); ?>?id=<?= e($registro->id); ?>" title="Editar">
+                                        <i class="bi bi-pencil-square text-success"></i>
                                     </a>
-                                </td>
-                                <td>
-                                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-3">
-                                        <i class="bi bi-car-front-fill me-1"></i><?= e($registro->placa); ?>
-                                    </span>
-                                </td>
-                                <td class="text-center">
-                                    <div class="btn-group shadow-sm" role="group">
-                                        <a class="btn btn-light btn-sm border" href="<?= e(app_url('/conductores/editar')); ?>?id=<?= e($registro->id); ?>" title="Editar">
-                                            <i class="bi bi-pencil-square text-success"></i>
-                                        </a>
-                                        <button type="button" class="btn btn-light btn-sm border btn-eliminar"
-                                            data-id="<?= e($registro->id); ?>"
-                                            data-token="<?= e(\Core\Csrf::token()); ?>"
-                                            title="Eliminar">
-                                            <i class="bi bi-trash-fill text-danger"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
+                                    <button type="button" class="btn btn-light btn-sm border btn-eliminar"
+                                        data-id="<?= e($registro->id); ?>"
+                                        data-nombre="<?= e($registro->nombres); ?>"
+                                        data-token="<?= e(\Core\Csrf::token()); ?>"
+                                        title="Eliminar">
+                                        <i class="bi bi-trash-fill text-danger"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
 
 <script type="module">
-    import {
-        initDeleteButtons
-    } from '<?= e(app_url('/modules/conductores/delete.js')); ?>';
+    import { initDeleteButtons } from '<?= e(app_url('/js/modules/conductores/delete.js')); ?>';
     initDeleteButtons('<?= e(app_url()); ?>');
 </script>
+<script src="<?= e(app_url('/js/modules/conductores/datatable.js')); ?>"></script>

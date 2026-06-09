@@ -27,60 +27,58 @@
             </div>
         </div>
         <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover table-sm" id="tabla_id" style="visibility: hidden;">
-                    <thead class="table-light">
+            <table class="table table-bordered table-hover table-sm" id="tabla_propietarios" style="visibility: hidden;">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col" class="text-center" style="width: 50px;">#</th>
+                        <th scope="col">Nombre del Propietario</th>
+                        <th scope="col">Teléfono</th>
+                        <th scope="col" class="text-center" style="width: 120px;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $counter = 1;
+                    foreach ($vm->listaPropietarios as $registro) : ?>
                         <tr>
-                            <th scope="col" class="text-center" style="width: 50px;">#</th>
-                            <th scope="col">Nombre del Propietario</th>
-                            <th scope="col">Teléfono</th>
-                            <th scope="col" class="text-center" style="width: 120px;">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        $counter = 1;
-                        foreach ($vm->listaPropietarios as $registro) : ?>
-                            <tr>
-                                <td class="text-center text-muted fw-bold"><?= $counter++; ?></td>
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        <div class="bg-light rounded-circle border d-flex align-items-center justify-content-center me-3 d-none d-sm-flex" style="width: 35px; height: 35px; flex-shrink: 0;">
-                                            <i class="bi bi-person text-secondary"></i>
-                                        </div>
-                                        <div class="fw-bold"><?= e($registro->nombre); ?></div>
+                            <td class="text-center text-muted fw-bold"><?= $counter++; ?></td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-light rounded-circle border d-flex align-items-center justify-content-center me-3 d-none d-sm-flex" style="width: 35px; height: 35px; flex-shrink: 0;">
+                                        <i class="bi bi-person text-secondary"></i>
                                     </div>
-                                </td>
-                                <td class="text-center">
-                                    <a href="https://wa.me/<?= e($registro->telefono); ?>" class="badge bg-light text-dark border fw-normal" target="_blank" title="Contactar por WhatsApp">
-                                        <i class="bi bi-telephone me-1 text-success"></i><?= e($registro->telefono); ?>
+                                    <div class="fw-bold"><?= e($registro->nombre); ?></div>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <a href="https://wa.me/<?= e($registro->telefono); ?>" class="badge bg-light text-dark border fw-normal" target="_blank" title="Contactar por WhatsApp">
+                                    <i class="bi bi-telephone me-1 text-success"></i><?= e($registro->telefono); ?>
+                                </a>
+                            </td>
+                            <td class="text-center">
+                                <div class="btn-group shadow-sm" role="group">
+                                    <a class="btn btn-light btn-sm border" href="<?= e(app_url('/propietarios/editar')); ?>?id=<?= e($registro->id); ?>" title="Editar">
+                                        <i class="bi bi-pencil-square text-success"></i>
                                     </a>
-                                </td>
-                                <td class="text-center">
-                                    <div class="btn-group shadow-sm" role="group">
-                                        <a class="btn btn-light btn-sm border" href="<?= e(app_url('/propietarios/editar')); ?>?id=<?= e($registro->id); ?>" title="Editar">
-                                            <i class="bi bi-pencil-square text-success"></i>
-                                        </a>
-                                        <button type="button" class="btn btn-light btn-sm border btn-eliminar"
-                                            data-id="<?= e($registro->id); ?>"
-                                            data-token="<?= e(\Core\Csrf::token()); ?>"
-                                            title="Eliminar">
-                                            <i class="bi bi-trash-fill text-danger"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
+                                    <button type="button" class="btn btn-light btn-sm border btn-eliminar"
+                                        data-id="<?= e($registro->id); ?>"
+                                        data-nombre="<?= e($registro->nombre); ?>"
+                                        data-token="<?= e(\Core\Csrf::token()); ?>"
+                                        title="Eliminar">
+                                        <i class="bi bi-trash-fill text-danger"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
 
 <script type="module">
-    import {
-        initDeleteButtons
-    } from '<?= e(app_url('/modules/propietarios/delete.js')); ?>';
+    import { initDeleteButtons } from '<?= e(app_url('/js/modules/propietarios/delete.js')); ?>';
     initDeleteButtons('<?= e(app_url()); ?>');
 </script>
+<script src="<?= e(app_url('/js/modules/propietarios/datatable.js')); ?>"></script>

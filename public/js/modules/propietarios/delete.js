@@ -1,30 +1,30 @@
 /**
- * Taxi deletion module
+ * Propietario deletion module
  */
 
 /**
- * Deletes a taxi via AJAX
- * @param {number|string} placa - The taxi Placa
+ * Deletes a propietario via AJAX
+ * @param {number|string} id - The propietario ID
  * @param {string} token - CSRF token
  * @param {string} baseUrl - Application base URL
  */
-export function deleteTaxi(placa, token, baseUrl) {
+export function deletePropietario(id, nombre, token, baseUrl) {
     Swal.fire({
-        title: "¿Está seguro de borrar el registro?",
-        text: "¡Una vez borrado no se puede recuperar!",
+        title: "¿Eliminar propietario?",
+        text: "Se eliminará a " + nombre + " de la lista de propietarios. Esta acción no se puede deshacer.",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: '#d33',
         cancelButtonColor: '#6c757d',
-        confirmButtonText: "Sí, elimínelo",
+        confirmButtonText: "Sí, eliminar propietario",
         cancelButtonText: "Cancelar"
     }).then((result) => {
         if (result.isConfirmed) {
             const formData = new FormData();
-            formData.append('placa', placa);
+            formData.append('id', id);
             formData.append('_token', token);
 
-            const url = baseUrl.endsWith('/') ? `${baseUrl}taxis/eliminar` : `${baseUrl}/taxis/eliminar`;
+            const url = baseUrl.endsWith('/') ? `${baseUrl}propietarios/eliminar` : `${baseUrl}/propietarios/eliminar`;
 
             fetch(url, {
                 method: 'POST',
@@ -43,15 +43,15 @@ export function deleteTaxi(placa, token, baseUrl) {
                 })
                 .then(data => {
                     if (data.success) {
-                        sessionStorage.setItem('pendingToast', JSON.stringify({ type: 'success', message: data.message || 'Registro eliminado' }));
+                        sessionStorage.setItem('pendingToast', JSON.stringify({ type: 'success', message: data.message || 'Propietario eliminado exitosamente' }));
                         window.location.reload();
                     } else {
-                        window.showToastError(data.message || 'No se pudo eliminar el registro');
+                        window.showToastError(data.message || 'No se pudo eliminar el propietario');
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    const message = error.message || 'Ocurrió un error al intentar eliminar el registro';
+                    const message = error.message || 'Ocurrió un error al intentar eliminar el propietario';
                     window.showToastError(message);
                 });
         }
@@ -59,16 +59,17 @@ export function deleteTaxi(placa, token, baseUrl) {
 }
 
 /**
- * Initializes delete listeners for taxis
+ * Initializes delete listeners for propietarios
  * @param {string} baseUrl 
  */
 export function initDeleteButtons(baseUrl) {
     document.addEventListener('click', function (event) {
         const btn = event.target.closest('.btn-eliminar');
         if (btn) {
-            const placa = btn.getAttribute('data-placa');
+            const id = btn.getAttribute('data-id');
+            const nombre = btn.getAttribute('data-nombre');
             const token = btn.getAttribute('data-token');
-            deleteTaxi(placa, token, baseUrl);
+            deletePropietario(id, nombre, token, baseUrl);
         }
     });
 }

@@ -1,22 +1,22 @@
 /**
- * Propietario deletion module
+ * Conductor deletion module
  */
 
 /**
- * Deletes a propietario via AJAX
- * @param {number|string} id - The propietario ID
+ * Deletes a conductor via AJAX
+ * @param {number|string} id - The conductor ID
  * @param {string} token - CSRF token
  * @param {string} baseUrl - Application base URL
  */
-export function deletePropietario(id, token, baseUrl) {
+export function deleteConductor(id, nombre, token, baseUrl) {
     Swal.fire({
-        title: "¿Está seguro de borrar el registro?",
-        text: "¡Una vez borrado no se puede recuperar!",
+        title: "¿Eliminar conductor?",
+        text: "Se eliminará a " + nombre + " de la lista de conductores. Esta acción no se puede deshacer.",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: '#d33',
         cancelButtonColor: '#6c757d',
-        confirmButtonText: "Sí, elimínelo",
+        confirmButtonText: "Sí, eliminar conductor",
         cancelButtonText: "Cancelar"
     }).then((result) => {
         if (result.isConfirmed) {
@@ -24,7 +24,7 @@ export function deletePropietario(id, token, baseUrl) {
             formData.append('id', id);
             formData.append('_token', token);
 
-            const url = baseUrl.endsWith('/') ? `${baseUrl}propietarios/eliminar` : `${baseUrl}/propietarios/eliminar`;
+            const url = baseUrl.endsWith('/') ? `${baseUrl}conductores/eliminar` : `${baseUrl}/conductores/eliminar`;
 
             fetch(url, {
                 method: 'POST',
@@ -43,15 +43,15 @@ export function deletePropietario(id, token, baseUrl) {
                 })
                 .then(data => {
                     if (data.success) {
-                        sessionStorage.setItem('pendingToast', JSON.stringify({ type: 'success', message: data.message || 'Registro eliminado' }));
+                        sessionStorage.setItem('pendingToast', JSON.stringify({ type: 'success', message: data.message || 'Conductor eliminado exitosamente' }));
                         window.location.reload();
                     } else {
-                        window.showToastError(data.message || 'No se pudo eliminar el registro');
+                        window.showToastError(data.message || 'No se pudo eliminar el conductor');
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    const message = error.message || 'Ocurrió un error al intentar eliminar el registro';
+                    const message = error.message || 'Ocurrió un error al intentar eliminar el conductor';
                     window.showToastError(message);
                 });
         }
@@ -59,7 +59,7 @@ export function deletePropietario(id, token, baseUrl) {
 }
 
 /**
- * Initializes delete listeners for propietarios
+ * Initializes delete listeners for conductores
  * @param {string} baseUrl 
  */
 export function initDeleteButtons(baseUrl) {
@@ -67,8 +67,9 @@ export function initDeleteButtons(baseUrl) {
         const btn = event.target.closest('.btn-eliminar');
         if (btn) {
             const id = btn.getAttribute('data-id');
+            const nombre = btn.getAttribute('data-nombre');
             const token = btn.getAttribute('data-token');
-            deletePropietario(id, token, baseUrl);
+            deleteConductor(id, nombre, token, baseUrl);
         }
     });
 }

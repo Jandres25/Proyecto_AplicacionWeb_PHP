@@ -27,64 +27,62 @@
             </div>
         </div>
         <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover table-sm" id="tabla_id" style="visibility: hidden;">
-                    <thead class="table-light">
+            <table class="table table-bordered table-hover table-sm" id="tabla_usuarios" style="visibility: hidden;">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col" class="text-center" style="width: 50px;">#</th>
+                        <th scope="col">Nombre Completo</th>
+                        <th scope="col">Usuario</th>
+                        <th scope="col">Correo Electrónico</th>
+                        <th scope="col" class="text-center" style="width: 120px;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $counter = 1;
+                    foreach ($vm->listaUsuarios as $registro) : ?>
                         <tr>
-                            <th scope="col" class="text-center" style="width: 50px;">#</th>
-                            <th scope="col">Nombre Completo</th>
-                            <th scope="col">Usuario</th>
-                            <th scope="col">Correo Electrónico</th>
-                            <th scope="col" class="text-center" style="width: 120px;">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        $counter = 1;
-                        foreach ($vm->listaUsuarios as $registro) : ?>
-                            <tr>
-                                <td class="text-center text-muted fw-bold"><?= $counter++; ?></td>
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        <div class="bg-light rounded-circle border d-flex align-items-center justify-content-center me-3 d-none d-sm-flex" style="width: 35px; height: 35px; flex-shrink: 0;">
-                                            <i class="bi bi-person text-secondary"></i>
-                                        </div>
-                                        <div class="fw-bold"><?= e($registro->nombres . ' ' . $registro->apellidos); ?></div>
+                            <td class="text-center text-muted fw-bold"><?= $counter++; ?></td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-light rounded-circle border d-flex align-items-center justify-content-center me-3 d-none d-sm-flex" style="width: 35px; height: 35px; flex-shrink: 0;">
+                                        <i class="bi bi-person text-secondary"></i>
                                     </div>
-                                </td>
-                                <td>
-                                    <span class="badge bg-light text-dark border fw-normal"><?= e($registro->usuario); ?></span>
-                                </td>
-                                <td>
-                                    <a href="mailto:<?= e($registro->correo); ?>" class="text-decoration-none text-muted small">
-                                        <i class="bi bi-envelope me-1"></i><?= e($registro->correo); ?>
+                                    <div class="fw-bold"><?= e($registro->nombres . ' ' . $registro->apellidos); ?></div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="badge bg-light text-dark border fw-normal"><?= e($registro->usuario); ?></span>
+                            </td>
+                            <td>
+                                <a href="mailto:<?= e($registro->correo); ?>" class="text-decoration-none text-muted small">
+                                    <i class="bi bi-envelope me-1"></i><?= e($registro->correo); ?>
+                                </a>
+                            </td>
+                            <td class="text-center">
+                                <div class="btn-group shadow-sm" role="group">
+                                    <a class="btn btn-light btn-sm border" href="<?= e(app_url('/usuarios/editar')); ?>?id=<?= e($registro->id); ?>" title="Editar">
+                                        <i class="bi bi-pencil-square text-success"></i>
                                     </a>
-                                </td>
-                                <td class="text-center">
-                                    <div class="btn-group shadow-sm" role="group">
-                                        <a class="btn btn-light btn-sm border" href="<?= e(app_url('/usuarios/editar')); ?>?id=<?= e($registro->id); ?>" title="Editar">
-                                            <i class="bi bi-pencil-square text-success"></i>
-                                        </a>
-                                        <button type="button" class="btn btn-light btn-sm border btn-eliminar"
-                                            data-id="<?= e($registro->id); ?>"
-                                            data-token="<?= e(\Core\Csrf::token()); ?>"
-                                            title="Eliminar">
-                                            <i class="bi bi-trash-fill text-danger"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
+                                    <button type="button" class="btn btn-light btn-sm border btn-eliminar"
+                                        data-id="<?= e($registro->id); ?>"
+                                        data-nombre="<?= e($registro->usuario); ?>"
+                                        data-token="<?= e(\Core\Csrf::token()); ?>"
+                                        title="Eliminar">
+                                        <i class="bi bi-trash-fill text-danger"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
 
 <script type="module">
-    import {
-        initDeleteButtons
-    } from '<?= e(app_url('/modules/users/delete.js')); ?>';
+    import { initDeleteButtons } from '<?= e(app_url('/js/modules/usuarios/delete.js')); ?>';
     initDeleteButtons('<?= e(app_url()); ?>');
 </script>
+<script src="<?= e(app_url('/js/modules/usuarios/datatable.js')); ?>"></script>

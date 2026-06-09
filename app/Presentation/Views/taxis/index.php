@@ -27,56 +27,53 @@
             </div>
         </div>
         <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover table-sm" id="tabla_id" style="visibility: hidden;">
-                    <thead class="table-light">
+            <table class="table table-bordered table-hover table-sm" id="tabla_taxis" style="visibility: hidden;">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col" class="text-center" style="width: 80px;">Placa</th>
+                        <th scope="col">Modelo</th>
+                        <th scope="col">Marca</th>
+                        <th scope="col">Propietario</th>
+                        <th scope="col" class="text-center" style="width: 120px;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $counter = 1;
+                    foreach ($vm->listaTaxis as $registro) : ?>
                         <tr>
-                            <th scope="col" class="text-center" style="width: 80px;">Placa</th>
-                            <th scope="col">Modelo</th>
-                            <th scope="col">Marca</th>
-                            <th scope="col">Propietario</th>
-                            <th scope="col" class="text-center" style="width: 120px;">Acciones</th>
+                            <td class="text-center fw-bold text-primary"><?= $counter++; ?></td>
+                            <td><?= e($registro->modelo); ?></td>
+                            <td><?= e($registro->marca); ?></td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <i class="bi bi-person-badge me-2 text-secondary"></i>
+                                    <?= e($registro->nombrePropietario ?? ''); ?>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <div class="btn-group shadow-sm" role="group">
+                                    <a class="btn btn-light btn-sm border" href="<?= e(app_url('/taxis/editar')); ?>?placa=<?= e($registro->placa); ?>" title="Editar">
+                                        <i class="bi bi-pencil-square text-success"></i>
+                                    </a>
+                                    <button type="button" class="btn btn-light btn-sm border btn-eliminar"
+                                        data-placa="<?= e($registro->placa); ?>"
+                                        data-token="<?= e(\Core\Csrf::token()); ?>"
+                                        title="Eliminar">
+                                        <i class="bi bi-trash-fill text-danger"></i>
+                                    </button>
+                                </div>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        $counter = 1;
-                        foreach ($vm->listaTaxis as $registro) : ?>
-                            <tr>
-                                <td class="text-center fw-bold text-primary"><?= $counter++; ?></td>
-                                <td><?= e($registro->modelo); ?></td>
-                                <td><?= e($registro->marca); ?></td>
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        <i class="bi bi-person-badge me-2 text-secondary"></i>
-                                        <?= e($registro->nombrePropietario ?? ''); ?>
-                                    </div>
-                                </td>
-                                <td class="text-center">
-                                    <div class="btn-group shadow-sm" role="group">
-                                        <a class="btn btn-light btn-sm border" href="<?= e(app_url('/taxis/editar')); ?>?placa=<?= e($registro->placa); ?>" title="Editar">
-                                            <i class="bi bi-pencil-square text-success"></i>
-                                        </a>
-                                        <button type="button" class="btn btn-light btn-sm border btn-eliminar"
-                                            data-placa="<?= e($registro->placa); ?>"
-                                            data-token="<?= e(\Core\Csrf::token()); ?>"
-                                            title="Eliminar">
-                                            <i class="bi bi-trash-fill text-danger"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
 
 <script type="module">
-    import {
-        initDeleteButtons
-    } from '<?= e(app_url('/modules/taxis/delete.js')); ?>';
+    import { initDeleteButtons } from '<?= e(app_url('/js/modules/taxis/delete.js')); ?>';
     initDeleteButtons('<?= e(app_url()); ?>');
 </script>
+<script src="<?= e(app_url('/js/modules/taxis/datatable.js')); ?>"></script>

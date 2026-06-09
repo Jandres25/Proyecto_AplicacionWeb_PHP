@@ -24,7 +24,7 @@ Arquitectura por capas clásica (N-Layer): **Presentation → Application → Do
 - **Sin JOINs Cross-Domain:** Los repositorios consultan una sola tabla. El ensamblado de datos entre dominios ocurre en el Service (e.g. `TaxiService::allWithOwner()`).
 - **Renderizado Tipado de Vistas:** `View::renderWith()` recibe un `ViewModel` tipado; no se usa `extract()` ni arrays crudos.
 - **Layout Desacoplado:** El layout consume un `LayoutViewModel` preparado en `core/View`, sin lógica de aplicación en la plantilla.
-- **Gestión AJAX:** Eliminación de registros mediante Fetch API con feedback visual vía SweetAlert2.
+- **Gestión AJAX:** Eliminación de registros mediante Fetch API con feedback visual vía SweetAlert2. Cada módulo tiene su propio `delete.js` con mensajes contextuales (nombre del registro en la confirmación).
 - **Toasts Centralizados:** Helpers reutilizables en `public/js/toast-config.js` (`showToast`, `showToastSuccess`, `showToastError`).
 - **Seguridad:** CSRF en todas las acciones POST y control de acceso basado en roles (`is_admin` en la tabla `usuarios`). `Auth::requireAdmin()` verifica la columna — no depende del nombre de usuario.
 - **Tests automatizados:** Suite de unit tests con PHPUnit 10 (modelos de dominio y services). CI via GitHub Actions en PHP 8.2 y 8.3. Correr con `composer test`.
@@ -135,8 +135,14 @@ routes/
   web.php              ← Definición de rutas
 public/
   index.php            ← Front controller
-  css/, js/, img/      ← Recursos estáticos
-  modules/             ← Módulos ES6 (lógica AJAX)
+  css/, img/           ← Recursos estáticos
+  js/
+    toast-config.js    ← Helpers globales de toasts
+    modules/
+      taxis/           ← datatable.js + delete.js
+      propietarios/    ← datatable.js + delete.js
+      conductores/     ← datatable.js + delete.js
+      usuarios/        ← datatable.js + delete.js
 database/
   schema.sql
   seeder.sql

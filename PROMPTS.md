@@ -64,6 +64,7 @@ _______________
 - Nuevos repositorios deben implementar una interface en app/Infrastructure/Contracts/
 - Registrar bindings en config/bindings.php
 - URLs internas en vistas: siempre app_url('/ruta') — nunca $layout->baseUrl ni rutas hardcodeadas
+- delete.js: cada módulo tiene su propio ES module en public/js/modules/{modulo}/delete.js; el botón debe llevar data-nombre con el identificador visible (nombre, usuario o placa) para mensajes contextuales en SweetAlert2; no existe layout.js compartido
 
 [Formato de salida]
 _______________
@@ -115,6 +116,7 @@ Descripción: [describe qué debe hacer]
 - SQL: siempre bindValue() con tipos explícitos (PDO::PARAM_INT, etc.)
 - Los repositorios no hacen JOINs entre dominios — eso va en el Service
 - declare(strict_types=1) en todos los archivos PHP
+- delete.js: crear public/js/modules/{modulo}/delete.js con firma deleteXxx(id, nombre, token, baseUrl); el botón lleva data-nombre con el identificador visible; mensajes contextuales en el confirm de SweetAlert2
 - URLs internas en vistas: siempre app_url('/ruta') — nunca $layout->baseUrl
 - Variables de entorno disponibles: SESSION_LIFETIME, REMEMBER_ME_ENABLED, REMEMBER_ME_TTL_DAYS, REMEMBER_ME_COOKIE_NAME
 
@@ -198,7 +200,7 @@ Evalúa específicamente:
 - JOINs cross-domain: los repositorios no deben cruzar tablas de otro dominio — combinar en el Service
 - ViewModels: vistas reciben ViewModel tipado, no arrays ni variables sueltas
 - Flash/Toasts: Flash::set() con clave 'success' o 'error'; frontend usa showToastSuccess/showToastError
-- AJAX delete: $request->isAjax() verificado, Response::json() con estructura {success, message}; siempre return después de Response::json()
+- AJAX delete: $request->isAjax() verificado, Response::json() con estructura {success, message}; siempre return después de Response::json(); el botón lleva data-nombre; delete.js en public/js/modules/{modulo}/delete.js con mensajes contextuales
 - Contratos: repositorio implementa interface en app/Infrastructure/Contracts/, binding en config/bindings.php
 - Convenciones: declare(strict_types=1), tipos explícitos en bindValue, app_url() para URLs internas
 - Seeder: contraseñas insertadas ya hasheadas (password_hash) — nunca texto plano en seed data
@@ -312,7 +314,7 @@ Devuelve en este orden:
 
 ---
 
-_Última actualización: 2026-06-06_
+_Última actualización: 2026-06-09_
 _Mantener sincronizado con CLAUDE.md al inicio de cada sesión._
 
 ---
@@ -362,15 +364,15 @@ Crear los unit tests para el nuevo módulo:
 
 ## Stack completo actual (referencia rápida)
 
-| Capa      | Tecnología                                                     |
-| --------- | -------------------------------------------------------------- |
-| Servidor  | XAMPP (Apache + MySQL)                                         |
-| Backend   | PHP 8.x, PDO, Composer (PSR-4)                                 |
-| Framework | Propio en `core/` (Router, Container, Auth, Csrf, Flash, View) |
-| Frontend  | Bootstrap 5.3, Bootstrap Icons, icheck-bootstrap 3             |
-| Tablas    | DataTables 1.13 + Responsive                                   |
-| Alertas   | SweetAlert2                                                    |
-| Logs      | Monolog (rotación diaria, 14 días)                             |
-| Auth      | Sesión PHP + cookie remember-me (SHA-256, rotación por uso)    |
-| Tests     | PHPUnit 10.5, unit tests en `tests/Unit/` (`composer test`)    |
-| CI        | GitHub Actions — PHP 8.2 / 8.3, sin BD                        |
+| Capa      | Tecnología                                                                                                                              |
+| --------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| Servidor  | XAMPP (Apache + MySQL)                                                                                                                  |
+| Backend   | PHP 8.x, PDO, Composer (PSR-4)                                                                                                          |
+| Framework | Propio en `core/` (Router, Container, Auth, Csrf, Flash, View)                                                                          |
+| Frontend  | Bootstrap 5.3, Bootstrap Icons, icheck-bootstrap 3                                                                                      |
+| Tablas    | DataTables 1.13 + Responsive + Buttons (PDF/Excel/CSV/Print/Colvis); dom personalizado con drawCallback → ComponentUtils.initTooltips() |
+| Alertas   | SweetAlert2                                                                                                                             |
+| Logs      | Monolog (rotación diaria, 14 días)                                                                                                      |
+| Auth      | Sesión PHP + cookie remember-me (SHA-256, rotación por uso)                                                                             |
+| Tests     | PHPUnit 10.5, unit tests en `tests/Unit/` (`composer test`)                                                                             |
+| CI        | GitHub Actions — PHP 8.2 / 8.3, sin BD                                                                                                  |

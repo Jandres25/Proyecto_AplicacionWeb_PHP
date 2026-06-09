@@ -83,6 +83,8 @@ Repository methods must not JOIN across domain tables. `TaxiService::allWithOwne
 **Deletion (AJAX):**
 `destroy()` methods detect `Request::isAjax()` and return `Response::json()` instead of redirecting. The frontend calls these via Fetch API: on success it stores the message in `sessionStorage` and reloads the page; `toast-config.js` reads it on load and fires the toast. This ensures the toast appears after the list has refreshed. Error toasts (non-AJAX path) are shown inline via `showToastError()`.
 
+Each module has its own `delete.js` ES module at `public/js/modules/{module}/delete.js`. The delete button must carry a `data-nombre` attribute with a human-readable identifier (name, username, or plate) so the SweetAlert2 confirmation dialog can show a specific message instead of a generic one. The button's `initDeleteButtons(baseUrl)` export wires the click listener; the internal `deleteXxx(id, nombre, token, baseUrl)` function handles the fetch call. No shared `layout.js` delete function exists — each module owns its messages.
+
 **Toast helpers (`public/js/toast-config.js`):**
 Exposes `window.showToast(type, title)`, `window.showToastSuccess(title)`, `window.showToastError(title)`. Also reads `sessionStorage.pendingToast` on every page load to display post-reload toasts (used by AJAX delete modules).
 

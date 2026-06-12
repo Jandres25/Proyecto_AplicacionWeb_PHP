@@ -26,6 +26,7 @@ Arquitectura por capas clásica (N-Layer): **Presentation → Application → Do
 - **Layout Desacoplado:** El layout consume un `LayoutViewModel` preparado en `core/View`, sin lógica de aplicación en la plantilla.
 - **Gestión AJAX:** Eliminación de registros mediante Fetch API con feedback visual vía SweetAlert2. Cada módulo tiene su propio `delete.js` con mensajes contextuales (nombre del registro en la confirmación).
 - **Toasts Centralizados:** Helpers reutilizables en `public/js/toast-config.js` (`showToast`, `showToastSuccess`, `showToastError`).
+- **Perfil del usuario:** Cualquier usuario autenticado puede editar su nombre, correo y contraseña en `/perfil`. El id se obtiene de `Auth::id()` — nunca por URL (IDOR-safe). Dos tabs independientes con CSRF propio cada uno.
 - **Seguridad:** CSRF en todas las acciones POST y control de acceso basado en roles (`is_admin` en la tabla `usuarios`). `Auth::requireAdmin()` verifica la columna — no depende del nombre de usuario.
 - **Tests automatizados:** Suite de unit tests con PHPUnit 10 (modelos de dominio y services). CI via GitHub Actions en PHP 8.2 y 8.3. Correr con `composer test`.
 - **Recuérdame:** Cookie persistente de 30 días con token hasheado (SHA-256) y rotación en cada uso. Configurable via variables de entorno.
@@ -156,6 +157,7 @@ Todos los módulos de gestión requieren sesión activa con `is_admin = 1`.
 - `/propietarios`: Administración de dueños de vehículos (Solo Admin).
 - `/conductores`: Gestión de personal de conducción y asignación de vehículos (Solo Admin).
 - `/usuarios`: Control de usuarios del sistema (Solo Admin).
+- `/perfil`: Editar información personal y contraseña del usuario autenticado (todos los usuarios).
 - `/login`: Autenticación de usuarios.
 
 ---

@@ -20,19 +20,19 @@
             <ul class="nav nav-tabs mb-0" id="perfilTabs" role="tablist">
                 <li class="nav-item" role="presentation">
                     <button class="nav-link <?= $vm->activeTab === 'perfil' ? 'active' : ''; ?>"
-                            id="tab-perfil"
-                            data-bs-toggle="tab"
-                            data-bs-target="#pane-perfil"
-                            type="button" role="tab">
+                        id="tab-perfil"
+                        data-bs-toggle="tab"
+                        data-bs-target="#pane-perfil"
+                        type="button" role="tab">
                         <i class="bi bi-person me-1"></i>Información
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link <?= $vm->activeTab === 'clave' ? 'active' : ''; ?>"
-                            id="tab-clave"
-                            data-bs-toggle="tab"
-                            data-bs-target="#pane-clave"
-                            type="button" role="tab">
+                        id="tab-clave"
+                        data-bs-toggle="tab"
+                        data-bs-target="#pane-clave"
+                        type="button" role="tab">
                         <i class="bi bi-key me-1"></i>Contraseña
                     </button>
                 </li>
@@ -40,9 +40,8 @@
 
             <div class="tab-content border border-top-0 rounded-bottom shadow-sm bg-white">
 
-                {{-- Tab: Información --}}
                 <div class="tab-pane fade <?= $vm->activeTab === 'perfil' ? 'show active' : ''; ?>"
-                     id="pane-perfil" role="tabpanel">
+                    id="pane-perfil" role="tabpanel">
                     <form action="<?= e(app_url('/perfil/informacion')); ?>" method="post">
                         <input type="hidden" name="_token" value="<?= e(\Core\Csrf::token()); ?>">
                         <div class="p-4">
@@ -68,7 +67,7 @@
                                     <div class="input-group">
                                         <span class="input-group-text bg-light"><i class="bi bi-person"></i></span>
                                         <input type="text" class="form-control" id="nombres" name="nombres"
-                                               value="<?= e($vm->nombres); ?>" required>
+                                            value="<?= e($vm->nombres); ?>" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb-3">
@@ -76,7 +75,7 @@
                                     <div class="input-group">
                                         <span class="input-group-text bg-light"><i class="bi bi-person"></i></span>
                                         <input type="text" class="form-control" id="apellidos" name="apellidos"
-                                               value="<?= e($vm->apellidos); ?>" required>
+                                            value="<?= e($vm->apellidos); ?>" required>
                                     </div>
                                 </div>
                             </div>
@@ -86,7 +85,7 @@
                                 <div class="input-group">
                                     <span class="input-group-text bg-light"><i class="bi bi-envelope"></i></span>
                                     <input type="email" class="form-control" id="correo" name="correo"
-                                           value="<?= e($vm->correo); ?>" required>
+                                        value="<?= e($vm->correo); ?>" required>
                                 </div>
                             </div>
                         </div>
@@ -98,9 +97,8 @@
                     </form>
                 </div>
 
-                {{-- Tab: Contraseña --}}
                 <div class="tab-pane fade <?= $vm->activeTab === 'clave' ? 'show active' : ''; ?>"
-                     id="pane-clave" role="tabpanel">
+                    id="pane-clave" role="tabpanel">
                     <form action="<?= e(app_url('/perfil/clave')); ?>" method="post">
                         <input type="hidden" name="_token" value="<?= e(\Core\Csrf::token()); ?>">
                         <div class="p-4">

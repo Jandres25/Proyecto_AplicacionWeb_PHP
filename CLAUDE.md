@@ -63,7 +63,7 @@ database/
 - `Container` — DI container with `bind()`, `singleton()`, and reflection-based autowiring. Exposes `Container::setInstance()` / `Container::getInstance()` for global static access (used by `Auth`)
 - `Router` — static GET/POST routing; resolves paths with or without `/public` prefix; supports `?route=` fallback
 - `View` — `View::renderWith(string $view, ViewModel $vm)` is the only rendering method; no `extract()`, data is passed as a typed `ViewModel`
-- `Auth` — session-based auth; `Auth::requireAdmin()` redirects if not logged in or if `$_SESSION['is_admin']` is not `true` (backed by the `is_admin TINYINT` column in `usuarios`). `Auth::isAdmin(): bool` exposes the flag. `Auth::requireLogin()` also attempts transparent re-login via remember-me cookie before redirecting. `Auth::issueRememberCookie(int $userId)` issues the persistent cookie. Uses `Container::getInstance()` internally to resolve `AuthServiceInterface`.
+- `Auth` — session-based auth; `Auth::requireAdmin()` redirects if not logged in or if `$_SESSION['is_admin']` is not `true` (backed by the `is_admin TINYINT` column in `usuarios`). `Auth::isAdmin(): bool` exposes the flag. `Auth::id(): int` returns `$_SESSION['user_id']` — use this in user-scoped actions instead of reading id from URL/POST (prevents IDOR). `Auth::requireLogin()` also attempts transparent re-login via remember-me cookie before redirecting. `Auth::issueRememberCookie(int $userId)` issues the persistent cookie. Uses `Container::getInstance()` internally to resolve `AuthServiceInterface`.
 - `Csrf` — `Csrf::token()` generates token, `Csrf::validateOrFail()` checks it in POST handlers
 - `Flash` — one-time session messages (`success`/`error`); consumed by `View::buildLayoutViewModel()` and rendered as toasts
 - `ErrorHandler` — `ErrorHandler::abort(int $code)` terminates with the appropriate HTTP error view
@@ -119,3 +119,5 @@ Usar siempre `app_url('/ruta')` — tanto en vistas standalone (login) como en e
 - Domain models validate their own fields in `create()`; Services validate cross-domain rules (e.g. FK existence) before calling the factory
 - `destroy()` methods: always add `return` after `Response::json()` — never rely on `exit` inside the callee to prevent fall-through
 - `seeder.sql` inserts passwords already hashed with `password_hash(..., PASSWORD_DEFAULT)` — no plain-text passwords in seed data
+- **Error → CLAUDE.md**: after fixing any mistake (architecture, convention, pattern, any kind of error), document it here before considering the task done — so it never repeats
+- **No Blade syntax in PHP views**: never use `{{-- ... --}}` comments in `.php` templates — they render as literal text. Use `<?php /* ... */ ?>` or HTML `<!-- ... -->` instead

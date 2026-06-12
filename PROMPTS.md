@@ -119,6 +119,9 @@ Descripción: [describe qué debe hacer]
 - delete.js: crear public/js/modules/{modulo}/delete.js con firma deleteXxx(id, nombre, token, baseUrl); el botón lleva data-nombre con el identificador visible; mensajes contextuales en el confirm de SweetAlert2
 - URLs internas en vistas: siempre app_url('/ruta') — nunca $layout->baseUrl
 - Variables de entorno disponibles: SESSION_LIFETIME, REMEMBER_ME_ENABLED, REMEMBER_ME_TTL_DAYS, REMEMBER_ME_COOKIE_NAME
+- Módulo de perfil implementado: GET /perfil, POST /perfil/informacion, POST /perfil/clave — Auth::requireLogin(), Auth::id() para obtener el usuario en sesión (nunca por URL/POST)
+- Auth::id(): int existe en core/Auth.php — devuelve $_SESSION['user_id']
+- Vistas PHP: nunca usar comentarios {{-- ... --}} de Blade — renderiza como texto literal; usar <!-- --> o <?php /* */ ?>
 
 [Formato de salida]
 Devuelve en este orden:
@@ -225,7 +228,7 @@ patrones Repository/ViewModel y PHP sin framework.
 
 [Contexto]
 Proyecto: Gestión de Flota — PHP 8.x custom, sin framework.
-Estado actual: módulos implementados — taxis, propietarios, conductores, usuarios, auth.
+Estado actual: módulos implementados — taxis, propietarios, conductores, usuarios, auth, perfil (GET /perfil, POST /perfil/informacion, POST /perfil/clave).
 BD: propietarios, taxis, conductores, usuarios (ver database/schema.sql).
 Arquitectura N-Layer: Presentation / Application / Domain / Infrastructure. Framework interno en core/.
 Bootstrap: bootstrap/app.php. Bindings: config/bindings.php. Rutas: routes/web.php.
@@ -314,7 +317,7 @@ Devuelve en este orden:
 
 ---
 
-_Última actualización: 2026-06-09_
+_Última actualización: 2026-06-12_
 _Mantener sincronizado con CLAUDE.md al inicio de cada sesión._
 
 ---

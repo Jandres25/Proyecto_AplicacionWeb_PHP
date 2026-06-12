@@ -45,6 +45,10 @@ final class View
             $navigationItems[] = ['href' => $baseUrl . 'usuarios', 'label' => 'Usuarios'];
         }
 
+        if (Auth::check()) {
+            $navigationItems[] = ['href' => $baseUrl . 'perfil', 'label' => 'Mi Perfil'];
+        }
+
         $toastMessages = [];
         if (!self::isAjaxRequest()) {
             $success = Flash::get('success');

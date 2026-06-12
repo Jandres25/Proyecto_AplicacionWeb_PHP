@@ -8,6 +8,7 @@ use App\Presentation\Controllers\PropietarioController;
 use App\Presentation\Controllers\TaxiController;
 use App\Presentation\Controllers\ConductorController;
 use App\Presentation\Controllers\UsuarioController;
+use App\Presentation\Controllers\PerfilController;
 
 $router->get('/login', [AuthController::class, 'showLogin']);
 $router->post('/login', [AuthController::class, 'login']);
@@ -37,3 +38,6 @@ $router->post('/usuarios/crear', [UsuarioController::class, 'store']);
 $router->get('/usuarios/editar', [UsuarioController::class, 'edit']);
 $router->post('/usuarios/editar', [UsuarioController::class, 'update']);
 $router->post('/usuarios/eliminar', [UsuarioController::class, 'destroy']);
+$router->get('/perfil', [PerfilController::class, 'index']);
+$router->post('/perfil/informacion', [PerfilController::class, 'updateProfile']);
+$router->post('/perfil/clave', [PerfilController::class, 'updatePassword']);

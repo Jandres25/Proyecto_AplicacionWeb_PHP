@@ -14,6 +14,7 @@ use App\Infrastructure\Persistence\Repositories\PropietarioRepository;
 use App\Infrastructure\Persistence\Repositories\TaxiRepository;
 use App\Infrastructure\Persistence\Repositories\UserRepository;
 use App\Application\Services\AuthService;
+use App\Application\Services\PerfilService;
 
 /** @param Container $container */
 return static function (Container $container): void {
@@ -36,4 +37,5 @@ return static function (Container $container): void {
     $container->bind(UserRepositoryInterface::class, static fn(Container $c) => new UserRepository($c->make(\PDO::class)));
 
     $container->bind(AuthServiceInterface::class, static fn(Container $c) => new AuthService($c->make(UserRepositoryInterface::class)));
+    $container->bind(PerfilService::class, static fn(Container $c) => new PerfilService($c->make(UserRepositoryInterface::class)));
 };

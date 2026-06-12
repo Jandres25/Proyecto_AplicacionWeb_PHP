@@ -68,6 +68,12 @@ final class Auth
         return (bool) ($_SESSION['is_admin'] ?? false);
     }
 
+    public static function id(): int
+    {
+        Session::start();
+        return (int) ($_SESSION['user_id'] ?? 0);
+    }
+
     public static function username(): string
     {
         Session::start();

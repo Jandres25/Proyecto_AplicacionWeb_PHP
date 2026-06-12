@@ -48,6 +48,17 @@ final class Usuario
         return new self(id: 0, nombres: $cleanNames, apellidos: $cleanLastnames, usuario: $cleanUser, correo: $cleanEmail, claveHash: '', isAdmin: false);
     }
 
+    public static function validatePasswordChange(string $nueva, string $confirmacion): void
+    {
+        if (mb_strlen($nueva) < 8) {
+            throw new \InvalidArgumentException('La nueva contraseña debe tener al menos 8 caracteres.');
+        }
+
+        if ($nueva !== $confirmacion) {
+            throw new \InvalidArgumentException('La nueva contraseña y su confirmación no coinciden.');
+        }
+    }
+
     public static function fromRow(array $row): self
     {
         return new self(

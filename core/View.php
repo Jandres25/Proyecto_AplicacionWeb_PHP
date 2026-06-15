@@ -39,9 +39,10 @@ final class View
             ['href' => $baseUrl . 'conductores', 'label' => 'Conductores'],
             ['href' => $baseUrl . 'propietarios', 'label' => 'Propietarios'],
             ['href' => $baseUrl . 'taxis', 'label' => 'Taxis'],
+            ['href' => $baseUrl . 'reportes', 'label' => 'Reportes'],
         ];
 
-        if (Auth::username() === 'Administrador') {
+        if (Auth::isAdmin()) {
             $navigationItems[] = ['href' => $baseUrl . 'usuarios', 'label' => 'Usuarios'];
         }
 

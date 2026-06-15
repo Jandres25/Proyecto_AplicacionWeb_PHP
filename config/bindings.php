@@ -15,6 +15,7 @@ use App\Infrastructure\Persistence\Repositories\TaxiRepository;
 use App\Infrastructure\Persistence\Repositories\UserRepository;
 use App\Application\Services\AuthService;
 use App\Application\Services\PerfilService;
+use App\Application\Services\ReporteService;
 
 /** @param Container $container */
 return static function (Container $container): void {
@@ -38,4 +39,9 @@ return static function (Container $container): void {
 
     $container->bind(AuthServiceInterface::class, static fn(Container $c) => new AuthService($c->make(UserRepositoryInterface::class)));
     $container->bind(PerfilService::class, static fn(Container $c) => new PerfilService($c->make(UserRepositoryInterface::class)));
+    $container->bind(ReporteService::class, static fn(Container $c) => new ReporteService(
+        $c->make(TaxiRepositoryInterface::class),
+        $c->make(PropietarioRepositoryInterface::class),
+        $c->make(ConductorRepositoryInterface::class),
+    ));
 };

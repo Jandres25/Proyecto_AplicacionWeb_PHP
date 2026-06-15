@@ -37,6 +37,7 @@ app/
   Application/
     Contracts/         ← Service interfaces (e.g. AuthServiceInterface)
     Services/          ← Application services (orchestration, no SQL)
+    Reportes/          ← DTOs de proyección (FlotaRow, EstadisticasGenerales, FiltrosFlota) — no son Domain Models
   Domain/
     Models/            ← Domain models with validation via Model::create()
   Infrastructure/
@@ -107,11 +108,17 @@ Cookie persistente `remember_token` (30 días por defecto). El token en claro va
 **URLs en vistas:**
 Usar siempre `app_url('/ruta')` — tanto en vistas standalone (login) como en el layout (header/footer). No usar `$layout->baseUrl` para construir URLs de assets o rutas.
 
+**Módulo de reportes (`GET /reportes`):**
+Solo admin. Muestra estadísticas generales (tarjetas) y tabla de flota (taxi + propietario + conductor asignado). Filtros server-side por `marca` y `propietario` vía GET — sin CSRF. `ReporteService` carga los tres repositorios por separado y combina en memoria (patrón anti-JOIN cross-domain). DTOs de proyección en `App\Application\Reportes\`: `FlotaRow`, `EstadisticasGenerales`, `FiltrosFlota` — no son Domain Models. `FiltrosFlota::fromQuery()` normaliza cadenas vacías y valores ≤ 0 a `null`. La tabla usa DataTables client-side (datos ya filtrados desde PHP); sin `delete.js` (módulo de solo lectura).
+
+**DTOs de proyección vs Domain Models:**
+Cuando un módulo produce vistas combinadas de múltiples dominios sin ser una entidad propia (reportes, dashboards), usar clases `final readonly` en `App\Application\{Módulo}\` en lugar de `App\Domain\Models\`. No tienen `create()` factory ni `fromRow()` — solo constructor y propiedades.
+
 ## Conventions
 
 - All PHP files use `declare(strict_types=1)`
 - Controllers validate CSRF on every POST: `Csrf::validateOrFail((string) $this->request->post('_token', ''))`
-- Admin-only routes call `Auth::requireAdmin()` at the start of every action — this covers all modules (taxis, propietarios, conductores, usuarios). Admin access is determined by `is_admin = 1` in the `usuarios` table, not by username.
+- Admin-only routes call `Auth::requireAdmin()` at the start of every action — this covers all modules (taxis, propietarios, conductores, usuarios, reportes). Admin access is determined by `is_admin = 1` in the `usuarios` table, not by username. **Never compare `Auth::username()` to a string to check admin role** — always use `Auth::isAdmin()`.
 - Flash messages use only `'success'` or `'error'` keys; messages must be specific (e.g. `'Taxi creado exitosamente'`, not `'Registro Agregado'`)
 - Repositories: `PDO::fetch()` returns `false` (not `null`) when no row is found — always check `$row !== false` before calling `fromRow()`
 - `Response::redirect(app_url('/path'))` — use `app_url()` helper for all internal URLs

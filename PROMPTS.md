@@ -120,6 +120,8 @@ Descripción: [describe qué debe hacer]
 - URLs internas en vistas: siempre app_url('/ruta') — nunca $layout->baseUrl
 - Variables de entorno disponibles: SESSION_LIFETIME, REMEMBER_ME_ENABLED, REMEMBER_ME_TTL_DAYS, REMEMBER_ME_COOKIE_NAME
 - Módulo de perfil implementado: GET /perfil, POST /perfil/informacion, POST /perfil/clave — Auth::requireLogin(), Auth::id() para obtener el usuario en sesión (nunca por URL/POST)
+- Módulo de reportes implementado: GET /reportes — Auth::requireAdmin(), filtros server-side por GET (sin CSRF), ReporteService combina repos en memoria, DTOs readonly en App\Application\Reportes\ (FlotaRow, EstadisticasGenerales, FiltrosFlota)
+- Nunca comparar Auth::username() a un string para verificar rol admin — siempre usar Auth::isAdmin()
 - Auth::id(): int existe en core/Auth.php — devuelve $_SESSION['user_id']
 - Vistas PHP: nunca usar comentarios {{-- ... --}} de Blade — renderiza como texto literal; usar <!-- --> o <?php /* */ ?>
 
@@ -228,7 +230,7 @@ patrones Repository/ViewModel y PHP sin framework.
 
 [Contexto]
 Proyecto: Gestión de Flota — PHP 8.x custom, sin framework.
-Estado actual: módulos implementados — taxis, propietarios, conductores, usuarios, auth, perfil (GET /perfil, POST /perfil/informacion, POST /perfil/clave).
+Estado actual: módulos implementados — taxis, propietarios, conductores, usuarios, auth, perfil (GET /perfil, POST /perfil/informacion, POST /perfil/clave), reportes (GET /reportes — estadísticas + flota con filtros server-side GET).
 BD: propietarios, taxis, conductores, usuarios (ver database/schema.sql).
 Arquitectura N-Layer: Presentation / Application / Domain / Infrastructure. Framework interno en core/.
 Bootstrap: bootstrap/app.php. Bindings: config/bindings.php. Rutas: routes/web.php.
@@ -317,7 +319,7 @@ Devuelve en este orden:
 
 ---
 
-_Última actualización: 2026-06-12_
+_Última actualización: 2026-06-15_
 _Mantener sincronizado con CLAUDE.md al inicio de cada sesión._
 
 ---

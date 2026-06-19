@@ -30,6 +30,7 @@ bash.exe.stackdump
 
 # Claude
 .claude
+.mcp.json
 
 # Docs (tracked intentionally — do not ignore)
 !docs/

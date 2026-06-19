@@ -10,6 +10,7 @@ use App\Presentation\Controllers\ConductorController;
 use App\Presentation\Controllers\UsuarioController;
 use App\Presentation\Controllers\PerfilController;
 use App\Presentation\Controllers\ReporteController;
+use App\Presentation\Controllers\AuditLogController;
 
 $router->get('/login', [AuthController::class, 'showLogin']);
 $router->post('/login', [AuthController::class, 'login']);
@@ -43,3 +44,4 @@ $router->get('/perfil', [PerfilController::class, 'index']);
 $router->post('/perfil/informacion', [PerfilController::class, 'updateProfile']);
 $router->post('/perfil/clave', [PerfilController::class, 'updatePassword']);
 $router->get('/reportes', [ReporteController::class, 'index']);
+$router->get('/audit-log', [AuditLogController::class, 'index']);

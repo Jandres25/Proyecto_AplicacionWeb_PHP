@@ -44,6 +44,7 @@ final class View
 
         if (Auth::isAdmin()) {
             $navigationItems[] = ['href' => $baseUrl . 'usuarios', 'label' => 'Usuarios'];
+            $navigationItems[] = ['href' => $baseUrl . 'audit-log', 'label' => 'Auditoría'];
         }
 
         if (Auth::check()) {

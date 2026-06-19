@@ -14,6 +14,8 @@ use App\Presentation\Http\Response;
 use App\Presentation\ViewModels\PropietarioCreateViewModel;
 use App\Presentation\ViewModels\PropietarioEditViewModel;
 use App\Presentation\ViewModels\PropietarioIndexViewModel;
+use App\Application\Audit\AuditActions;
+use App\Application\Contracts\AuditServiceInterface;
 use App\Application\Services\PropietarioService;
 use InvalidArgumentException;
 
@@ -21,6 +23,7 @@ final class PropietarioController
 {
     public function __construct(
         private readonly PropietarioService $service,
+        private readonly AuditServiceInterface $auditService,
         private readonly Request $request,
     ) {}
 
@@ -55,6 +58,7 @@ final class PropietarioController
 
         try {
             $this->service->create($old['nombre'], $old['telefono']);
+            $this->auditService->log(AuditActions::PROPIETARIO_CREATED, 'propietarios', null, "Propietario creado: {$old['nombre']}");
             Flash::set('success', 'Propietario creado exitosamente');
             Response::redirect(app_url('/propietarios'));
         } catch (InvalidArgumentException $exception) {
@@ -98,6 +102,7 @@ final class PropietarioController
 
         try {
             $this->service->update($id, $nombre, $telefono);
+            $this->auditService->log(AuditActions::PROPIETARIO_UPDATED, 'propietarios', (string) $id, "Propietario actualizado: {$nombre} (id #{$id})");
             Flash::set('success', 'Propietario actualizado exitosamente');
             Response::redirect(app_url('/propietarios'));
         } catch (InvalidArgumentException $exception) {
@@ -125,6 +130,7 @@ final class PropietarioController
         }
 
         $this->service->delete($id);
+        $this->auditService->log(AuditActions::PROPIETARIO_DELETED, 'propietarios', (string) $id, "Propietario eliminado: {$current->nombre} (id #{$id})");
 
         if ($this->request->isAjax()) {
             Response::json(['success' => true, 'message' => 'Propietario eliminado exitosamente']);

@@ -14,6 +14,8 @@ use App\Presentation\Http\Response;
 use App\Presentation\ViewModels\UsuarioCreateViewModel;
 use App\Presentation\ViewModels\UsuarioEditViewModel;
 use App\Presentation\ViewModels\UsuarioIndexViewModel;
+use App\Application\Audit\AuditActions;
+use App\Application\Contracts\AuditServiceInterface;
 use App\Application\Services\UsuarioService;
 use InvalidArgumentException;
 
@@ -21,6 +23,7 @@ final class UsuarioController
 {
     public function __construct(
         private readonly UsuarioService $service,
+        private readonly AuditServiceInterface $auditService,
         private readonly Request $request,
     ) {}
 
@@ -56,6 +59,7 @@ final class UsuarioController
 
         try {
             $this->service->create($old['nombres'], $old['apellidos'], $old['usuario'], $clave, $old['correo']);
+            $this->auditService->log(AuditActions::USUARIO_CREATED, 'usuarios', null, "Usuario creado: @{$old['usuario']}");
             Flash::set('success', 'Usuario creado exitosamente');
             Response::redirect(app_url('/usuarios'));
         } catch (InvalidArgumentException $exception) {
@@ -102,6 +106,7 @@ final class UsuarioController
 
         try {
             $this->service->update($id, $nombres, $apellidos, $usuarioNombre, $clave, $correo);
+            $this->auditService->log(AuditActions::USUARIO_UPDATED, 'usuarios', (string) $id, "Usuario actualizado: @{$usuarioNombre} (id #{$id})");
             Flash::set('success', 'Usuario actualizado exitosamente');
             Response::redirect(app_url('/usuarios'));
         } catch (InvalidArgumentException $exception) {
@@ -138,6 +143,7 @@ final class UsuarioController
         }
 
         $this->service->delete($id);
+        $this->auditService->log(AuditActions::USUARIO_DELETED, 'usuarios', (string) $id, "Usuario eliminado: @{$current->usuario} (id #{$id})");
 
         if ($this->request->isAjax()) {
             Response::json(['success' => true, 'message' => 'Usuario eliminado exitosamente']);

@@ -24,4 +24,7 @@ final class AuditActions
     public const USUARIO_CREATED = 'usuario.created';
     public const USUARIO_UPDATED = 'usuario.updated';
     public const USUARIO_DELETED = 'usuario.deleted';
+
+    public const PERFIL_UPDATED  = 'perfil.updated';
+    public const PERFIL_PASSWORD = 'perfil.password_changed';
 }

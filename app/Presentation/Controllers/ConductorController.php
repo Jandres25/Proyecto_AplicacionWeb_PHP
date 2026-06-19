@@ -14,6 +14,8 @@ use App\Presentation\Http\Response;
 use App\Presentation\ViewModels\ConductorCreateViewModel;
 use App\Presentation\ViewModels\ConductorEditViewModel;
 use App\Presentation\ViewModels\ConductorIndexViewModel;
+use App\Application\Audit\AuditActions;
+use App\Application\Contracts\AuditServiceInterface;
 use App\Application\Services\ConductorService;
 use InvalidArgumentException;
 
@@ -21,6 +23,7 @@ final class ConductorController
 {
     public function __construct(
         private readonly ConductorService $service,
+        private readonly AuditServiceInterface $auditService,
         private readonly Request $request,
     ) {}
 
@@ -55,6 +58,7 @@ final class ConductorController
 
         try {
             $this->service->create($old['nombre'], $old['telefono'], (int) $old['placa']);
+            $this->auditService->log(AuditActions::CONDUCTOR_CREATED, 'conductores', null, "Conductor creado: {$old['nombre']}");
             Flash::set('success', 'Conductor creado exitosamente');
             Response::redirect(app_url('/conductores'));
         } catch (InvalidArgumentException $exception) {
@@ -101,6 +105,7 @@ final class ConductorController
 
         try {
             $this->service->update($id, $nombres, $telefono, $placa);
+            $this->auditService->log(AuditActions::CONDUCTOR_UPDATED, 'conductores', (string) $id, "Conductor actualizado: {$nombres} (id #{$id})");
             Flash::set('success', 'Conductor actualizado exitosamente');
             Response::redirect(app_url('/conductores'));
         } catch (InvalidArgumentException $exception) {
@@ -129,6 +134,7 @@ final class ConductorController
         }
 
         $this->service->delete($id);
+        $this->auditService->log(AuditActions::CONDUCTOR_DELETED, 'conductores', (string) $id, "Conductor eliminado: {$current->nombres} (id #{$id})");
 
         if ($this->request->isAjax()) {
             Response::json(['success' => true, 'message' => 'Conductor eliminado exitosamente']);

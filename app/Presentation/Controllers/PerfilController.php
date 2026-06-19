@@ -12,6 +12,8 @@ use Core\View;
 use App\Presentation\Http\Request;
 use App\Presentation\Http\Response;
 use App\Presentation\ViewModels\PerfilIndexViewModel;
+use App\Application\Audit\AuditActions;
+use App\Application\Contracts\AuditServiceInterface;
 use App\Application\Services\PerfilService;
 use InvalidArgumentException;
 
@@ -19,6 +21,7 @@ final class PerfilController
 {
     public function __construct(
         private readonly PerfilService $service,
+        private readonly AuditServiceInterface $auditService,
         private readonly Request $request,
     ) {}
 
@@ -54,6 +57,7 @@ final class PerfilController
 
         try {
             $this->service->updateProfile($id, $nombres, $apellidos, $correo);
+            $this->auditService->log(AuditActions::PERFIL_UPDATED, 'perfil', (string) $id, "Perfil actualizado: @" . Auth::username() . " (id #{$id})");
             Flash::set('success', 'Información de perfil actualizada exitosamente.');
             Response::redirect(app_url('/perfil'));
         } catch (InvalidArgumentException $e) {
@@ -82,6 +86,7 @@ final class PerfilController
 
         try {
             $this->service->updatePassword($id, $actual, $nueva, $confirmacion);
+            $this->auditService->log(AuditActions::PERFIL_PASSWORD, 'perfil', (string) $id, "Contraseña cambiada: @" . Auth::username() . " (id #{$id})");
             Flash::set('success', 'Contraseña actualizada exitosamente.');
             Response::redirect(app_url('/perfil'));
         } catch (InvalidArgumentException $e) {

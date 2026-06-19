@@ -14,6 +14,8 @@ use App\Presentation\Http\Response;
 use App\Presentation\ViewModels\TaxiCreateViewModel;
 use App\Presentation\ViewModels\TaxiEditViewModel;
 use App\Presentation\ViewModels\TaxiIndexViewModel;
+use App\Application\Audit\AuditActions;
+use App\Application\Contracts\AuditServiceInterface;
 use App\Application\Services\TaxiService;
 use InvalidArgumentException;
 
@@ -21,6 +23,7 @@ final class TaxiController
 {
     public function __construct(
         private readonly TaxiService $service,
+        private readonly AuditServiceInterface $auditService,
         private readonly Request $request,
     ) {}
 
@@ -57,6 +60,7 @@ final class TaxiController
 
         try {
             $this->service->create($old['modelo'], $old['marca'], (int) $old['propietario']);
+            $this->auditService->log(AuditActions::TAXI_CREATED, 'taxis', null, "Taxi creado: {$old['marca']} {$old['modelo']}");
             Flash::set('success', 'Taxi creado exitosamente');
             Response::redirect(app_url('/taxis'));
         } catch (InvalidArgumentException $exception) {
@@ -103,6 +107,7 @@ final class TaxiController
 
         try {
             $this->service->update($placa, $modelo, $marca, $idPropietario);
+            $this->auditService->log(AuditActions::TAXI_UPDATED, 'taxis', (string) $placa, "Taxi actualizado: {$marca} {$modelo} (placa #{$placa})");
             Flash::set('success', 'Taxi actualizado exitosamente');
             Response::redirect(app_url('/taxis'));
         } catch (InvalidArgumentException $exception) {
@@ -131,6 +136,7 @@ final class TaxiController
         }
 
         $this->service->delete($placa);
+        $this->auditService->log(AuditActions::TAXI_DELETED, 'taxis', (string) $placa, "Taxi eliminado: {$current->marca} {$current->modelo} (placa #{$placa})");
 
         if ($this->request->isAjax()) {
             Response::json(['success' => true, 'message' => 'Taxi eliminado exitosamente']);

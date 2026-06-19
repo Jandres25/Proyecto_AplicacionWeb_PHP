@@ -15,6 +15,8 @@ use App\Infrastructure\Persistence\Repositories\PropietarioRepository;
 use App\Infrastructure\Persistence\Repositories\TaxiRepository;
 use App\Infrastructure\Persistence\Repositories\UserRepository;
 use App\Infrastructure\Persistence\Repositories\AuditLogRepository;
+use App\Application\Contracts\AuditServiceInterface;
+use App\Application\Services\AuditService;
 use App\Application\Services\AuthService;
 use App\Application\Services\PerfilService;
 use App\Application\Services\ReporteService;
@@ -39,6 +41,12 @@ return static function (Container $container): void {
     $container->bind(ConductorRepositoryInterface::class, static fn(Container $c) => new ConductorRepository($c->make(\PDO::class)));
     $container->bind(UserRepositoryInterface::class, static fn(Container $c) => new UserRepository($c->make(\PDO::class)));
     $container->bind(AuditLogRepositoryInterface::class, static fn(Container $c) => new AuditLogRepository($c->make(\PDO::class)));
+
+    $container->bind(AuditServiceInterface::class, static fn(Container $c) => new AuditService(
+        $c->make(AuditLogRepositoryInterface::class),
+        $c->make(Request::class), // Request implements IpProviderInterface
+        $c->make(\Psr\Log\LoggerInterface::class),
+    ));
 
     $container->bind(AuthServiceInterface::class, static fn(Container $c) => new AuthService($c->make(UserRepositoryInterface::class)));
     $container->bind(PerfilService::class, static fn(Container $c) => new PerfilService($c->make(UserRepositoryInterface::class)));

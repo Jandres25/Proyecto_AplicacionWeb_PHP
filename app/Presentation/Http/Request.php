@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Presentation\Http;
 
-final class Request
+final class Request implements IpProviderInterface
 {
     public function isAjax(): bool
     {
@@ -25,5 +25,11 @@ final class Request
     public function get(string $key, mixed $default = null): mixed
     {
         return $_GET[$key] ?? $default;
+    }
+
+    public function ip(): ?string
+    {
+        $addr = $_SERVER['REMOTE_ADDR'] ?? null;
+        return $addr !== '' ? $addr : null;
     }
 }

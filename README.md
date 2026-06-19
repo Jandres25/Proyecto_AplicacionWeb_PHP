@@ -28,6 +28,7 @@ Arquitectura por capas clásica (N-Layer): **Presentation → Application → Do
 - **Toasts Centralizados:** Helpers reutilizables en `public/js/toast-config.js` (`showToast`, `showToastSuccess`, `showToastError`).
 - **Perfil del usuario:** Cualquier usuario autenticado puede editar su nombre, correo y contraseña en `/perfil`. El id se obtiene de `Auth::id()` — nunca por URL (IDOR-safe). Dos tabs independientes con CSRF propio cada uno.
 - **Reportes de flota:** Vista `/reportes` con estadísticas generales (tarjetas) y tabla de flota (taxi + propietario + conductor). Filtros server-side por marca y propietario vía GET. Combinación cross-domain en memoria en `ReporteService` — sin JOINs en repositorios. Exportación PDF/Excel/CSV/Print via DataTables Buttons.
+- **Log de auditoría:** Vista `/audit-log` (solo admin) con registro inmutable de todas las acciones del sistema. Instrumenta login, logout, CRUD de taxis/propietarios/conductores/usuarios, y cambios de perfil. Filtros por módulo y usuario. `AuditService` es best-effort (nunca lanza excepciones). Constantes de acción centralizadas en `AuditActions`.
 - **Seguridad:** CSRF en todas las acciones POST y control de acceso basado en roles (`is_admin` en la tabla `usuarios`). `Auth::requireAdmin()` verifica la columna — no depende del nombre de usuario.
 - **Tests automatizados:** Suite de unit tests con PHPUnit 10 (modelos de dominio y services). CI via GitHub Actions en PHP 8.2 y 8.3. Correr con `composer test`.
 - **Recuérdame:** Cookie persistente de 30 días con token hasheado (SHA-256) y rotación en cada uso. Configurable via variables de entorno.
@@ -146,6 +147,7 @@ public/
       conductores/     ← datatable.js + delete.js
       usuarios/        ← datatable.js + delete.js
       reportes/        ← datatable.js
+      audit-log/       ← datatable.js
 database/
   schema.sql
   seeder.sql
@@ -161,6 +163,7 @@ Todos los módulos de gestión requieren sesión activa con `is_admin = 1`.
 - `/usuarios`: Control de usuarios del sistema (Solo Admin).
 - `/perfil`: Editar información personal y contraseña del usuario autenticado (todos los usuarios).
 - `/reportes`: Reportes de flota con estadísticas y filtros server-side (Solo Admin).
+- `/audit-log`: Log de auditoría de todas las acciones del sistema (Solo Admin).
 - `/login`: Autenticación de usuarios.
 
 ---

@@ -230,7 +230,7 @@ patrones Repository/ViewModel y PHP sin framework.
 
 [Contexto]
 Proyecto: Gestión de Flota — PHP 8.x custom, sin framework.
-Estado actual: módulos implementados — taxis, propietarios, conductores, usuarios, auth, perfil (GET /perfil, POST /perfil/informacion, POST /perfil/clave), reportes (GET /reportes — estadísticas + flota con filtros server-side GET).
+Estado actual: módulos implementados — taxis, propietarios, conductores, usuarios, auth, perfil (GET /perfil, POST /perfil/informacion, POST /perfil/clave), reportes (GET /reportes — estadísticas + flota con filtros server-side GET), audit-log (GET /audit-log — log de auditoría con filtros por entidad y usuario; AuditService instrumentado en todos los controllers).
 BD: propietarios, taxis, conductores, usuarios (ver database/schema.sql).
 Arquitectura N-Layer: Presentation / Application / Domain / Infrastructure. Framework interno en core/.
 Bootstrap: bootstrap/app.php. Bindings: config/bindings.php. Rutas: routes/web.php.
@@ -319,7 +319,7 @@ Devuelve en este orden:
 
 ---
 
-_Última actualización: 2026-06-15_
+_Última actualización: 2026-06-19_
 _Mantener sincronizado con CLAUDE.md al inicio de cada sesión._
 
 ---

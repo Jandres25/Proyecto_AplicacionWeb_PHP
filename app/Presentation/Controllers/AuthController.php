@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Presentation\Controllers;
 
 use App\Application\Contracts\AuthServiceInterface;
+use App\Application\Audit\AuditActions;
+use App\Application\Contracts\AuditServiceInterface;
 use Core\Auth;
 use Core\Csrf;
 use Core\View;
@@ -16,6 +18,7 @@ final class AuthController
 {
     public function __construct(
         private readonly AuthServiceInterface $service,
+        private readonly AuditServiceInterface $auditService,
         private readonly Request $request,
     ) {}
 
@@ -51,13 +54,22 @@ final class AuthController
             Auth::issueRememberCookie((int) $user['ID']);
         }
 
+        $this->auditService->log(AuditActions::AUTH_LOGIN, 'auth', null, "Login: @{$username}");
+
         Response::redirect(app_url('/'));
     }
 
     public function logout(): void
     {
         Csrf::validateOrFail((string) $this->request->post('_token', ''));
+
+        $userId   = Auth::id();
+        $username = Auth::username();
+
         Auth::logout();
+
+        $this->auditService->log(AuditActions::AUTH_LOGOUT, 'auth', (string) $userId, "Logout: @{$username}");
+
         Response::redirect(app_url('/login'));
     }
 }

@@ -23,6 +23,43 @@ $(document).ready(function () {
                         exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6] }
                     },
                     {
+                        extend: 'pdf',
+                        text: '<i class="bi bi-file-earmark-pdf me-1"></i> PDF',
+                        title: 'Log de Auditoría',
+                        filename: 'audit_log_' + new Date().toISOString().slice(0, 10),
+                        pageSize: 'LETTER',
+                        orientation: 'portrait',
+                        exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6] },
+                        customize: function (doc) {
+                            doc.defaultStyle.fontSize = 9;
+                            doc.styles.tableHeader.fontSize = 10;
+                            doc.styles.tableHeader.fillColor = '#4b545c';
+                            doc.styles.tableHeader.color = '#ffffff';
+                            doc.content.splice(0, 1, {
+                                text: 'LOG DE AUDITORÍA',
+                                style: { fontSize: 16, alignment: 'center', bold: true, margin: [0, 10, 0, 10] }
+                            });
+                            doc.content.splice(1, 0, {
+                                text: 'Registro de acciones del sistema',
+                                style: { fontSize: 11, alignment: 'center', italics: true, margin: [0, 0, 0, 10] }
+                            });
+                            doc.content.splice(2, 0, {
+                                text: 'Generado el: ' + new Date().toLocaleString('es-ES'),
+                                style: { fontSize: 9, alignment: 'right', margin: [0, 0, 0, 10] }
+                            });
+                            doc.footer = function (currentPage, pageCount) {
+                                return {
+                                    columns: [
+                                        { text: 'Sistema de Gestión', alignment: 'left', fontSize: 8 },
+                                        { text: 'Página ' + currentPage + ' de ' + pageCount, alignment: 'center', fontSize: 8 },
+                                        { text: 'Confidencial', alignment: 'right', fontSize: 8 }
+                                    ],
+                                    margin: [40, 0]
+                                };
+                            };
+                        }
+                    },
+                    {
                         extend: 'csv',
                         text: '<i class="bi bi-filetype-csv me-1"></i> CSV',
                         filename: 'audit_log_' + new Date().toISOString().slice(0, 10),

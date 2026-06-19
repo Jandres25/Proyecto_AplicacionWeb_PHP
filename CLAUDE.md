@@ -114,6 +114,14 @@ Solo admin. Muestra estadísticas generales (tarjetas) y tabla de flota (taxi + 
 **DTOs de proyección vs Domain Models:**
 Cuando un módulo produce vistas combinadas de múltiples dominios sin ser una entidad propia (reportes, dashboards), usar clases `final readonly` en `App\Application\{Módulo}\` en lugar de `App\Domain\Models\`. No tienen `create()` factory ni `fromRow()` — solo constructor y propiedades.
 
+**Módulo de audit-log (`GET /audit-log`):**
+Solo admin. Tabla `audit_log` con columnas: `id`, `usuario_id`, `usuario_nombre` (denormalizado), `accion`, `entidad`, `entidad_id`, `descripcion`, `ip`, `creado_en`. `AuditServiceInterface::log(string $accion, string $entidad, ?string $entidadId, string $descripcion): void` — best-effort, wrapeado en try/catch interno, nunca lanza. `AuditActions` en `App\Application\Audit\AuditActions` centraliza todas las constantes de acción. `AuditService` resuelve `Auth::id()` y `Auth::username()` internamente; no pasar userId/username al llamar. Todos los controllers CRUD (Taxi, Propietario, Conductor, Usuario) y PerfilController y AuthController están instrumentados:
+- **CRUD** (`store`, `update`, `destroy`): llamar `log()` justo después de que la operación exitosa se complete, antes del redirect/AJAX response. En `destroy()`, leer la entidad antes de borrarla, llamar `service->delete()`, luego `log()`, luego la respuesta.
+- **AuthController::login()**: llamar `log()` después de `Auth::login()` (sesión ya activa).
+- **AuthController::logout()**: capturar `Auth::id()` y `Auth::username()` **antes** de `Auth::logout()` (que destruye la sesión), luego `log()` después.
+- **PerfilController**: `Auth::username()` es seguro porque la sesión sigue activa durante updateProfile/updatePassword.
+Filtros server-side por `entidad` y `usuario_id` vía GET — sin CSRF. Vista usa DataTables client-side (solo lectura, sin `delete.js`). El filtro de entidades en la vista incluye: `['auth', 'taxis', 'propietarios', 'conductores', 'usuarios', 'perfil']`.
+
 ## Conventions
 
 - All PHP files use `declare(strict_types=1)`

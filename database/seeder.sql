@@ -32,3 +32,17 @@ INSERT INTO `usuarios` (`Nombres`, `Apellidos`, `Usuario`, `Clave`, `Correo`, `i
 ('Sistema', 'Admin', 'Administrador', '$2y$10$UYGCkF/zfz4HeyQRCAYy5utUTjkChfTi4Tl9rL/mIt3X0XWs/nhm2', 'admin@example.com', 1),
 ('Soporte', 'Técnico', 'support_user', '$2y$10$HZXfvwGGw/qQ.5JR3mEqWuc56sdQGN/8XzeRt9QoXn.i.UeM663QW', 'support@example.com', 0),
 ('Invitado', 'Especial', 'guest_view', '$2y$10$UcwO2HSSpp93lTXKxUzmNuRroSqN/qj72IMkYBg7EljVDkKtvWDB6', 'guest@example.com', 0);
+
+-- Datos para la tabla `audit_log`
+-- Registros de ejemplo que cubren los distintos módulos y acciones
+INSERT INTO `audit_log` (`usuario_id`, `usuario_nombre`, `accion`, `entidad`, `entidad_id`, `descripcion`, `ip`, `creado_en`) VALUES
+(1, 'Administrador', 'auth.login',          'auth',         NULL,  'Inicio de sesión exitoso',                    '127.0.0.1', '2026-06-19 08:00:00'),
+(1, 'Administrador', 'taxi.created',         'taxis',        '1',   'Taxi creado: Corolla 2022 (Toyota)',           '127.0.0.1', '2026-06-19 08:05:00'),
+(1, 'Administrador', 'taxi.created',         'taxis',        '2',   'Taxi creado: Versa 2023 (Nissan)',             '127.0.0.1', '2026-06-19 08:06:00'),
+(1, 'Administrador', 'propietario.created',  'propietarios', '1',   'Propietario creado: Carlos Alberto Gómez',    '127.0.0.1', '2026-06-19 08:10:00'),
+(1, 'Administrador', 'conductor.created',    'conductores',  '1',   'Conductor creado: Juan Pablo Duarte',         '127.0.0.1', '2026-06-19 08:15:00'),
+(1, 'Administrador', 'taxi.updated',         'taxis',        '1',   'Taxi actualizado: Corolla 2022 (Toyota)',      '127.0.0.1', '2026-06-19 09:00:00'),
+(2, 'support_user',  'auth.login',           'auth',         NULL,  'Inicio de sesión exitoso',                    '10.0.0.2',  '2026-06-19 09:30:00'),
+(1, 'Administrador', 'usuario.created',      'usuarios',     '2',   'Usuario creado: support_user',                '127.0.0.1', '2026-06-19 10:00:00'),
+(1, 'Administrador', 'conductor.deleted',    'conductores',  '5',   'Conductor eliminado: Laura Isabel Castro',    '127.0.0.1', '2026-06-19 10:30:00'),
+(1, 'Administrador', 'auth.logout',          'auth',         NULL,  'Cierre de sesión',                            '127.0.0.1', '2026-06-19 11:00:00');

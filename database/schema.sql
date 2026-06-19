@@ -56,4 +56,22 @@ ALTER TABLE `conductores`
 ALTER TABLE `taxis`
   ADD CONSTRAINT `taxis_ibfk_2` FOREIGN KEY (`Idpropietario`) REFERENCES `propietarios` (`Idpropietario`) ON DELETE CASCADE ON UPDATE CASCADE;
 
+-- Estructura de tabla para la tabla `audit_log`
+CREATE TABLE IF NOT EXISTS `audit_log` (
+  `id`             int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `usuario_id`     int(11) NULL,
+  `usuario_nombre` varchar(150) NOT NULL DEFAULT 'sistema',
+  `accion`         varchar(60) NOT NULL,
+  `entidad`        varchar(40) NOT NULL,
+  `entidad_id`     varchar(60) NULL,
+  `descripcion`    varchar(255) NOT NULL,
+  `ip`             varchar(45) NULL,
+  `creado_en`      datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_audit_entidad`     (`entidad`),
+  KEY `idx_audit_usuario`     (`usuario_id`),
+  KEY `idx_audit_creado`      (`creado_en`),
+  KEY `idx_audit_entidad_eid` (`entidad`, `entidad_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 COMMIT;

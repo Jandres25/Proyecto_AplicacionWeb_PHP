@@ -33,6 +33,13 @@ INSERT INTO `usuarios` (`Nombres`, `Apellidos`, `Usuario`, `Clave`, `Correo`, `i
 ('Soporte', 'Técnico', 'support_user', '$2y$10$HZXfvwGGw/qQ.5JR3mEqWuc56sdQGN/8XzeRt9QoXn.i.UeM663QW', 'support@example.com', 0),
 ('Invitado', 'Especial', 'guest_view', '$2y$10$UcwO2HSSpp93lTXKxUzmNuRroSqN/qj72IMkYBg7EljVDkKtvWDB6', 'guest@example.com', 0);
 
+-- Datos para la tabla `turnos`
+-- 3 turnos de prueba no solapados (conductores y taxis distintos o rangos no solapados)
+INSERT INTO `turnos` (`conductor_id`, `placa`, `inicio`, `fin`) VALUES
+(1, 1, '2026-06-23 06:00:00', '2026-06-23 14:00:00'),
+(2, 2, '2026-06-23 08:00:00', '2026-06-23 16:00:00'),
+(3, 3, '2026-06-23 14:00:00', '2026-06-23 22:00:00');
+
 -- Datos para la tabla `audit_log`
 -- Registros de ejemplo que cubren los distintos módulos y acciones
 INSERT INTO `audit_log` (`usuario_id`, `usuario_nombre`, `accion`, `entidad`, `entidad_id`, `descripcion`, `ip`, `creado_en`) VALUES

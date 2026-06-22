@@ -74,4 +74,23 @@ CREATE TABLE IF NOT EXISTS `audit_log` (
   KEY `idx_audit_entidad_eid` (`entidad`, `entidad_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- Estructura de tabla para la tabla `turnos`
+CREATE TABLE IF NOT EXISTS `turnos` (
+  `id`           int(11) NOT NULL AUTO_INCREMENT,
+  `conductor_id` int(11) NOT NULL,
+  `placa`        int(11) NOT NULL,
+  `inicio`       datetime NOT NULL,
+  `fin`          datetime NOT NULL,
+  `creado_en`    timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_turnos_conductor_rango` (`conductor_id`, `inicio`, `fin`),
+  KEY `idx_turnos_placa_rango`     (`placa`, `inicio`, `fin`),
+  CONSTRAINT `fk_turnos_conductor`
+    FOREIGN KEY (`conductor_id`) REFERENCES `conductores` (`ID`)
+    ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_turnos_taxi`
+    FOREIGN KEY (`placa`) REFERENCES `taxis` (`Placa`)
+    ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 COMMIT;

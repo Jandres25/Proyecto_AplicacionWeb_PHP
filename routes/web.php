@@ -11,6 +11,7 @@ use App\Presentation\Controllers\UsuarioController;
 use App\Presentation\Controllers\PerfilController;
 use App\Presentation\Controllers\ReporteController;
 use App\Presentation\Controllers\AuditLogController;
+use App\Presentation\Controllers\TurnoController;
 
 $router->get('/login', [AuthController::class, 'showLogin']);
 $router->post('/login', [AuthController::class, 'login']);
@@ -45,3 +46,9 @@ $router->post('/perfil/informacion', [PerfilController::class, 'updateProfile'])
 $router->post('/perfil/clave', [PerfilController::class, 'updatePassword']);
 $router->get('/reportes', [ReporteController::class, 'index']);
 $router->get('/audit-log', [AuditLogController::class, 'index']);
+$router->get('/turnos',           [TurnoController::class, 'index']);
+$router->get('/turnos/crear',     [TurnoController::class, 'create']);
+$router->post('/turnos/crear',    [TurnoController::class, 'store']);
+$router->get('/turnos/editar',    [TurnoController::class, 'edit']);
+$router->post('/turnos/editar',   [TurnoController::class, 'update']);
+$router->post('/turnos/eliminar', [TurnoController::class, 'destroy']);

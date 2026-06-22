@@ -29,7 +29,7 @@
                         <label for="filtro_entidad" class="form-label small fw-semibold">Módulo (entidad)</label>
                         <select id="filtro_entidad" name="entidad" class="form-select form-select-sm">
                             <option value="">Todos los módulos</option>
-                            <?php foreach (['auth', 'taxis', 'propietarios', 'conductores', 'usuarios', 'perfil'] as $entidad) : ?>
+                            <?php foreach (['auth', 'taxis', 'propietarios', 'conductores', 'usuarios', 'perfil', 'turnos'] as $entidad) : ?>
                                 <option value="<?= e($entidad); ?>" <?= $vm->filtroEntidad === $entidad ? 'selected' : ''; ?>>
                                     <?= e(ucfirst($entidad)); ?>
                                 </option>

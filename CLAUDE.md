@@ -120,7 +120,30 @@ Solo admin. Tabla `audit_log` con columnas: `id`, `usuario_id`, `usuario_nombre`
 - **AuthController::login()**: llamar `log()` después de `Auth::login()` (sesión ya activa).
 - **AuthController::logout()**: capturar `Auth::id()` y `Auth::username()` **antes** de `Auth::logout()` (que destruye la sesión), luego `log()` después.
 - **PerfilController**: `Auth::username()` es seguro porque la sesión sigue activa durante updateProfile/updatePassword.
-Filtros server-side por `entidad` y `usuario_id` vía GET — sin CSRF. Vista usa DataTables client-side (solo lectura, sin `delete.js`). El filtro de entidades en la vista incluye: `['auth', 'taxis', 'propietarios', 'conductores', 'usuarios', 'perfil']`.
+Filtros server-side por `entidad` y `usuario_id` vía GET — sin CSRF. Vista usa DataTables client-side (solo lectura, sin `delete.js`). El filtro de entidades en la vista incluye: `['auth', 'taxis', 'propietarios', 'conductores', 'usuarios', 'perfil', 'turnos']`.
+
+**Módulo de turnos (`/turnos`):**
+Solo admin. Gestiona la asignación de turno de un conductor a un taxi en un rango de tiempo. Tabla `turnos` con columnas `id`, `conductor_id` (FK→conductores.ID), `placa` (FK→taxis.Placa), `inicio` (DATETIME), `fin` (DATETIME), `creado_en`.
+
+Rutas:
+- `GET /turnos` → `TurnoController::index()`
+- `GET /turnos/crear` → `TurnoController::create()`
+- `POST /turnos/crear` → `TurnoController::store()`
+- `GET /turnos/editar` → `TurnoController::edit()`
+- `POST /turnos/editar` → `TurnoController::update()`
+- `POST /turnos/eliminar` → `TurnoController::destroy()`
+
+**Reglas de solapamiento (cross-domain — van en `TurnoService`, nunca en el modelo ni el repositorio):**
+- Un conductor no puede tener dos turnos activos simultáneos: `overlappingForConductor()` en `TurnoRepository`.
+- Un taxi no puede tener dos conductores activos simultáneos: `overlappingForPlaca()` en `TurnoRepository`.
+- SQL de solapamiento: `inicio < :fin AND fin > :inicio` (ambas columnas DATETIME en la misma tabla).
+- El parámetro `$excludeId` evita que `update()` se invalide contra el propio turno que se edita.
+
+**DTO `TurnoRow` (`App\Application\Turnos\TurnoRow`):** `final readonly`, campos `id`, `conductorNombre`, `placa`, `taxiModelo`, `inicio`, `fin`. Se genera en `TurnoService::all()` combinando `TurnoRepository`, `ConductorRepository` y `TaxiRepository` en memoria (sin JOINs cross-domain).
+
+**AuditActions añadidas:** `TURNO_CREATED = 'turno.created'`, `TURNO_UPDATED = 'turno.updated'`, `TURNO_DELETED = 'turno.deleted'`. Entidad auditada: `'turnos'`.
+
+**Formulario:** 4 inputs (`date` + `time` × 2). El Controller concatena fecha y hora con `:00` al final antes de pasarlos al Service (`'Y-m-d H:i:00'`) porque `<input type="time">` no envía segundos.
 
 ## Conventions
 

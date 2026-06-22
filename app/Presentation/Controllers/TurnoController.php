@@ -62,8 +62,8 @@ final class TurnoController
 
         $conductorId = (int) $old['conductor_id'];
         $placa       = (int) $old['placa'];
-        $inicio      = trim($old['fecha_inicio'] . ' ' . $old['hora_inicio']);
-        $fin         = trim($old['fecha_fin'] . ' ' . $old['hora_fin']);
+        $inicio      = trim($old['fecha_inicio'] . ' ' . $old['hora_inicio']) . ':00';
+        $fin         = trim($old['fecha_fin']    . ' ' . $old['hora_fin'])    . ':00';
 
         try {
             $turno = $this->service->create($conductorId, $placa, $inicio, $fin);
@@ -112,8 +112,8 @@ final class TurnoController
 
         $conductorId = (int) $this->request->post('conductor_id', 0);
         $placa       = (int) $this->request->post('placa', 0);
-        $inicio      = trim((string) $this->request->post('fecha_inicio', '') . ' ' . (string) $this->request->post('hora_inicio', ''));
-        $fin         = trim((string) $this->request->post('fecha_fin', '') . ' ' . (string) $this->request->post('hora_fin', ''));
+        $inicio      = trim((string) $this->request->post('fecha_inicio', '') . ' ' . (string) $this->request->post('hora_inicio', '')) . ':00';
+        $fin         = trim((string) $this->request->post('fecha_fin', '')    . ' ' . (string) $this->request->post('hora_fin', ''))    . ':00';
 
         try {
             $this->service->update($id, $conductorId, $placa, $inicio, $fin);

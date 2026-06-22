@@ -136,3 +136,4 @@ Filtros server-side por `entidad` y `usuario_id` vía GET — sin CSRF. Vista us
 - `seeder.sql` inserts passwords already hashed with `password_hash(..., PASSWORD_DEFAULT)` — no plain-text passwords in seed data
 - **Error → CLAUDE.md**: after fixing any mistake (architecture, convention, pattern, any kind of error), document it here before considering the task done — so it never repeats
 - **No Blade syntax in PHP views**: never use `{{-- ... --}}` comments in `.php` templates — they render as literal text. Use `<?php /* ... */ ?>` or HTML `<!-- ... -->` instead
+- **`<input type="time">` envía `HH:MM` sin segundos**: cuando un Domain Model valida con formato `Y-m-d H:i:s`, el Controller debe concatenar `:00` al valor de la hora antes de pasarlo al Service (e.g. `trim($fecha . ' ' . $hora) . ':00'`). Nunca asumir que el browser envía segundos.

@@ -39,6 +39,7 @@ final class View
             ['href' => $baseUrl . 'conductores', 'label' => 'Conductores'],
             ['href' => $baseUrl . 'propietarios', 'label' => 'Propietarios'],
             ['href' => $baseUrl . 'taxis', 'label' => 'Taxis'],
+            ['href' => $baseUrl . 'turnos', 'label' => 'Turnos'],
             ['href' => $baseUrl . 'reportes', 'label' => 'Reportes'],
         ];
 

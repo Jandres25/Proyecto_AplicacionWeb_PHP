@@ -20,6 +20,9 @@ use App\Application\Services\AuditService;
 use App\Application\Services\AuthService;
 use App\Application\Services\PerfilService;
 use App\Application\Services\ReporteService;
+use App\Application\Services\TurnoService;
+use App\Infrastructure\Contracts\TurnoRepositoryInterface;
+use App\Infrastructure\Persistence\Repositories\TurnoRepository;
 
 /** @param Container $container */
 return static function (Container $container): void {
@@ -54,5 +57,12 @@ return static function (Container $container): void {
         $c->make(TaxiRepositoryInterface::class),
         $c->make(PropietarioRepositoryInterface::class),
         $c->make(ConductorRepositoryInterface::class),
+    ));
+
+    $container->bind(TurnoRepositoryInterface::class, static fn(Container $c) => new TurnoRepository($c->make(\PDO::class)));
+    $container->bind(TurnoService::class, static fn(Container $c) => new TurnoService(
+        $c->make(TurnoRepositoryInterface::class),
+        $c->make(ConductorRepositoryInterface::class),
+        $c->make(TaxiRepositoryInterface::class),
     ));
 };

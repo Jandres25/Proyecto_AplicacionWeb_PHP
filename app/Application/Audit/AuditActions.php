@@ -27,4 +27,8 @@ final class AuditActions
 
     public const PERFIL_UPDATED  = 'perfil.updated';
     public const PERFIL_PASSWORD = 'perfil.password_changed';
+
+    public const TURNO_CREATED = 'turno.created';
+    public const TURNO_UPDATED = 'turno.updated';
+    public const TURNO_DELETED = 'turno.deleted';
 }

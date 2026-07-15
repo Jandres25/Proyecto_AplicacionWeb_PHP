@@ -8,8 +8,8 @@
   <img src="https://img.shields.io/badge/XAMPP-Apache%20%2B%20MySQL-FB7A24?style=flat&logo=xampp&logoColor=white" alt="XAMPP">
   <img src="https://img.shields.io/badge/arquitectura-N--Layer-0078D4?style=flat" alt="N-Layer">
   <img src="https://img.shields.io/badge/tests-PHPUnit%2010-366488?style=flat&logo=php&logoColor=white" alt="PHPUnit">
-  <a href="https://github.com/Jandres25/Proyecto_AplicacionWeb_PHP/actions/workflows/tests.yml">
-    <img src="https://github.com/Jandres25/Proyecto_AplicacionWeb_PHP/actions/workflows/tests.yml/badge.svg" alt="Tests">
+  <a href="https://github.com/jandrescodes/Proyecto_AplicacionWeb_PHP/actions/workflows/tests.yml">
+    <img src="https://github.com/jandrescodes/Proyecto_AplicacionWeb_PHP/actions/workflows/tests.yml/badge.svg" alt="Tests">
   </a>
 </p>
 
